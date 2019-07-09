@@ -14,6 +14,7 @@
         <title>Home Page</title>
     </head>
     <body>
+           <%@ include file="navbar.jsp" %>
         <h1>${loggedinuser.userid}</h1>
     </body>
 </html>
