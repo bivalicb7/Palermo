@@ -9,6 +9,7 @@ import at.favre.lib.crypto.bcrypt.BCrypt;
 import com.palermo.palermo.entities.User;
 import com.palermo.palermo.services.UserService;
 import com.palermo.palermo.validators.UserRegisterValidator;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -49,6 +50,7 @@ public class RegisterController {
     public String doRegister(
             ModelMap mm,
             @Valid @ModelAttribute("user") User user,
+            HttpSession session,
             BindingResult br
     ) {
 
@@ -63,7 +65,10 @@ public class RegisterController {
             user.setPassword(bcryptHashString);
             
             userService.addUser(user);
-            mm.addAttribute("loggedinuser", userService.getUserByUsername(user.getUsername()));
+//            mm.addAttribute("loggedinuser", );
+            User loggedinuser = userService.getUserByUsername(user.getUsername());
+            loggedinuser.setPassword(null);
+            session.setAttribute("loggedinuser", loggedinuser);
             return "home";
         }
 

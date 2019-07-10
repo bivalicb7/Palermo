@@ -9,6 +9,9 @@ import com.palermo.palermo.entities.User;
 import com.palermo.palermo.services.UserService;
 import com.palermo.palermo.validators.UserLogInValidator;
 import com.palermo.palermo.validators.UserRegisterValidator;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -49,19 +52,31 @@ public class LogInController {
     @RequestMapping(value = "/dologin", method = RequestMethod.POST)
     public String doLogIn(
             ModelMap mm,
-            @ Valid @ModelAttribute("user") User user,
+            @Valid @ModelAttribute("user") User user,
+            HttpSession session,
+            HttpServletResponse response,
             BindingResult br
     ) {
 
         if (br.hasErrors()) {
             return "login";
         } else {
+
+            //Add user in session
+//            mm.addAttribute("loggedinuser", userService.getUserByUsername(user.getUsername()));
+            User loggedinuser = userService.getUserByUsername(user.getUsername());
+            loggedinuser.setPassword(null);
+            session.setAttribute("loggedinuser", loggedinuser);
             
-            mm.addAttribute("loggedinuser", userService.getUserByUsername(user.getUsername()));
+            //Add user in cookie
+            
+            // create a cookie
+            Cookie cookie = new Cookie("useridincookie", Integer.toString(loggedinuser.getUserid()));
+
+            //add cookie to response
+            response.addCookie(cookie);
             return "home";
         }
     }
-
-    
 
 }

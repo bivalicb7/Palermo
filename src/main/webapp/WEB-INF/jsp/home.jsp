@@ -15,6 +15,9 @@
     </head>
     <body>
            <%@ include file="navbar.jsp" %>
-        <h1>${loggedinuser.userid}</h1>
+        <h1>Userid = ${loggedinuser.userid}</h1>
+        <h1>Username = ${sessionScope.loggedinuser.username}</h1>
+                        <script src="${pageContext.request.contextPath}/js/app.js"></script>
+
     </body>
 </html>
