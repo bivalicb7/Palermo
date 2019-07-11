@@ -28,16 +28,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 @RequestMapping(value = "register")
 public class RegisterController {
-        @Autowired
+
+    @Autowired
     private UserService userService;
     @Autowired
     private UserRegisterValidator userValidator;
-    
-        @InitBinder
+
+    @InitBinder
     private void initBinder(WebDataBinder binder) {
         binder.setValidator(userValidator);
     }
-    
+
     @RequestMapping(value = "/createaccount", method = RequestMethod.GET)
     public String showRegisterPage(ModelMap mm
     ) {
@@ -49,21 +50,21 @@ public class RegisterController {
     @RequestMapping(value = "/docreateaccount", method = RequestMethod.POST)
     public String doRegister(
             ModelMap mm,
-            @Valid @ModelAttribute("user") User user,
             HttpSession session,
+            @Valid @ModelAttribute("user") User user,
             BindingResult br
     ) {
 
         if (br.hasErrors()) {
             return "register";
         } else {
-            
+
             user.setRole("plainuser");
-            
+
             //hash password
             String bcryptHashString = BCrypt.withDefaults().hashToString(12, user.getPassword().toCharArray());
             user.setPassword(bcryptHashString);
-            
+
             userService.addUser(user);
 //            mm.addAttribute("loggedinuser", );
             User loggedinuser = userService.getUserByUsername(user.getUsername());

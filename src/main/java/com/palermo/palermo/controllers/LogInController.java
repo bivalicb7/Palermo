@@ -52,9 +52,9 @@ public class LogInController {
     @RequestMapping(value = "/dologin", method = RequestMethod.POST)
     public String doLogIn(
             ModelMap mm,
-            @Valid @ModelAttribute("user") User user,
             HttpSession session,
             HttpServletResponse response,
+            @Valid @ModelAttribute("user") User user,
             BindingResult br
     ) {
 
