@@ -5,6 +5,7 @@
  */
 
 var stompClient = null;
+var num = null;
 
 console.log("hi");
 
@@ -41,12 +42,13 @@ function setConnected(connected) {
 //    });
 //}
 function connect1() {
+    num = 1;
     var socket = new SockJS('/palermo/game/liana1');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
         setConnected(true);
         console.log('Connected: ' + frame);
-        stompClient.subscribe('/topic/greetings', function (greeting) {
+        stompClient.subscribe('/topic/greetings/1', function (greeting) {
             showGreeting(JSON.parse(greeting.body).content);
         });
         stompClient.subscribe('/topic/voting', function (votegreeting) {
@@ -56,12 +58,13 @@ function connect1() {
 }
 
 function connect2() {
+    num =2;
     var socket = new SockJS('/palermo/game/liana2');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
         setConnected(true);
         console.log('Connected: ' + frame);
-        stompClient.subscribe('/topic/greetings', function (greeting) {
+        stompClient.subscribe('/topic/greetings/2', function (greeting) {
             showGreeting(JSON.parse(greeting.body).content);
         });
         stompClient.subscribe('/topic/voting', function (votegreeting) {
@@ -79,8 +82,9 @@ function disconnect() {
 }
 
 function sendName() {
-    stompClient.send("/app/hello", {}, JSON.stringify({'name': $("#name").val()}));
+    stompClient.send(`/app/hello${num}`, {}, JSON.stringify({'name': $("#name").val()}));
 }
+
 function sendVote() {
     stompClient.send("/app/vote", {}, JSON.stringify(
             {
@@ -121,28 +125,28 @@ $(function () {
 //Cookie play
 
 function getCookie(cname) {
-  var name = cname + "=";
-  var ca = document.cookie.split(';');
-  for(var i = 0; i < ca.length; i++) {
-    var c = ca[i];
-    while (c.charAt(0) == ' ') {
-      c = c.substring(1);
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
     }
-    if (c.indexOf(name) == 0) {
-      return c.substring(name.length, c.length);
-    }
-  }
-  return "";
+    return "";
 }
 
 function checkCookie() {
-  var user = getCookie("useridincookie");
-  if (user != "") {
-    alert("Welcome again " + user);
-  } else {
-    user = prompt("Please enter your name:", "");
-    if (user != "" && user != null) {
-      setCookie("username", user, 365);
+    var user = getCookie("useridincookie");
+    if (user != "") {
+        alert("Welcome again " + user);
+    } else {
+        user = prompt("Please enter your name:", "");
+        if (user != "" && user != null) {
+            setCookie("username", user, 365);
+        }
     }
-  }
 }
