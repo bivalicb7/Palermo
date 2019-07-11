@@ -82,7 +82,7 @@ function disconnect() {
 }
 
 function sendName() {
-    stompClient.send(`/app/hello${num}`, {}, JSON.stringify({'name': $("#name").val()}));
+    stompClient.send(`/app/hello/${num}`, {}, JSON.stringify({'name': $("#name").val()}));
 }
 
 function sendVote() {
