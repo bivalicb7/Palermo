@@ -15,6 +15,11 @@
     </head>
     <body>
            <%@ include file="navbar.jsp" %>
-        <h1>${loggedinuser.userid}</h1>
+        <h1>Userid = ${loggedinuser.userid}</h1>
+        <h1>Username = ${sessionScope.loggedinuser.username}</h1>
+        
+        <a href="${pageContext.request.contextPath}/lobby/startgame">Create new game</a>
+                        <script src="${pageContext.request.contextPath}/js/app.js"></script>
+
     </body>
 </html>

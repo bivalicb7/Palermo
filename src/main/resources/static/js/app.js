@@ -5,6 +5,7 @@
  */
 
 var stompClient = null;
+var num = null;
 
 console.log("hi");
 
@@ -40,13 +41,30 @@ function setConnected(connected) {
 //        });
 //    });
 //}
-function connect() {
-    var socket = new SockJS('gs-guide-websocket');
+function connect1() {
+    num = 1;
+    var socket = new SockJS('/palermo/game/liana1');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
         setConnected(true);
         console.log('Connected: ' + frame);
-        stompClient.subscribe('/topic/greetings', function (greeting) {
+        stompClient.subscribe('/topic/greetings/1', function (greeting) {
+            showGreeting(JSON.parse(greeting.body).content);
+        });
+        stompClient.subscribe('/topic/voting', function (votegreeting) {
+            showVote(JSON.parse(votegreeting.body).content);
+        }, {userid: checkCookie("useridincookie")});
+    });
+}
+
+function connect2() {
+    num =2;
+    var socket = new SockJS('/palermo/game/liana2');
+    stompClient = Stomp.over(socket);
+    stompClient.connect({}, function (frame) {
+        setConnected(true);
+        console.log('Connected: ' + frame);
+        stompClient.subscribe('/topic/greetings/2', function (greeting) {
             showGreeting(JSON.parse(greeting.body).content);
         });
         stompClient.subscribe('/topic/voting', function (votegreeting) {
@@ -64,8 +82,9 @@ function disconnect() {
 }
 
 function sendName() {
-    stompClient.send("/app/hello", {}, JSON.stringify({'name': $("#name").val()}));
+    stompClient.send(`/app/hello/${num}`, {}, JSON.stringify({'name': $("#name").val()}));
 }
+
 function sendVote() {
     stompClient.send("/app/vote", {}, JSON.stringify(
             {
@@ -86,8 +105,11 @@ $(function () {
     $("form").on('submit', function (e) {
         e.preventDefault();
     });
-    $("#connect").click(function () {
-        connect();
+    $("#connect1").click(function () {
+        connect1();
+    });
+    $("#connect2").click(function () {
+        connect2();
     });
     $("#disconnect").click(function () {
         disconnect();
@@ -99,3 +121,29 @@ $(function () {
         sendVote();
     });
 });
+
+//Cookie play
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
+function checkCookie(cname) {
+    var user = getCookie(cname);
+    if (user != "") {
+        return user;
+    } else {
+        return 0;
+    }
+}
