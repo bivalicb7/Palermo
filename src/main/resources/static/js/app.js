@@ -53,7 +53,7 @@ function connect1() {
         });
         stompClient.subscribe('/topic/voting', function (votegreeting) {
             showVote(JSON.parse(votegreeting.body).content);
-        });
+        }, {userid: checkCookie("useridincookie")});
     });
 }
 
@@ -139,14 +139,11 @@ function getCookie(cname) {
     return "";
 }
 
-function checkCookie() {
-    var user = getCookie("useridincookie");
+function checkCookie(cname) {
+    var user = getCookie(cname);
     if (user != "") {
-        alert("Welcome again " + user);
+        return user;
     } else {
-        user = prompt("Please enter your name:", "");
-        if (user != "" && user != null) {
-            setCookie("username", user, 365);
-        }
+        return 0;
     }
 }

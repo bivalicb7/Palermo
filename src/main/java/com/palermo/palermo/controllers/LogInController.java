@@ -72,7 +72,7 @@ public class LogInController {
             
             // create a cookie
             Cookie cookie = new Cookie("useridincookie", Integer.toString(loggedinuser.getUserid()));
-
+            cookie.setPath("/");
             //add cookie to response
             response.addCookie(cookie);
             return "home";
