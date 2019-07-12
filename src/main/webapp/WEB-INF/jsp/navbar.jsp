@@ -10,6 +10,14 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
+ .bg-img {background-image: url("${pageContext.request.contextPath}/img/palermo.jpg");
+
+  min-height: 380px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+}
 body {
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
@@ -27,6 +35,7 @@ body {
   padding: 14px 16px;
   text-decoration: none;
   font-size: 17px;
+  
 }
 
 .topnav a:hover {
@@ -41,7 +50,7 @@ body {
 </style>
 </head>
 <body>
-
+<div class="bg-img">
 <div class="topnav">
   <a class="active" href="myprofile">My profile</a>
   <a href="main">Main</a>
