@@ -8,7 +8,12 @@ package com.palermo.palermo.controllers;
 //import com.palermo.palermo.configurationClasses.WebSocketConfig;
 //import com.palermo.palermo.configurationClasses.WebSocketConfig;
 import com.palermo.palermo.entities.User;
+import com.palermo.palermo.gameModel.GameMain;
+import com.palermo.palermo.gameModel.GameTable;
 import java.util.Collection;
+import java.util.Map;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.endpoint.EndpointsSupplier;
 import org.springframework.boot.actuate.endpoint.web.PathMappedEndpoints;
@@ -16,6 +21,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 //import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 //import org.springframework.web.socket.config.annotation.WebMvcStompEndpointRegistry;
 //import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
@@ -27,25 +33,50 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 @RequestMapping(value = "lobby")
 public class LobbyController {
-//    @Autowired
-//     WebSocketConfig wsc;
-//    @Autowired
-//    private WebMvcStompEndpointRegistry reg;
-//    @Autowired PathMappedEndpoints pme;
-    
-    @RequestMapping(value = "/startgame", method = RequestMethod.GET)
-    public String startGame(ModelMap mm
-     //    StompEndpointRegistry  registry
-    ) {
-//        wsc.registerStompEndpoints(ser, "liana");
-//    WebMvcStompEndpointRegistry ser = new WebMvcStompEndpointRegistry(WebSocketHandler webSocketHandler, WebSocketTransportRegistration transportRegistration, TaskScheduler defaultSockJsTaskScheduler);
-//           registry.addEndpoint("/liana").withSockJS();
-//        Collection<String> allPaths = pme.getAllPaths();
 
-//PathMappedEndpoints pme = new PathMappedEndpoints("/palermo", () -> {
-//    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//});
-        mm.addAttribute("user", new User());
+    @Autowired
+    GameMain gamemain;
+
+    @RequestMapping(value = "/home", method = RequestMethod.GET)
+    public String showLobby(ModelMap mm) {
+        
+        System.out.println("Tables running" + gamemain.getGametables().size() );
+        Map<Integer, GameTable> map = gamemain.getGametables();
+        mm.addAttribute("runningtables", map);
+        return "home";
+    }
+
+    @RequestMapping(value = "/startgame", method = RequestMethod.GET)
+    public String startGame(ModelMap mm,
+            HttpServletResponse response
+    ) {
+        
+        int newtableid = gamemain.returnNextTableId();
+        GameTable newtable = new GameTable();
+        newtable.setGametableid(newtableid);
+        gamemain.getGametables().put(newtableid, newtable);
+
+        Cookie cookie = new Cookie("tableidincookie", Integer.toString(newtableid));
+        //TODO set path to specific game page. (check link)
+        cookie.setPath("/");
+        //add cookie to response
+        response.addCookie(cookie);
+
+        return "game";
+    }
+    
+    @RequestMapping(value = "/joingame", method = RequestMethod.GET)
+    public String joinGame(ModelMap mm,
+            @RequestParam("tableid") String tableid,
+            HttpServletResponse response
+    ) {
+
+        Cookie cookie = new Cookie("tableidincookie", tableid);
+        //TODO set path to specific game page. (check link)
+        cookie.setPath("/");
+        //add cookie to response
+        response.addCookie(cookie);
+
         return "game";
     }
 }

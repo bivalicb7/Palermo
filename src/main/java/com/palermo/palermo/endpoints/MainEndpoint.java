@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  *
  * @author Los_e
  */
-@ServerEndpoint(value = "/game/{username}")
+@ServerEndpoint(value = "/game")
 public class MainEndpoint {
     @Autowired
      SessionRegistry registry = SessionRegistry.getInstance();
@@ -25,6 +25,7 @@ public class MainEndpoint {
     
     @OnOpen
     public void onOpen(Session session, EndpointConfig conf) throws IOException {
+        System.out.println("In HEREEEEEEEEEEEE");
         registry.add(session);
         session.getBasicRemote().sendText("People in chat " + registry.getAll().size());
     }

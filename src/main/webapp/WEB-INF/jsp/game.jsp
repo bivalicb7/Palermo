@@ -15,7 +15,7 @@
         <script src="${pageContext.request.contextPath}/webjars/jquery/jquery.min.js"></script>
         <script src="${pageContext.request.contextPath}/webjars/sockjs-client/sockjs.min.js"></script>
         <script src="${pageContext.request.contextPath}/webjars/stomp-websocket/stomp.min.js"></script>
-        <script src="${pageContext.request.contextPath}/js/app.js"></script>
+        <script src="${pageContext.request.contextPath}/js/game.js"></script>
     </head>
     <body>
         <%@ include file="navbar.jsp" %>
