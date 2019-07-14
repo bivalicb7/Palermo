@@ -78,7 +78,16 @@ public class GameMain {
         //Also remove from the usersintablesmapping
         usersintablesmapping.remove(sessionid);
         System.out.println(usersintablesmapping.toString());
+        
+        //Check if table is empty of users and remove it from the game
+        removeTableFromMain(tableid);
+    }
 
+    public void removeTableFromMain(int tableid) {
+
+        if (gametables.get(tableid).getUsersintable().isEmpty()) {
+            gametables.remove(tableid);
+        }
     }
 
 }
