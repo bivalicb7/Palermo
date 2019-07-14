@@ -31,9 +31,15 @@
             <c:when test = "${!empty runningtables}">
                 <c:forEach items="${runningtables}" var="table">
                     <div id="tablecontainer" style="border: 3px solid black; width: auto; margin: 10px;">
-                        <p> Table id: ${table.value.gametableid} </p>
-                        <p> Table id (key in set): ${table.key} </p>
+                        <p> Table id: ${table.key} </p>
                         <p>Num of users:  ${table.value.usersintable.size()}</p>
+                        
+                        <ul id="userslist">
+                            <c:forEach items="${table.value.usersintable}" var="userintable">
+                                <li> ${userintable.value.user.username} </li>
+                            </c:forEach>
+                        </ul>
+
                         <c:url value="/lobby/joingame" var = "joinURL">
                             <c:param name="tableid" value="${table.value.gametableid}" />
                         </c:url>

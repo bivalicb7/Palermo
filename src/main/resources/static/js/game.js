@@ -31,12 +31,18 @@ $(function () {
 function connect() {
     var socket = new SockJS('/palermo/game');
     stompClient = Stomp.over(socket);
-    stompClient.connect({}, function (frame) {
+    stompClient.connect({tableid: tableid}, function (frame) {
         setConnected(true);
         console.log('Connected: ' + frame);
         stompClient.subscribe(`/topic/greetings/${tableid}`, function (greeting) {
             showGreeting(JSON.parse(greeting.body).content);
         }, {userid: checkCookie("useridincookie")});
+        stompClient.subscribe(`/topic/tablestate/${tableid}`, function (greeting) {
+            showGreeting(JSON.parse(greeting.body).content);
+        }, {
+            userid: checkCookie("useridincookie"), 
+            tableid: tableid
+        });
         stompClient.subscribe(`/topic/voting/${tableid}`, function (votegreeting) {
             showVote(JSON.parse(votegreeting.body).content);
         }, {userid: checkCookie("useridincookie")});
@@ -55,47 +61,9 @@ function setConnected(connected) {
     $("#votes").html("");
 }
 
-//function connect() {
-//    var socket1 = new SockJS('gs-guide-websocket');
-//    var socket2 = new SockJS('votesSocket');
-//    stompClient1 = Stomp.over(socket1);
-//    stompClient2 = Stomp.over(socket2);
-//    stompClient1.connect({}, function (frame) {
-//        setConnected(true);
-//        console.log('Connected: ' + frame);
-//        stompClient1.subscribe('/topic/greetings', function (greeting) {
-//            showGreeting(JSON.parse(greeting.body).content);
-//        });
-//    });
-//    stompClient2.connect({}, function (frame) {
-//        setConnected(true);
-//        console.log('Connected: ' + frame);
-//        stompClient2.subscribe('/topic/voting', function (votegreeting) {
-//            showVote(JSON.parse(votegreeting.body).content);
-//        });
-//    });
-//}
-
-
-//function connect2() {
-//    num =2;
-//    var socket = new SockJS('/palermo/game/liana2');
-//    stompClient = Stomp.over(socket);
-//    stompClient.connect({}, function (frame) {
-//        setConnected(true);
-//        console.log('Connected: ' + frame);
-//        stompClient.subscribe('/topic/greetings/2', function (greeting) {
-//            showGreeting(JSON.parse(greeting.body).content);
-//        });
-//        stompClient.subscribe('/topic/voting', function (votegreeting) {
-//            showVote(JSON.parse(votegreeting.body).content);
-//        });
-//    });
-//}
-
 function disconnect() {
     if (stompClient !== null) {
-        stompClient.disconnect();
+        stompClient.disconnect(function(){}, {tableid: tableid});
     }
     setConnected(false);
     console.log("Disconnected");

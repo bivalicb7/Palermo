@@ -5,7 +5,9 @@
  */
 package com.palermo.palermo.gameModel;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -15,7 +17,9 @@ import java.util.Set;
 public class GameTable {
 
     private int gametableid;
-    private Set<GameUserInTable> usersintable = new HashSet();
+
+    // Key: String user websocket sessiodin  Value: GameUserInTable
+    private Map<String, GameUserInTable> usersintable = new HashMap();
 
     public GameTable() {
     }
@@ -28,11 +32,11 @@ public class GameTable {
         this.gametableid = gametableid;
     }
 
-    public Set<GameUserInTable> getUsersintable() {
+    public Map<String, GameUserInTable> getUsersintable() {
         return usersintable;
     }
 
-    public void setUsersintable(Set<GameUserInTable> usersintable) {
+    public void setUsersintable(Map<String, GameUserInTable> usersintable) {
         this.usersintable = usersintable;
     }
 

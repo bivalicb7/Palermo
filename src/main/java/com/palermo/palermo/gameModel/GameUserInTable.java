@@ -16,6 +16,14 @@ public class GameUserInTable {
     private User user;
     private String usersessionid;
 
+    public String getUsersessionid() {
+        return usersessionid;
+    }
+
+    public void setUsersessionid(String usersessionid) {
+        this.usersessionid = usersessionid;
+    }
+
     public GameUserInTable() {
     }
 
