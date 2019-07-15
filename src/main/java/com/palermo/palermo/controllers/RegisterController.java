@@ -9,6 +9,8 @@ import at.favre.lib.crypto.bcrypt.BCrypt;
 import com.palermo.palermo.entities.User;
 import com.palermo.palermo.services.UserService;
 import com.palermo.palermo.validators.UserRegisterValidator;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +53,7 @@ public class RegisterController {
     public String doRegister(
             ModelMap mm,
             HttpSession session,
+            HttpServletResponse response,
             @Valid @ModelAttribute("user") User user,
             BindingResult br
     ) {
@@ -58,6 +61,7 @@ public class RegisterController {
         if (br.hasErrors()) {
             return "register";
         } else {
+            System.out.println(userService);
 
             user.setRole("plainuser");
 
@@ -70,6 +74,13 @@ public class RegisterController {
             User loggedinuser = userService.getUserByUsername(user.getUsername());
             loggedinuser.setPassword(null);
             session.setAttribute("loggedinuser", loggedinuser);
+
+            //Add user in cookie
+            // create a cookie
+            Cookie cookie = new Cookie("useridincookie", Integer.toString(loggedinuser.getUserid()));
+            cookie.setPath("/");
+            //add cookie to response
+            response.addCookie(cookie);
             return "home";
         }
 

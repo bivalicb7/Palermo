@@ -15,7 +15,7 @@
         <script src="${pageContext.request.contextPath}/webjars/jquery/jquery.min.js"></script>
         <script src="${pageContext.request.contextPath}/webjars/sockjs-client/sockjs.min.js"></script>
         <script src="${pageContext.request.contextPath}/webjars/stomp-websocket/stomp.min.js"></script>
-        <script src="${pageContext.request.contextPath}/js/app.js"></script>
+        <script src="${pageContext.request.contextPath}/js/game.js"></script>
     </head>
     <body>
         <%@ include file="navbar.jsp" %>
@@ -23,6 +23,40 @@
         <noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being
             enabled. Please enable
             Javascript and reload this page!</h2></noscript>
+
+        <div id="gamecontainer">
+            
+            <div id="tablecontainer">
+                <div id="usersintable">
+                    <ul id="userslist">
+                        
+                    </ul>
+                </div>
+            </div>
+            
+            
+            <div id="chatcontainer">
+                <div class="col-md-12">
+                    <table id="conversation" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Chat</th>
+                            </tr>
+                        </thead>
+                        <tbody id="incomingmessages">
+                        </tbody>
+                    </table>
+                </div>
+                
+                <textarea placeholder="Type message.."></textarea>
+                <button id="send1" class="btn btn-default" type="submit">Send</button>
+            </div>
+        </div>
+
+
+
+
+        <h1>The old stuff</h1>            
         <div id="main-content" class="container">
             <div class="row">
                 <div class="col-md-6">

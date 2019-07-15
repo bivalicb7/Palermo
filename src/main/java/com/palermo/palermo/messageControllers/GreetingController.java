@@ -25,12 +25,7 @@ public class GreetingController {
     SimpMessagingTemplate smp;
     
 
-//    @MessageMapping("/hello1")
-//    @SendTo("/topic/greetings/1")
-//    public Greeting greeting(HelloMessage message) throws Exception {
-//        Thread.sleep(1000); // simulated delay
-//        return new Greeting("Hello, " + HtmlUtils.htmlEscape(message.getName()) + "!");
-//    }
+
     @MessageMapping("/hello/{variable}")
 //    @SendTo("/topic/greetings/1")
     public void greeting(HelloMessage message, @DestinationVariable String variable) throws Exception {
@@ -40,4 +35,10 @@ public class GreetingController {
                 new Greeting("Hello, " + HtmlUtils.htmlEscape(message.getName()) + "!" + variable));
     }
 
+    //    @MessageMapping("/hello1")
+//    @SendTo("/topic/greetings/1")
+//    public Greeting greeting(HelloMessage message) throws Exception {
+//        Thread.sleep(1000); // simulated delay
+//        return new Greeting("Hello, " + HtmlUtils.htmlEscape(message.getName()) + "!");
+//    }
 }

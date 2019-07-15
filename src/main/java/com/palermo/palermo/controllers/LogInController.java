@@ -61,21 +61,22 @@ public class LogInController {
         if (br.hasErrors()) {
             return "login";
         } else {
-
             //Add user in session
 //            mm.addAttribute("loggedinuser", userService.getUserByUsername(user.getUsername()));
             User loggedinuser = userService.getUserByUsername(user.getUsername());
             loggedinuser.setPassword(null);
             session.setAttribute("loggedinuser", loggedinuser);
             
-            //Add user in cookie
-            
+            //Add user in cookie   
             // create a cookie
             Cookie cookie = new Cookie("useridincookie", Integer.toString(loggedinuser.getUserid()));
             cookie.setPath("/");
             //add cookie to response
             response.addCookie(cookie);
-            return "home";
+            
+            
+//            return "home";
+            return "redirect:/lobby/home";
         }
     }
 

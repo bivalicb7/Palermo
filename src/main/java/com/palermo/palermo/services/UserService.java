@@ -28,6 +28,10 @@ public class UserService {
         return userRepo.findUserByUsername(username);
     }
     
+    public User getUserById(int userid) {
+        return userRepo.findById(userid).get();
+    }
+    
     public void addUser(User user) {
         userRepo.save(user);
     }
