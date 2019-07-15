@@ -34,15 +34,18 @@ function connect() {
     stompClient.connect({tableid: tableid}, function (frame) {
         setConnected(true);
         console.log('Connected: ' + frame);
+        
         stompClient.subscribe(`/topic/greetings/${tableid}`, function (greeting) {
             showGreeting(JSON.parse(greeting.body).content);
         }, {userid: checkCookie("useridincookie")});
-        stompClient.subscribe(`/topic/tablestate/${tableid}`, function (greeting) {
-            showGreeting(JSON.parse(greeting.body).content);
+        
+        stompClient.subscribe(`/topic/tablestate/${tableid}`, function (tablestate) {
+            updateTableState(JSON.parse(tablestate.body));
         }, {
             userid: checkCookie("useridincookie"), 
             tableid: tableid
         });
+        
         stompClient.subscribe(`/topic/voting/${tableid}`, function (votegreeting) {
             showVote(JSON.parse(votegreeting.body).content);
         }, {userid: checkCookie("useridincookie")});
@@ -87,6 +90,19 @@ function showGreeting(message) {
 }
 function showVote(votemessage) {
     $("#votes").append("<tr><td>" + votemessage + "</td></tr>");
+}
+function updateTableState(tablestate) {
+
+    var list = document.querySelector("#userslist");
+    list.innerHTML = "";
+    for (var elem in tablestate.usersintable){
+        
+            console.log(elem);
+        var li = document.createElement("li");
+        li.innerHTML = tablestate.usersintable[elem].user.username;
+        list.appendChild(li);
+//        console.log(user.username);
+    };
 }
 
 //Cookie play

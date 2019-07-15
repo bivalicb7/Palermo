@@ -49,6 +49,16 @@ public class GameMain {
         this.gametables = gametables;
     }
 
+    public Map<String, Integer> getUsersintablesmapping() {
+        return usersintablesmapping;
+    }
+
+    public void setUsersintablesmapping(Map<String, Integer> usersintablesmapping) {
+        this.usersintablesmapping = usersintablesmapping;
+    }
+    
+    
+
     public int returnNextTableId() {
         GameMain.nexttableid = nexttableid + 1;
         return GameMain.nexttableid;
