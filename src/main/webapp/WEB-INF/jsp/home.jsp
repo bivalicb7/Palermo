@@ -12,43 +12,26 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Home Page</title>
+        <link href="${pageContext.request.contextPath}/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="${pageContext.request.contextPath}/main.css" rel="stylesheet">
+        <script src="${pageContext.request.contextPath}/webjars/jquery/jquery.min.js"></script>
+        <script src="${pageContext.request.contextPath}/webjars/sockjs-client/sockjs.min.js"></script>
+        <script src="${pageContext.request.contextPath}/webjars/stomp-websocket/stomp.min.js"></script>
+        <script src="${pageContext.request.contextPath}/js/lobby.js"></script>
+
     </head>
     <body>
         <%@ include file="navbar.jsp" %>
         <h1>Userid = ${loggedinuser.userid}</h1>
         <h1>Username = ${sessionScope.loggedinuser.username}</h1>
 
-
+        <div id="tableslist"></div>
 
         <%--<c:if test="${param.success ne null}">--%>
         <!--<div id="overlay">-->
         <!--<a id="close" href="#overlay">&times;</a>-->
 
-        <c:choose>
-            <c:when test = "${empty runningtables}">
-                <p id="lyrics" >No tables at the moment</p>
-            </c:when>
-            <c:when test = "${!empty runningtables}">
-                <c:forEach items="${runningtables}" var="table">
-                    <div id="tablecontainer" style="border: 3px solid black; width: auto; margin: 10px;">
-                        <p> Table id: ${table.key} </p>
-                        <p>Num of users:  ${table.value.usersintable.size()}</p>
-                        
-                        <ul id="userslist">
-                            <c:forEach items="${table.value.usersintable}" var="userintable">
-                                <li> ${userintable.value.user.username} </li>
-                            </c:forEach>
-                        </ul>
 
-                        <c:url value="/lobby/joingame" var = "joinURL">
-                            <c:param name="tableid" value="${table.value.gametableid}" />
-                        </c:url>
-                        <a href="${joinURL}">Join game</a>
-                        <!--Key = ${entry.key}, value = ${entry.value}<br>-->
-                    </div>
-                </c:forEach>
-            </c:when>
-        </c:choose>
         <!--</div>-->
         <%--</c:if>--%>
 

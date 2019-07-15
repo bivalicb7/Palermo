@@ -96,12 +96,9 @@ function updateTableState(tablestate) {
     var list = document.querySelector("#userslist");
     list.innerHTML = "";
     for (var elem in tablestate.usersintable){
-        
-            console.log(elem);
         var li = document.createElement("li");
         li.innerHTML = tablestate.usersintable[elem].user.username;
         list.appendChild(li);
-//        console.log(user.username);
     };
 }
 
