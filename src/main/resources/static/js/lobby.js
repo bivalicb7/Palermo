@@ -46,17 +46,20 @@ function checkTables(tablesinlobby) {
         //Check if table doesn't exist and display 
         if (!allexistingtableids.includes(elem)) {
             displayTable(tablesinlobby, elem);
+        } else {
+            updateUsersInTable(tablesinlobby, elem);
         }
     }
-    
+
+    //fuiter method
     function notincluded(elem) {
         return !newtableidsarray.includes(elem);
     }
-    
+
     console.log("NEW table IDS:", newtableidsarray);
     let tablestoberemoved = allexistingtableids.filter(notincluded);
     removeInactiveTables(tablestoberemoved);
-    
+
     allexistingtableids = newtableidsarray;
 }
 
@@ -65,17 +68,18 @@ function  displayTable(tablesinlobby, elem) {
 
     var list = document.querySelector("#tableslist");
     var fragment = document.createDocumentFragment();
-    
+
     var divcont = document.createElement("div");
-    divcont.setAttribute("class", "tablecontainer");
+    divcont.classList.add("tableentrance", "tablecontainer");
     divcont.setAttribute("id", `table_id${tablesinlobby.gametablesinlobby[elem].gametableid}`);
-    divcont.setAttribute("style", "border: 3px solid black; width: auto; margin: 10px;");
+    divcont.setAttribute("style", "border: 3px solid black; width: auto; margin: 0 10px 10px 10px;");
 
     var tableid = document.createElement("p");
     tableid.innerHTML = `Table id: ${tablesinlobby.gametablesinlobby[elem].gametableid}`;
     var numofusers = document.createElement("p");
     numofusers.innerHTML = `Num of users: ${Object.keys(tablesinlobby.gametablesinlobby[elem].usersintable).length}`;
     var userslist = document.createElement("ul");
+    userslist.setAttribute("class", "userslist");
 //        li.innerHTML = tablestate.usersintable[elem].user.username;
 
     for (var userelem in tablesinlobby.gametablesinlobby[elem].usersintable) {
@@ -107,13 +111,25 @@ function removeInactiveTables(tableidsarray) {
 
 }
 
-function mapTablesInPage(tableid) {
-    let list = document.querySelectorAll("#tableslist");
+function updateUsersInTable(tablesinlobby, id) {
+    let list = document.querySelector(`#table_id${id} > .userslist`);
 
-    allexistingtableids = list.forEach(function (table) {
+    let usernames = [];
 
+    list.querySelectorAll("li").forEach(function (username) {
+        usernames.push(username.innerHTML);
     });
 
+    list.innerHTML = "";
+    for (var userelem in tablesinlobby.gametablesinlobby[id].usersintable) {
+        var li = document.createElement("li");
+        li.innerHTML = tablesinlobby.gametablesinlobby[id].usersintable[userelem].user.username;
+
+        if (!usernames.includes(li.innerHTML)) {
+            li.classList.add("userentrance");
+        }
+        list.appendChild(li);
+    }
 }
 
 //function showTables(tablesinlobby) {
