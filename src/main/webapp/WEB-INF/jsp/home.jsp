@@ -8,16 +8,24 @@
 <%@ taglib uri="http://www.springframework.org/tags/form"
            prefix="springForm"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %><!DOCTYPE html>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
+
+<c:set var="req" value="${pageContext.request}" />
+<c:set var="url">${req.requestURL}</c:set>
+<c:set var="uri" value="${req.requestURI}" />
+
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Home Page</title>
-        <link href="${pageContext.request.contextPath}/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-        <link href="${pageContext.request.contextPath}/main.css" rel="stylesheet">
-        <script src="${pageContext.request.contextPath}/webjars/jquery/jquery.min.js"></script>
-        <script src="${pageContext.request.contextPath}/webjars/sockjs-client/sockjs.min.js"></script>
-        <script src="${pageContext.request.contextPath}/webjars/stomp-websocket/stomp.min.js"></script>
-        <script src="${pageContext.request.contextPath}/js/lobby.js"></script>
+        <base href="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/" />
+        <link href="webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="main.css" rel="stylesheet">
+        <script src="webjars/jquery/jquery.min.js"></script>
+        <script src="webjars/sockjs-client/sockjs.min.js"></script>
+        <script src="webjars/stomp-websocket/stomp.min.js"></script>
+        <script src="js/lobby.js"></script>
 
     </head>
     <body>
@@ -35,7 +43,6 @@
         <!--</div>-->
         <%--</c:if>--%>
 
-        <a href="${pageContext.request.contextPath}/lobby/startgame">Create new game</a>
-        <!--<script src="${pageContext.request.contextPath}/js/app.js"></script>-->
+        <a href="lobby/startgame">Create new game</a>
     </body>
 </html>

@@ -6,16 +6,24 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
+
+<c:set var="req" value="${pageContext.request}" />
+<c:set var="url">${req.requestURL}</c:set>
+<c:set var="uri" value="${req.requestURI}" />
+
 <!DOCTYPE html>
 <html>
     <head>
         <title>Hello WebSocket</title>
-        <link href="${pageContext.request.contextPath}/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-        <link href="${pageContext.request.contextPath}/main.css" rel="stylesheet">
-        <script src="${pageContext.request.contextPath}/webjars/jquery/jquery.min.js"></script>
-        <script src="${pageContext.request.contextPath}/webjars/sockjs-client/sockjs.min.js"></script>
-        <script src="${pageContext.request.contextPath}/webjars/stomp-websocket/stomp.min.js"></script>
-        <script src="${pageContext.request.contextPath}/js/game.js"></script>
+        <base href="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/" />
+        <link href="webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="main.css" rel="stylesheet">
+        <script src="webjars/jquery/jquery.min.js"></script>
+        <script src="webjars/sockjs-client/sockjs.min.js"></script>
+        <script src="webjars/stomp-websocket/stomp.min.js"></script>
+        <script src="js/game.js"></script>
     </head>
     <body>
         <%@ include file="navbar.jsp" %>
@@ -25,16 +33,16 @@
             Javascript and reload this page!</h2></noscript>
 
         <div id="gamecontainer">
-            
+
             <div id="tablecontainer">
                 <div id="usersintable">
                     <ul id="userslist">
-                        
+
                     </ul>
                 </div>
             </div>
-            
-            
+
+
             <div id="chatcontainer">
                 <div class="col-md-12">
                     <table id="conversation" class="table table-striped">
@@ -47,7 +55,7 @@
                         </tbody>
                     </table>
                 </div>
-                
+
                 <textarea placeholder="Type message.."></textarea>
                 <button id="send1" class="btn btn-default" type="submit">Send</button>
             </div>
