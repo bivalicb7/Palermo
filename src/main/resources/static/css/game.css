@@ -4,23 +4,13 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 */
 /* 
-    Created on : Jul 17, 2019, 12:48:50 AM
+    Created on : Jul 17, 2019, 2:07:22 AM
     Author     : Los_e
 */
-
-#tableslist {
-    overflow: hidden;
-}
 
 .userentrance {
     animation-duration: 0.5s;
     animation-name: slidein1;
-}
-
-.tableentrance {
-    /*z-index: -1;*/
-    animation-duration: 1s;
-    animation-name: slidein2;
 }
 
 @keyframes slidein1 {
@@ -32,17 +22,5 @@ and open the template in the editor.
     to {
         margin-left: 0%;
         /*width: 100%;*/
-    }
-}
-    
-@keyframes slidein2 {
-    from {
-        margin-top: -10%;
-        opacity: 0; 
-    }
-
-    to {
-       margin-top: 0%;
-        opacity: 1;
     }
 }

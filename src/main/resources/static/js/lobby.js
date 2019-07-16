@@ -51,7 +51,7 @@ function checkTables(tablesinlobby) {
         }
     }
 
-    //fuiter method
+    //filter method
     function notincluded(elem) {
         return !newtableidsarray.includes(elem);
     }
