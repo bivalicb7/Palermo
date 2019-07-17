@@ -94,6 +94,7 @@ function sendVote() {
 
 function showChatmessage(message) {
     $("#incomingmessages").append("<tr><td>" + message + "</td></tr>");
+    document.querySelector("#chattablecontainer").scrollTop = document.querySelector("#chattablecontainer").scrollHeight ;
 }
 function showVote(votemessage) {
     $("#votes").append("<tr><td>" + votemessage + "</td></tr>");

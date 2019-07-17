@@ -52,17 +52,12 @@
         </style>
     </head>
     <body>
-
         <div class="topnav">
             <a class="active" href="myprofile">My profile</a>
             <a href="main">Main</a>
             <a href="contact">Contact</a>
             <a href="about">About</a>
             <p>${loggedinuser.username}</p>
-
         </div>
-
-
-
     </body>
 </html>
