@@ -5,8 +5,8 @@
  */
 package com.palermo.palermo.messageControllers;
 
-import com.palermo.palermo.messageBeans.Greeting;
-import com.palermo.palermo.messageBeans.HelloMessage;
+import com.palermo.palermo.messageBeans.ChatMessageToClient;
+import com.palermo.palermo.messageBeans.ChatMessageFromClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -20,25 +20,24 @@ import org.springframework.web.util.HtmlUtils;
  * @author Los_e
  */
 @Controller
-public class GreetingController {
+public class ChatMessageController {
     @Autowired
     SimpMessagingTemplate smp;
     
 
 
-    @MessageMapping("/hello/{variable}")
+    @MessageMapping("/chatsending/{variable}")
 //    @SendTo("/topic/greetings/1")
-    public void greeting(HelloMessage message, @DestinationVariable String variable) throws Exception {
+    public void greeting(ChatMessageFromClient message, @DestinationVariable String variable) throws Exception {
         Thread.sleep(1000); // simulated delay
-        smp.convertAndSend(
-                "/topic/greetings/"+variable,
-                new Greeting("Hello, " + HtmlUtils.htmlEscape(message.getName()) + "!" + variable));
+        smp.convertAndSend("/topic/chatincoming/"+variable,
+                new ChatMessageToClient(HtmlUtils.htmlEscape(message.getName())+": "+ HtmlUtils.htmlEscape(message.getMessage())));
     }
 
     //    @MessageMapping("/hello1")
 //    @SendTo("/topic/greetings/1")
-//    public Greeting greeting(HelloMessage message) throws Exception {
+//    public ChatMessageToClient greeting(ChatMessageFromClient message) throws Exception {
 //        Thread.sleep(1000); // simulated delay
-//        return new Greeting("Hello, " + HtmlUtils.htmlEscape(message.getName()) + "!");
+//        return new ChatMessageToClient("Hello, " + HtmlUtils.htmlEscape(message.getName()) + "!");
 //    }
 }

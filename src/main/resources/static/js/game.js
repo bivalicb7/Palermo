@@ -22,8 +22,8 @@ $(function () {
     $("#disconnect").click(function () {
         disconnect();
     });
-    $("#send").click(function () {
-        sendName();
+    $("#sendchatmessage").click(function () {
+        sendChatMessage();
     });
     $("#sendvote").click(function () {
         sendVote();
@@ -37,8 +37,8 @@ function connect() {
         setConnected(true);
         console.log('Connected: ' + frame);
 
-        stompClient.subscribe(`/topic/greetings/${tableid}`, function (greeting) {
-            showGreeting(JSON.parse(greeting.body).content);
+        stompClient.subscribe(`/topic/chatincoming/${tableid}`, function (chatmessage) {
+            showChatmessage(JSON.parse(chatmessage.body).content);
         }, {userid: checkCookie("useridincookie")});
 
         stompClient.subscribe(`/topic/tablestate/${tableid}`, function (tablestate) {
@@ -74,8 +74,13 @@ function disconnect() {
     console.log("Disconnected");
 }
 
-function sendName() {
-    stompClient.send(`/app/hello/${tableid}`, {}, JSON.stringify({'name': $("#name").val()}));
+function sendChatMessage() {
+    stompClient.send(`/app/chatsending/${tableid}`, {}, JSON.stringify({
+        'message': document.querySelector("#messagetextarea").value  ,
+        'name': checkCookie("usernameincookie")
+    }));
+    
+    document.querySelector("#messagetextarea").value = "";
 }
 
 function sendVote() {
@@ -87,8 +92,8 @@ function sendVote() {
     ));
 }
 
-function showGreeting(message) {
-    $("#greetings").append("<tr><td>" + message + "</td></tr>");
+function showChatmessage(message) {
+    $("#incomingmessages").append("<tr><td>" + message + "</td></tr>");
 }
 function showVote(votemessage) {
     $("#votes").append("<tr><td>" + votemessage + "</td></tr>");

@@ -73,6 +73,12 @@ public class LogInController {
             cookie.setPath("/");
             //add cookie to response
             response.addCookie(cookie);
+            //Add user's username in cookie   
+            // create a cookie
+            Cookie cookiewithusername = new Cookie("usernameincookie", loggedinuser.getUsername());
+            cookiewithusername.setPath("/");
+            //add cookie to response
+            response.addCookie(cookiewithusername);
             
             
 //            return "home";

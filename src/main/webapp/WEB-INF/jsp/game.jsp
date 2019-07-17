@@ -56,8 +56,8 @@
                     </table>
                 </div>
 
-                <textarea placeholder="Type message.."></textarea>
-                <button id="send1" class="btn btn-default" type="submit">Send</button>
+                <textarea id="messagetextarea" placeholder="Type message.."></textarea>
+                <button id="sendchatmessage" class="btn btn-default" type="submit">Send</button>
             </div>
         </div>
 

@@ -6,7 +6,6 @@
 
 var stompClient = null;
 let allexistingtableids = [];
-console.log(allexistingtableids);
 
 $(function () {
 
@@ -56,7 +55,6 @@ function checkTables(tablesinlobby) {
         return !newtableidsarray.includes(elem);
     }
 
-    console.log("NEW table IDS:", newtableidsarray);
     let tablestoberemoved = allexistingtableids.filter(notincluded);
     removeInactiveTables(tablestoberemoved);
 
@@ -103,7 +101,6 @@ function  displayTable(tablesinlobby, elem) {
 }
 
 function removeInactiveTables(tableidsarray) {
-    console.log("tables to be REMOVED: ", tableidsarray);
     var list = document.querySelector("#tableslist");
     tableidsarray.forEach(function (id) {
         list.removeChild(document.querySelector(`#table_id${id}`));
