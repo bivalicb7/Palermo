@@ -1,0 +1,85 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Jul 15, 2019, 8:54:39 PM
+    Author     : liana
+*/
+@import url('https://fonts.googleapis.com/css?family=Poppins&display=swap');
+
+html, body{
+    background-image: url("/palermo/images/pal2.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100%;
+    font-family: 'Poppins', sans-serif !important;
+}
+
+.container{
+    height: 100%;
+    align-content: center;
+}
+
+.card{
+    height: 370px;
+    margin-top: auto;
+    margin-bottom: auto;
+    width: 400px;
+    background-color:rgba(0, 162, 255, 0.568) !important;
+}
+
+.card-header h3{
+    color: white;
+}
+
+.input-group-prepend span{
+    width: 50px;
+    background-color: chartreuse;
+    color: black;
+    border:0 !important;
+}
+
+input:focus{
+    outline: 0 0 0 0  !important;
+    box-shadow: 0 0 0 0 !important;
+
+}
+
+.remember{
+    color: white;
+}
+.remember input
+{
+    width: 20px;
+    height: 20px;
+    margin-left: 15px;
+    margin-right: 5px;
+}
+
+.login_btn{
+    color: black;
+    background-color: chartreuse;
+    width: 100px;
+}
+
+.login_btn:hover{
+    color: black;
+    background-color: rgb(255, 255, 255);
+}
+
+.links{
+    color: white;
+}
+
+.links a{
+    margin-left: 4px;
+}
+
+div.input-group span {
+        position: absolute;
+    left: 60%;
+    color: red;
+    top:20%;
+}
