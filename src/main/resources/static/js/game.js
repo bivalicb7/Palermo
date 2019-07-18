@@ -6,12 +6,14 @@
 
 var stompClient = null;
 var tableid = null;
+let allusers = [];
+
 
 
 $(function () {
-    
+
     tableid = getCookie("tableidincookie");
-    $("form").on("submit", function(e) {
+    $("form").on("submit", function (e) {
         e.preventDefault();
     });
     $(document).ready(function () {
@@ -20,8 +22,8 @@ $(function () {
     $("#disconnect").click(function () {
         disconnect();
     });
-    $("#send").click(function () {
-        sendName();
+    $("#sendchatmessage").click(function () {
+        sendChatMessage();
     });
     $("#sendvote").click(function () {
         sendVote();
@@ -34,18 +36,18 @@ function connect() {
     stompClient.connect({tableid: tableid}, function (frame) {
         setConnected(true);
         console.log('Connected: ' + frame);
-        
-        stompClient.subscribe(`/topic/greetings/${tableid}`, function (greeting) {
-            showGreeting(JSON.parse(greeting.body).content);
+
+        stompClient.subscribe(`/topic/chatincoming/${tableid}`, function (chatmessage) {
+            showChatmessage(JSON.parse(chatmessage.body).content);
         }, {userid: checkCookie("useridincookie")});
-        
+
         stompClient.subscribe(`/topic/tablestate/${tableid}`, function (tablestate) {
             updateTableState(JSON.parse(tablestate.body));
         }, {
-            userid: checkCookie("useridincookie"), 
+            userid: checkCookie("useridincookie"),
             tableid: tableid
         });
-        
+
         stompClient.subscribe(`/topic/voting/${tableid}`, function (votegreeting) {
             showVote(JSON.parse(votegreeting.body).content);
         }, {userid: checkCookie("useridincookie")});
@@ -66,14 +68,19 @@ function setConnected(connected) {
 
 function disconnect() {
     if (stompClient !== null) {
-        stompClient.disconnect(function(){}, {tableid: tableid});
+        stompClient.disconnect(function () {}, {tableid: tableid});
     }
     setConnected(false);
     console.log("Disconnected");
 }
 
-function sendName() {
-    stompClient.send(`/app/hello/${tableid}`, {}, JSON.stringify({'name': $("#name").val()}));
+function sendChatMessage() {
+    stompClient.send(`/app/chatsending/${tableid}`, {}, JSON.stringify({
+        'message': document.querySelector("#messagetextarea").value  ,
+        'name': checkCookie("usernameincookie")
+    }));
+    
+    document.querySelector("#messagetextarea").value = "";
 }
 
 function sendVote() {
@@ -85,24 +92,45 @@ function sendVote() {
     ));
 }
 
-function showGreeting(message) {
-    $("#greetings").append("<tr><td>" + message + "</td></tr>");
+function showChatmessage(message) {
+    $("#incomingmessages").append("<tr><td>" + message + "</td></tr>");
+    document.querySelector("#chattablecontainer").scrollTop = document.querySelector("#chattablecontainer").scrollHeight ;
 }
 function showVote(votemessage) {
     $("#votes").append("<tr><td>" + votemessage + "</td></tr>");
 }
+
 function updateTableState(tablestate) {
 
+    let newusersarray = [];
+
     var list = document.querySelector("#userslist");
-    list.innerHTML = "";
-    for (var elem in tablestate.usersintable){
+//    list.innerHTML = "";
+
+    for (var elem in tablestate.usersintable) {
+        let usernamevalue = tablestate.usersintable[elem].user.username;
+        newusersarray.push(usernamevalue);
+
+        if (!allusers.includes(usernamevalue)) {
+            var li = document.createElement("li");
+            li.setAttribute("username", usernamevalue);
+            li.innerHTML = usernamevalue;
+            li.classList.add("userentrance");
+            list.appendChild(li);
+        }
         
-            console.log(elem);
-        var li = document.createElement("li");
-        li.innerHTML = tablestate.usersintable[elem].user.username;
-        list.appendChild(li);
-//        console.log(user.username);
-    };
+    }
+    
+    function notincluded(elem) {
+        return !newusersarray.includes(elem);
+    }
+    let userstoberemoved = allusers.filter(notincluded);
+    
+    userstoberemoved.forEach((username) => {
+        list.removeChild(list.querySelector(`li[username=${username}]`));
+    });
+    
+    allusers = newusersarray;
 }
 
 //Cookie play

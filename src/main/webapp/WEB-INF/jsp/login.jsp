@@ -11,27 +11,71 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <!--<link href="${pageContext.request.contextPath}/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">-->
+        <script src="${pageContext.request.contextPath}/webjars/jquery/jquery.min.js"></script>
+        <link href="${pageContext.request.contextPath}/css/login.css" rel="stylesheet">
+
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+
+        <!--Fontawesome CDN-->
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+              integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+
+        <!--Bootsrap 4 CDN-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Log in Page</title>
     </head>
     <body>
-        <p>Please log in</p>
-           <springForm:form method="post" modelAttribute="user" action ="${pageContext.request.contextPath}/index/dologin">
-            <table>
-                <tr>
-                    <td>Username</td>
-                    <td><springForm:input path="username"/></td> 
-                    <td><springForm:errors path="username"/></td> 
-                </tr>
-                <tr>
-                    <td>Password</td>
-                    <td><springForm:input path="password"/></td> 
-                    <td><springForm:errors path="password"/></td> 
-                </tr>
-            </table>
-            <input type="submit">
-        </springForm:form>
-            
-            <a href="${pageContext.request.contextPath}/register/createaccount">REGISTER</a>
+        <div class="container">
+            <div class="d-flex justify-content-center h-100">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 align="center">Sign In</h3>
+                        <!-- <div class="d-flex justify-content-end social_icon">
+                            <span><i class="fab fa-facebook-square"></i></span>
+                            <span><i class="fab fa-google-plus-square"></i></span>
+                            <span><i class="fab fa-twitter-square"></i></span>
+                        </div> -->
+                    </div>
+                    <div class="card-body">
+                        <springForm:form method="post" modelAttribute="user"
+                                         action="${pageContext.request.contextPath}/index/dologin">
+                            <div class="input-group form-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                </div>
+                                <springForm:input path="username" type="text" class="form-control" placeholder="username"/>
+                                <springForm:errors path="username" />
+
+                            </div>
+                            <div class="input-group form-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fas fa-unlock"></i></span>
+                                </div>
+                                <springForm:input path="password" type="password" class="form-control" placeholder="password"/>
+                                <springForm:errors path="password" />
+                            </div>
+                            <div class="row align-items-center remember">
+                                <input type="checkbox">Remember Me
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" value="Login" class="btn float-right login_btn">
+                            </div>
+                        </springForm:form>
+                    </div>
+                    <div class="card-footer">
+                        <div class="d-flex justify-content-center links">
+                            <b> Don't have an account?</b><a href="${pageContext.request.contextPath}/register/createaccount" style="color:black">Sign Up</a>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <a href="#" style="color:black">Forgot your password?</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </body>
 </html>

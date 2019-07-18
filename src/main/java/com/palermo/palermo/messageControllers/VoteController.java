@@ -5,8 +5,8 @@
  */
 package com.palermo.palermo.messageControllers;
 
-import com.palermo.palermo.messageBeans.Greeting;
-import com.palermo.palermo.messageBeans.HelloMessage;
+import com.palermo.palermo.messageBeans.ChatMessageToClient;
+import com.palermo.palermo.messageBeans.ChatMessageFromClient;
 import com.palermo.palermo.messageBeans.Vote;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -22,8 +22,8 @@ public class VoteController {
 
     @MessageMapping("/vote")
     @SendTo("/topic/voting")
-    public Greeting greeting(Vote vote) throws Exception {
+    public ChatMessageToClient greeting(Vote vote) throws Exception {
         Thread.sleep(1000); // simulated delay
-        return new Greeting(HtmlUtils.htmlEscape(vote.getVoter()) + " voted for " + HtmlUtils.htmlEscape(vote.getPersonvotedout()) + "!");
+        return new ChatMessageToClient(HtmlUtils.htmlEscape(vote.getVoter()) + " voted for " + HtmlUtils.htmlEscape(vote.getPersonvotedout()) + "!");
     }
 }

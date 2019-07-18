@@ -5,6 +5,7 @@
  */
 package com.palermo.palermo.gameModel;
 
+import com.palermo.palermo.messageControllers.TablesInLobbyController;
 import com.palermo.palermo.services.UserService;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -22,6 +23,8 @@ public class GameMain {
 
     @Autowired
     UserService userService;
+        @Autowired
+    TablesInLobbyController tablesInLobbyController;
 
     private static int nexttableid;
 
@@ -97,6 +100,7 @@ public class GameMain {
 
         if (gametables.get(tableid).getUsersintable().isEmpty()) {
             gametables.remove(tableid);
+            tablesInLobbyController.updateTablesInLobby();
         }
     }
 
