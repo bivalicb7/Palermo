@@ -76,10 +76,10 @@ function disconnect() {
 
 function sendChatMessage() {
     stompClient.send(`/app/chatsending/${tableid}`, {}, JSON.stringify({
-        'message': document.querySelector("#messagetextarea").value  ,
+        'message': document.querySelector("#messagetextarea").value,
         'name': checkCookie("usernameincookie")
     }));
-    
+
     document.querySelector("#messagetextarea").value = "";
 }
 
@@ -94,7 +94,7 @@ function sendVote() {
 
 function showChatmessage(message) {
     $("#incomingmessages").append("<tr><td>" + message + "</td></tr>");
-    document.querySelector("#chattablecontainer").scrollTop = document.querySelector("#chattablecontainer").scrollHeight ;
+    document.querySelector("#chattablecontainer").scrollTop = document.querySelector("#chattablecontainer").scrollHeight;
 }
 function showVote(votemessage) {
     $("#votes").append("<tr><td>" + votemessage + "</td></tr>");
@@ -112,24 +112,35 @@ function updateTableState(tablestate) {
         newusersarray.push(usernamevalue);
 
         if (!allusers.includes(usernamevalue)) {
-            var li = document.createElement("li");
-            li.setAttribute("username", usernamevalue);
-            li.innerHTML = usernamevalue;
-            li.classList.add("userentrance");
-            list.appendChild(li);
+
+            if (usernamevalue == checkCookie("usernameincookie")) {
+                document.querySelector("#userinpageseat p").innerHTML = usernamevalue ;
+            } else {
+                var li = document.createElement("li");
+                li.setAttribute("username", usernamevalue);
+                li.innerHTML = `
+                    <div class="imgcontainer">
+                    <img src="images/man-user.png" alt ="user's image"/>
+                     </div>
+                    <p>${usernamevalue}</p>
+                `;
+                li.classList.add("seat", "userentrance");
+                list.appendChild(li);
+            }
+
         }
-        
+
     }
-    
+
     function notincluded(elem) {
         return !newusersarray.includes(elem);
     }
     let userstoberemoved = allusers.filter(notincluded);
-    
+
     userstoberemoved.forEach((username) => {
         list.removeChild(list.querySelector(`li[username=${username}]`));
     });
-    
+
     allusers = newusersarray;
 }
 

@@ -34,10 +34,21 @@
         <div id="gamecontainer">
 
             <div id="tablecontainer">
-                <div id="usersintable">
+                <!--<div id="usersintable">-->
                     <ul id="userslist">
 
                     </ul>
+                <!--</div>-->
+                <div id="userinpageseat">
+                    <div class="userinpageimgcontainer">
+                    <img src="images/man-user.png" alt="user's image">
+                    </div>
+                    <p></p>
+                </div>
+                <div id="votingareacont">
+                    <div id="votingarea">
+                        
+                    </div>
                 </div>
             </div>
 
@@ -55,5 +66,5 @@
                 <button id="sendchatmessage" type="submit">Send</button>
             </div>
         </div>
-</body>
+    </body>
 </html>

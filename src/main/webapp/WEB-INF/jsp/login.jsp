@@ -8,12 +8,21 @@
 <%@ taglib uri="http://www.springframework.org/tags/form"
            prefix="springForm"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
+
+<c:set var="req" value="${pageContext.request}" />
+<c:set var="url">${req.requestURL}</c:set>
+<c:set var="uri" value="${req.requestURI}" />
+
 <!DOCTYPE html>
 <html>
     <head>
-        <!--<link href="${pageContext.request.contextPath}/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">-->
-        <script src="${pageContext.request.contextPath}/webjars/jquery/jquery.min.js"></script>
-        <link href="${pageContext.request.contextPath}/css/login.css" rel="stylesheet">
+                <base href="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/" />
+
+        <!--<link href="webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">-->
+        <script src="webjars/jquery/jquery.min.js"></script>
+        <link href="css/login.css" rel="stylesheet">
 
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 
