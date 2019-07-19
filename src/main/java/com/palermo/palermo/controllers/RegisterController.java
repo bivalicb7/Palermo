@@ -89,6 +89,7 @@ public class RegisterController {
             //add cookie to response
             response.addCookie(cookiewithusername);
             return "home";
+//            return "redirect:/myprofile/edit";
         }
 
     }
