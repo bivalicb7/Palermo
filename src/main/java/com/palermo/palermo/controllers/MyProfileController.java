@@ -71,6 +71,16 @@ public class MyProfileController {
         return "updateuserdata";
     }
 
+    @RequestMapping(value = "/updatemydata", method = RequestMethod.GET)
+    public String showmyprofilewithdata(
+            ModelMap mm,
+            @ModelAttribute("loggedinuser") User user
+    ) {
+        Userprofile userprofile = userProfileService.getUserProfileById(user.getUserid());
+        mm.addAttribute("myprofile", userprofile);
+        return "updateuserdata";
+    }
+
     @RequestMapping(value = "/addmydata", method = RequestMethod.POST)
     public String addMyprofile(
             ModelMap mm,
@@ -81,58 +91,74 @@ public class MyProfileController {
     //            HttpServletRequest req
     ) {
 
-        String multipartBase64 = null;
-        try {
+        if (!sourcefile.isEmpty()) {
+            String multipartBase64 = null;
+            try {
 
-            //Resizing the image
-            //1. Create temp file in order to create BufferedImage object
-            String extension = FilenameUtils.getExtension(sourcefile.getOriginalFilename());
-            File tmp = File.createTempFile("test", "." + extension);
-            OutputStream os = Files.newOutputStream(tmp.toPath());
-            os.write(sourcefile.getBytes());
+                //Resizing the image
+                //1. Create temp file in order to create BufferedImage object
+                String extension = FilenameUtils.getExtension(sourcefile.getOriginalFilename());
+                File tmp = File.createTempFile("test", "." + extension);
+                OutputStream os = Files.newOutputStream(tmp.toPath());
+                os.write(sourcefile.getBytes());
 
-            BufferedImage img = null;
-            img = ImageIO.read(tmp);
+                BufferedImage img = null;
+                img = ImageIO.read(tmp);
 
-            //2. Set new width and height. About 300px width and equivalent height. But first check if image is small than that
-            //Get how many times smaller must the new image be
-            double factor = 1;
-            if (img.getWidth() > 300) {
-                factor = Precision.round((double) img.getWidth() / 300, 1);
+                //2. Set new width and height. About 300px width and equivalent height. But first check if image is small than that
+                //Get how many times smaller must the new image be
+                double factor = 1;
+                if (img.getWidth() > 300) {
+                    factor = Precision.round((double) img.getWidth() / 300, 1);
+                }
+
+                //Get new widths and heights based according to the factor
+                int newW = (int) (Precision.round((double) img.getWidth(), -1) / factor);
+                int newH = (int) (Precision.round((double) img.getHeight(), -1) / factor);
+                //Create the new image
+                BufferedImage newimg = new BufferedImage(newW, newH, img.getType());
+                Graphics2D g = newimg.createGraphics();
+                g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+                g.drawImage(img, 0, 0, newW, newH, 0, 0, img.getWidth(), img.getHeight(), null);
+                g.dispose();
+                //Transform to File in order to get Inputstream->byte[]
+                File tmp2 = File.createTempFile("newtest", "." + extension);
+                ImageIO.write(newimg, extension, tmp2);
+                InputStream targetStream = new FileInputStream(tmp2);
+                //Encode to base64 string
+                multipartBase64 = Base64.getEncoder().encodeToString(IOUtils.toByteArray(targetStream));
+
+            } catch (IOException ex) {
+                Logger.getLogger(MyProfileController.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-            //Get new widths and heights based according to the factor
-            int newW = (int) (Precision.round((double) img.getWidth(), -1) / factor);
-            int newH = (int) (Precision.round((double) img.getHeight(), -1) / factor);
-            //Create the new image
-            BufferedImage newimg = new BufferedImage(newW, newH, img.getType());
-            Graphics2D g = newimg.createGraphics();
-            g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-            g.drawImage(img, 0, 0, newW, newH, 0, 0, img.getWidth(), img.getHeight(), null);
-            g.dispose();
-            //Transform to File in order to get Inputstream->byte[]
-            File tmp2 = File.createTempFile("newtest", "." + extension);
-            ImageIO.write(newimg, extension, tmp2);
-            InputStream targetStream = new FileInputStream(tmp2);
-            //Encode to base64 string
-            multipartBase64 = Base64.getEncoder().encodeToString(IOUtils.toByteArray(targetStream));
-
-        } catch (IOException ex) {
-            Logger.getLogger(MyProfileController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        //Save multipart as blob in DB
+            //Save multipart as blob in DB
 //        try {
 //            userprofile.setProfileimage(sourcefile.getBytes());
 //        } catch (IOException ex) {
 //            Logger.getLogger(MyProfileController.class.getName()).log(Level.SEVERE, null, ex);
 //        }
+            userprofile.setProfileimageoriginalfilename(sourcefile.getOriginalFilename());
+            userprofile.setProfileimagebase64(multipartBase64);
+
+        } else {
+            
+            //Check if record in table has been created (not first visit) and get old image data, if new image has not been uploaded
+            Userprofile olduserprofile = null;
+            try {
+                olduserprofile = userProfileService.getUserProfileById(user.getUserid());
+                userprofile.setProfileimageoriginalfilename(olduserprofile.getProfileimageoriginalfilename());
+                userprofile.setProfileimagebase64(olduserprofile.getProfileimagebase64());
+            } catch (Exception e) {
+                System.out.println("User Profile has not been created yet");
+            }
+
+        }
+
         userprofile.setUserprofileid(user.getUserid());
-        userprofile.setProfileimageoriginalfilename(sourcefile.getOriginalFilename());
-        userprofile.setProfileimagebase64(multipartBase64);
         userProfileService.addUserProfile(userprofile);
 
-        return "home";
+        return "redirect:/updateprofile/showmydata";
 
     }
 
