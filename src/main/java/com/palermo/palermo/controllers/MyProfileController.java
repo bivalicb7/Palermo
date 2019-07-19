@@ -11,8 +11,13 @@ import com.palermo.palermo.repositories.UserProfileRepo;
 import com.palermo.palermo.repositories.UserRepo;
 import com.palermo.palermo.services.UserProfileService;
 import com.palermo.palermo.services.UserService;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -20,8 +25,12 @@ import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import org.apache.commons.compress.utils.IOUtils;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.math3.util.Precision;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -72,37 +81,57 @@ public class MyProfileController {
     //            HttpServletRequest req
     ) {
 
-        userprofile.setUserprofileid(user.getUserid());
+        String multipartBase64 = null;
         try {
-//            userprofile.setProfileimage(sourcefile.getBytes());
-            userprofile.setProfileimageoriginalfilename(sourcefile.getOriginalFilename());
-            String multipartBase64 = Base64.getEncoder().encodeToString(sourcefile.getBytes());
-            userprofile.setProfileimagebase64(multipartBase64);
+
+            //Resizing the image
+            //1. Create temp file in order to create BufferedImage object
+            String extension = FilenameUtils.getExtension(sourcefile.getOriginalFilename());
+            File tmp = File.createTempFile("test", "." + extension);
+            OutputStream os = Files.newOutputStream(tmp.toPath());
+            os.write(sourcefile.getBytes());
+
+            BufferedImage img = null;
+            img = ImageIO.read(tmp);
+
+            //2. Set new width and height. About 300px width and equivalent height. But first check if image is small than that
+            //Get how many times smaller must the new image be
+            double factor = 1;
+            if (img.getWidth() > 300) {
+                factor = Precision.round((double) img.getWidth() / 300, 1);
+            }
+
+            //Get new widths and heights based according to the factor
+            int newW = (int) (Precision.round((double) img.getWidth(), -1) / factor);
+            int newH = (int) (Precision.round((double) img.getHeight(), -1) / factor);
+            //Create the new image
+            BufferedImage newimg = new BufferedImage(newW, newH, img.getType());
+            Graphics2D g = newimg.createGraphics();
+            g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+            g.drawImage(img, 0, 0, newW, newH, 0, 0, img.getWidth(), img.getHeight(), null);
+            g.dispose();
+            //Transform to File in order to get Inputstream->byte[]
+            File tmp2 = File.createTempFile("newtest", "." + extension);
+            ImageIO.write(newimg, extension, tmp2);
+            InputStream targetStream = new FileInputStream(tmp2);
+            //Encode to base64 string
+            multipartBase64 = Base64.getEncoder().encodeToString(IOUtils.toByteArray(targetStream));
+
         } catch (IOException ex) {
             Logger.getLogger(MyProfileController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        userProfileService.addUserProfile(userprofile);
 
-//        OutputStream os = null;
+        //Save multipart as blob in DB
 //        try {
-//            Path path = Paths.get(context.getRealPath("userimages"), sourcefile.getOriginalFilename());
-//
-//            File f = new File(path.toString());
-//
-//            os = Files.newOutputStream(path);
-//            os.write(sourcefile.getBytes());
-//            System.out.println(path.toString());
-//            //        File f = new File("C:\\Users\\djbil\\OneDrive\\Έγγραφα\\GitHub\\websocket_test\\src\\main\\resources\\static\\userimages" + );
-//
+//            userprofile.setProfileimage(sourcefile.getBytes());
 //        } catch (IOException ex) {
 //            Logger.getLogger(MyProfileController.class.getName()).log(Level.SEVERE, null, ex);
-//        } finally {
-//            try {
-//                os.close();
-//            } catch (IOException ex) {
-//                Logger.getLogger(MyProfileController.class.getName()).log(Level.SEVERE, null, ex);
-//            }
 //        }
+        userprofile.setUserprofileid(user.getUserid());
+        userprofile.setProfileimageoriginalfilename(sourcefile.getOriginalFilename());
+        userprofile.setProfileimagebase64(multipartBase64);
+        userProfileService.addUserProfile(userprofile);
+
         return "home";
 
     }
