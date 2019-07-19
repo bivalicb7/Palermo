@@ -17,6 +17,7 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Base64;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletContext;
@@ -58,7 +59,7 @@ public class MyProfileController {
     ) {
         Userprofile userprofile = new Userprofile();
         mm.addAttribute("myprofile", userprofile);
-        return "myprofile";
+        return "updateuserdata";
     }
 
     @RequestMapping(value = "/addmydata", method = RequestMethod.POST)
@@ -72,7 +73,14 @@ public class MyProfileController {
     ) {
 
         userprofile.setUserprofileid(user.getUserid());
-        userprofile.setProfileimage("image");
+        try {
+//            userprofile.setProfileimage(sourcefile.getBytes());
+            userprofile.setProfileimageoriginalfilename(sourcefile.getOriginalFilename());
+            String multipartBase64 = Base64.getEncoder().encodeToString(sourcefile.getBytes());
+            userprofile.setProfileimagebase64(multipartBase64);
+        } catch (IOException ex) {
+            Logger.getLogger(MyProfileController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         userProfileService.addUserProfile(userprofile);
 
 //        OutputStream os = null;

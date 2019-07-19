@@ -11,6 +11,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
@@ -45,9 +46,16 @@ public class Userprofile implements Serializable {
     @Size(max = 100)
     @Column(name = "dateofbirthday")
     private String dateofbirthday;
-    @Size(max = 100)
+    @Lob()
     @Column(name = "profileimage")
-    private String profileimage;
+    private byte[] profileimage;
+    @Lob
+    @Size(max = 16777215)
+    @Column(name = "profileimagebase64")
+    private String profileimagebase64;
+    @Size(max = 100)
+    @Column(name = "profileimageoriginalfilename")
+    private String profileimageoriginalfilename;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -142,12 +150,28 @@ public class Userprofile implements Serializable {
         this.dateofbirthday = dateofbirthday;
     }
 
-    public String getProfileimage() {
+    public byte[] getProfileimage() {
         return profileimage;
     }
 
-    public void setProfileimage(String profileimage) {
+    public void setProfileimage(byte[] profileimage) {
         this.profileimage = profileimage;
+    }
+
+    public String getProfileimagebase64() {
+        return profileimagebase64;
+    }
+
+    public void setProfileimagebase64(String profileimagebase64) {
+        this.profileimagebase64 = profileimagebase64;
+    }
+
+    public String getProfileimageoriginalfilename() {
+        return profileimageoriginalfilename;
+    }
+
+    public void setProfileimageoriginalfilename(String profileimageoriginalfilename) {
+        this.profileimageoriginalfilename = profileimageoriginalfilename;
     }
     
 }

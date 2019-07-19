@@ -107,7 +107,7 @@ body {
     </style>
 </head>
 <body>
-    <div class="bg-img">
+    <!--<div class="bg-img">-->
 
         <div class="topnav">
             <a class="active" href="${pageContext.request.contextPath}/myprofile/showmyprofile">My profile</a>
