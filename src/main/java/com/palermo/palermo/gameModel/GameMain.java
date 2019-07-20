@@ -5,7 +5,12 @@
  */
 package com.palermo.palermo.gameModel;
 
+import com.palermo.palermo.entities.User;
+import com.palermo.palermo.entities.Userprofile;
+import com.palermo.palermo.entities.Userprofileview;
 import com.palermo.palermo.messageControllers.TablesInLobbyController;
+import com.palermo.palermo.services.UserProfileService;
+import com.palermo.palermo.services.UserProfileViewService;
 import com.palermo.palermo.services.UserService;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -23,6 +28,8 @@ public class GameMain {
 
     @Autowired
     UserService userService;
+    @Autowired
+    UserProfileViewService userProfileViewService;
         @Autowired
     TablesInLobbyController tablesInLobbyController;
 
@@ -71,8 +78,15 @@ public class GameMain {
 
         GameTable table = gametables.get(tableid);
         GameUserInTable newuserintable = new GameUserInTable();
-        newuserintable.setUser(userService.getUserById(userid));
+        
+        Userprofileview newuserprofileintable = userProfileViewService.getUserProfileViewById(userid);
+//        User newuseruserintable = userService.getUserById(userid);
+        newuserintable.setUserprofileview(newuserprofileintable);
         newuserintable.setUsersessionid(sessionid);
+//        newuserintable.setUsername(newuseruserintable.getUsername());
+//        newuserintable.setFirstname(newuserprofileintable.getFirstname());
+//        newuserintable.setLastname(newuserprofileintable.getLastname());
+//        newuserintable.setProfileimagebase64(newuserprofileintable.getProfileimagebase64());
         table.getUsersintable().put(sessionid, newuserintable);
 
         //Also add usersessionid to usersintablesmapping for quick removal

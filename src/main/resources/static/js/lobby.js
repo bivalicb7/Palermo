@@ -82,7 +82,7 @@ function  displayTable(tablesinlobby, elem) {
 
     for (var userelem in tablesinlobby.gametablesinlobby[elem].usersintable) {
         var li = document.createElement("li");
-        li.innerHTML = tablesinlobby.gametablesinlobby[elem].usersintable[userelem].user.username;
+        li.innerHTML = `${tablesinlobby.gametablesinlobby[elem].usersintable[userelem].userprofileview.username} ${tablesinlobby.gametablesinlobby[elem].usersintable[userelem].userprofileview.firstname} ${tablesinlobby.gametablesinlobby[elem].usersintable[userelem].userprofileview.lastname} `;
         userslist.appendChild(li);
 //            console.log(tablesinlobby.gametablesinlobby[elem].usersintable[userelem].user.username);
     }
@@ -120,7 +120,7 @@ function updateUsersInTable(tablesinlobby, id) {
     list.innerHTML = "";
     for (var userelem in tablesinlobby.gametablesinlobby[id].usersintable) {
         var li = document.createElement("li");
-        li.innerHTML = tablesinlobby.gametablesinlobby[id].usersintable[userelem].user.username;
+        li.innerHTML = `${tablesinlobby.gametablesinlobby[id].usersintable[userelem].userprofileview.username} ${tablesinlobby.gametablesinlobby[id].usersintable[userelem].userprofileview.firstname} ${tablesinlobby.gametablesinlobby[id].usersintable[userelem].userprofileview.lastname} `;
 
         if (!usernames.includes(li.innerHTML)) {
             li.classList.add("userentrance");

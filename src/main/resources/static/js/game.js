@@ -108,22 +108,39 @@ function updateTableState(tablestate) {
 //    list.innerHTML = "";
 
     for (var elem in tablestate.usersintable) {
-        let usernamevalue = tablestate.usersintable[elem].user.username;
+        let usernamevalue = tablestate.usersintable[elem].userprofileview.username;
         newusersarray.push(usernamevalue);
 
         if (!allusers.includes(usernamevalue)) {
 
             if (usernamevalue == checkCookie("usernameincookie")) {
-                document.querySelector("#userinpageseat p").innerHTML = usernamevalue ;
+                document.querySelector("#userinpageseat p").innerHTML = usernamevalue;
+
+                //Check if image is null in case default avatar needs to be displayed
+                if (tablestate.usersintable[elem].userprofileview.profileimagebase64 != "") {
+                    document.querySelector("#userinpageseat img").setAttribute("src", `data:image/png;base64, ${tablestate.usersintable[elem].userprofileview.profileimagebase64}`);
+                } else {
+                    document.querySelector("#userinpageseat img").setAttribute("src", "images/man-user.png");
+                }
+
             } else {
                 var li = document.createElement("li");
                 li.setAttribute("username", usernamevalue);
-                li.innerHTML = `
-                    <div class="imgcontainer">
-                    <img src="images/man-user.png" alt ="user's image"/>
-                     </div>
-                    <p>${usernamevalue}</p>
-                `;
+                var imgcontainer = document.createElement("div");
+                imgcontainer.setAttribute("class", "imgcontainer");
+                var img = document.createElement("img");
+
+                if (tablestate.usersintable[elem].userprofileview.profileimagebase64 != "") {
+                    img.setAttribute("src", `data:image/png;base64, ${tablestate.usersintable[elem].userprofileview.profileimagebase64}`);
+                } else {
+                    img.setAttribute("src", "images/man-user.png");
+                }
+                imgcontainer.appendChild(img);
+                var p = document.createElement("p");
+                p.innerHTML = usernamevalue;
+                
+                li.appendChild(imgcontainer);
+                li.appendChild(p);
                 li.classList.add("seat", "userentrance");
                 list.appendChild(li);
             }

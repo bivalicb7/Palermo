@@ -6,7 +6,9 @@
 package com.palermo.palermo.services;
 
 import com.palermo.palermo.entities.Userprofile;
+import com.palermo.palermo.entities.Userprofileview;
 import com.palermo.palermo.repositories.UserProfileRepo;
+import com.palermo.palermo.repositories.UserProfileViewRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,16 +17,12 @@ import org.springframework.stereotype.Service;
  * @author djbil
  */
 @Service
-public class UserProfileService {
+public class UserProfileViewService {
 
     @Autowired
-    private UserProfileRepo userprofileRepo;
-
-    public void addUserProfile(Userprofile userprofile) {
-        userprofileRepo.save(userprofile);
-    }
+    private UserProfileViewRepo userprofileviewRepo;
     
-    public Userprofile getUserProfileById(int userprofileid) {
-       return userprofileRepo.findById(userprofileid).get();
+    public Userprofileview getUserProfileViewById(int userprofileid) {
+       return userprofileviewRepo.findById(userprofileid).get();
     }
 }
