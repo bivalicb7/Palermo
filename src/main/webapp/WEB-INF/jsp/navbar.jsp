@@ -110,11 +110,13 @@ body {
     <!--<div class="bg-img">-->
 
         <div class="topnav">
+            
             <a href="${pageContext.request.contextPath}/myprofile/showmyprofile">Update my data</a>
-            <a href="main">Main</a>
+             <a href="${pageContext.request.contextPath}/updateprofile/showmydata">My profile</a>
+            <a href="${pageContext.request.contextPath}/lobby/home">Main</a>
             <a href="contact">Contact</a>
             <a href="about">About</a>
-            <a href="${pageContext.request.contextPath}/updateprofile/showmydata">My profile</a>
+           
             <p>${loggedinuser.username}</p>
 
         </div>

@@ -15,6 +15,14 @@
         <title>My Profile</title>
     </head>
     <body>
+        <c:if test="${loggedinuser.userid eq null}">
+            <%@include file="errorpage.jsp"%>
+            </c:if>
+        <c:if test="${loggedinuser.userid ne null}">
+           
+            
+        <%@ include file="navbar.jsp" %>
+        </br>
         <springForm:form method="post" modelAttribute="myprofile" action ="${pageContext.request.contextPath}/myprofile/addmydata" enctype="multipart/form-data">
             <table>
                 <tr>
@@ -38,5 +46,6 @@
                 </tr>
                 <input type="submit">
             </springForm:form>
+                </c:if>
             </body>
             </html>

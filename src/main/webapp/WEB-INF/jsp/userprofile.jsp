@@ -20,7 +20,13 @@
         <title>JSP Page</title>
     </head>
     <body>
-
+        <c:if test="${loggedinuser.userid eq null}">
+            <%@include file="errorpage.jsp"%>
+            </c:if>
+            <c:if test="${loggedinuser.userid ne null}">
+            
+        <%@ include file="navbar.jsp" %>
+        </br>
         <c:if test="${myprofile.profileimagebase64 ne null}">
             <img src="data:image/png;base64, ${myprofile.profileimagebase64}"/>
         </c:if>
@@ -46,5 +52,6 @@
             </tbody>
 
             <a href="myprofile/updatemydata">Edit user data</a>
+            </c:if>
     </body>
 </html>
