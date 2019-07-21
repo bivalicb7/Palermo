@@ -58,11 +58,10 @@ public class GameTable {
             //Get random index
             Random r = new Random();
             int index = r.nextInt((roleslist.size() - 1) + 1) + 1;
+            
+            //set role and remove role from list
             entry.getValue().setIngamerole(roleslist.get(index-1));
             roleslist.remove(index-1);
-
-            System.out.println(entry.getKey() + " " + entry.getValue().getIngamerole());
-
         }
 
     }

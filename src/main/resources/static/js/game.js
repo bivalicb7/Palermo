@@ -122,7 +122,8 @@ function updateTableState(tablestate) {
                 } else {
                     document.querySelector("#userinpageseat img").setAttribute("src", "images/man-user.png");
                 }
-
+                
+                
             } else {
                 var li = document.createElement("li");
                 li.setAttribute("username", usernamevalue);
