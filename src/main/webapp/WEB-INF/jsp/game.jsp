@@ -44,10 +44,16 @@
                     <img src="images/man-user.png" alt="user's image">
                     </div>
                     <p></p>
+                    <div id="ingamerolecontainer">
+                        <img/>
+                        <p id="ingamerole"></p>
+                    </div>
                 </div>
                 <div id="votingareacont">
                     <div id="votingarea">
-                        
+                        <div id="startgamecontainer">
+                            <button id="startbutton" disabled="true">Start game</button>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -36,6 +36,18 @@ public class EventListeners {
         if (sha.getDestination().matches("/topic/tablestate/\\d*")) {
 
             gamemain.addUserToTable(Integer.parseInt(sha.getNativeHeader("tableid").get(0)), Integer.parseInt(sha.getNativeHeader("userid").get(0)), sha.getSessionId());
+
+            //TO BE DELETED
+            //Add 5 more dummy players to the table to  go on with development
+            gamemain.addUserToTable(Integer.parseInt(sha.getNativeHeader("tableid").get(0)), 5, "1");
+            gamemain.addUserToTable(Integer.parseInt(sha.getNativeHeader("tableid").get(0)), 6, "2");
+            gamemain.addUserToTable(Integer.parseInt(sha.getNativeHeader("tableid").get(0)), 9, "3");
+            gamemain.addUserToTable(Integer.parseInt(sha.getNativeHeader("tableid").get(0)), 10, "4");
+            gamemain.addUserToTable(Integer.parseInt(sha.getNativeHeader("tableid").get(0)), 7, "5");
+            
+            
+            gamemain.getGametables().get(Integer.parseInt(sha.getNativeHeader("tableid").get(0))).assignRoles();
+            //TO BE DELETED
             tableStateController.updateTableState(Integer.parseInt(sha.getNativeHeader("tableid").get(0)));
             tablesInLobbyController.updateTablesInLobby();
 
@@ -58,7 +70,17 @@ public class EventListeners {
         int tableid = gamemain.getUsersintablesmapping().get(sha.getSessionId());
         gamemain.removeUserFromTable(sha.getSessionId());
 
+        //TO BE DELETED
+        //Remove all 5 more dummy players to closetable 
+        gamemain.removeUserFromTable("1");
+        gamemain.removeUserFromTable("2");
+        gamemain.removeUserFromTable("3");
+        gamemain.removeUserFromTable("4");
+        gamemain.removeUserFromTable("5");
+
+        //TO BE DELETED
         //Check if table still exists and users are still connected
+        
         if (gamemain.getGametables().get(tableid) != null) {
             tableStateController.updateTableState(tableid);
         }

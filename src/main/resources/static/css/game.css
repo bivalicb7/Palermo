@@ -163,6 +163,10 @@ body {
     background-color: lightgray;
 }
 
+#startbutton:disabled {
+    opacity: 0.5;
+}
+
 
 /* Chat */
 

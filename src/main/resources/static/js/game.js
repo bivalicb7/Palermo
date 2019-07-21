@@ -138,7 +138,7 @@ function updateTableState(tablestate) {
                 imgcontainer.appendChild(img);
                 var p = document.createElement("p");
                 p.innerHTML = usernamevalue;
-                
+
                 li.appendChild(imgcontainer);
                 li.appendChild(p);
                 li.classList.add("seat", "userentrance");
@@ -148,7 +148,8 @@ function updateTableState(tablestate) {
         }
 
     }
-
+    
+    //  Remove disconnected users
     function notincluded(elem) {
         return !newusersarray.includes(elem);
     }
@@ -157,8 +158,20 @@ function updateTableState(tablestate) {
     userstoberemoved.forEach((username) => {
         list.removeChild(list.querySelector(`li[username=${username}]`));
     });
-
+    
+    //Check if table is full in order to start the game
+    checkIfReadyToStart(newusersarray);
+    
     allusers = newusersarray;
+}
+
+function checkIfReadyToStart(array) {
+
+    if (array.length == 6) {
+        document.querySelector("#startbutton").disabled = false;
+    } else {
+        document.querySelector("#startbutton").disabled = true;
+    }
 }
 
 //Cookie play

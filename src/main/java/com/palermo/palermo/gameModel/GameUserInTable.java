@@ -16,6 +16,7 @@ public class GameUserInTable {
 
     private Userprofileview userprofileview;
     private String usersessionid;
+    private String ingamerole;
 
     public String getUsersessionid() {
         return usersessionid;
@@ -34,6 +35,14 @@ public class GameUserInTable {
 
     public void setUserprofileview(Userprofileview userprofileview) {
         this.userprofileview = userprofileview;
+    }
+
+    public String getIngamerole() {
+        return ingamerole;
+    }
+
+    public void setIngamerole(String ingamerole) {
+        this.ingamerole = ingamerole;
     }
 
 
