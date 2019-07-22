@@ -8,6 +8,8 @@ package com.palermo.palermo.gameModel;
 import com.palermo.palermo.entities.User;
 import com.palermo.palermo.entities.Userprofile;
 import com.palermo.palermo.entities.Userprofileview;
+import com.palermo.palermo.messageBeans.Roles;
+import com.palermo.palermo.messageControllers.TableStateController;
 import com.palermo.palermo.messageControllers.TablesInLobbyController;
 import com.palermo.palermo.services.UserProfileService;
 import com.palermo.palermo.services.UserProfileViewService;
@@ -32,6 +34,8 @@ public class GameMain {
     UserProfileViewService userProfileViewService;
         @Autowired
     TablesInLobbyController tablesInLobbyController;
+        @Autowired
+        TableStateController tableStateController;
 
     private static int nexttableid;
 
@@ -118,4 +122,17 @@ public class GameMain {
         }
     }
     
+    public void setUserReady(int tableid, String sessionid) {
+        GameTable table = gametables.get(tableid);
+        table.getUsersintable().get(sessionid).setReady(true);
+        
+        //Everytime a user is ready check if all of them are ready in order to start game
+        if(table.checkIfAllUsersReady()) {
+            table.assignRoles();
+            Roles roles = table.returnRolesObject();
+            tableStateController.sendRoles(tableid, roles);
+        }
+        
+    }
+        
 }

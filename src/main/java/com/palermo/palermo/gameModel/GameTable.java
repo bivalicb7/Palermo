@@ -5,14 +5,14 @@
  */
 package com.palermo.palermo.gameModel;
 
+import com.palermo.palermo.messageBeans.Roles;
+import com.palermo.palermo.messageControllers.TableStateController;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.Set;
+import org.apache.commons.collections4.IterableUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
@@ -58,12 +58,21 @@ public class GameTable {
             //Get random index
             Random r = new Random();
             int index = r.nextInt((roleslist.size() - 1) + 1) + 1;
-            
+
             //set role and remove role from list
-            entry.getValue().setIngamerole(roleslist.get(index-1));
-            roleslist.remove(index-1);
+            entry.getValue().setIngamerole(roleslist.get(index - 1));
+            System.out.println(entry.getKey() + " = " + roleslist.get(index - 1));
+
+            roleslist.remove(index - 1);
         }
 
     }
 
+    public boolean checkIfAllUsersReady() {
+        return IterableUtils.matchesAll(usersintable.values(), user -> (user.isReady()));
+    }
+
+    public Roles returnRolesObject() {   
+        return new Roles(usersintable);
+    }
 }

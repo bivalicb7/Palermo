@@ -17,6 +17,29 @@ public class GameUserInTable {
     private Userprofileview userprofileview;
     private String usersessionid;
     private String ingamerole;
+    private boolean ready;
+    private boolean dead;
+
+    public GameUserInTable() {
+        this.dead = false;
+        this.ready = false;
+    }
+
+    public boolean isReady() {
+        return ready;
+    }
+
+    public void setReady(boolean ready) {
+        this.ready = ready;
+    }
+
+    public boolean isDead() {
+        return dead;
+    }
+
+    public void setDead(boolean dead) {
+        this.dead = dead;
+    }
 
     public String getUsersessionid() {
         return usersessionid;
@@ -24,9 +47,6 @@ public class GameUserInTable {
 
     public void setUsersessionid(String usersessionid) {
         this.usersessionid = usersessionid;
-    }
-
-    public GameUserInTable() {
     }
 
     public Userprofileview getUserprofileview() {
@@ -44,7 +64,5 @@ public class GameUserInTable {
     public void setIngamerole(String ingamerole) {
         this.ingamerole = ingamerole;
     }
-
-
 
 }

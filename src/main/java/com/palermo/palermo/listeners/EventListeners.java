@@ -46,7 +46,7 @@ public class EventListeners {
             gamemain.addUserToTable(Integer.parseInt(sha.getNativeHeader("tableid").get(0)), 7, "5");
             
             
-            gamemain.getGametables().get(Integer.parseInt(sha.getNativeHeader("tableid").get(0))).assignRoles();
+//            gamemain.getGametables().get(Integer.parseInt(sha.getNativeHeader("tableid").get(0))).assignRoles();
             //TO BE DELETED
             tableStateController.updateTableState(Integer.parseInt(sha.getNativeHeader("tableid").get(0)));
             tablesInLobbyController.updateTablesInLobby();

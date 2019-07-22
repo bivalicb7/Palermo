@@ -48,6 +48,10 @@
                         <img/>
                         <p id="ingamerole"></p>
                     </div>
+                    <div id="extrainfo" style="border: 1px solid;">
+                        <p id="otheruserrole"></p>
+                        <p id="otherusername"></p>
+                    </div>
                 </div>
                 <div id="votingareacont">
                     <div id="votingarea">
