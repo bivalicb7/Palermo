@@ -19,9 +19,11 @@ import org.springframework.boot.actuate.endpoint.EndpointsSupplier;
 import org.springframework.boot.actuate.endpoint.web.PathMappedEndpoints;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 //import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 //import org.springframework.web.socket.config.annotation.WebMvcStompEndpointRegistry;
 //import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
@@ -32,6 +34,8 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 @Controller
 @RequestMapping(value = "lobby")
+//@SessionAttributes("loggedinuser")
+
 public class LobbyController {
 
     @Autowired
@@ -66,11 +70,14 @@ public class LobbyController {
     }
     
     @RequestMapping(value = "/joingame", method = RequestMethod.GET)
+
     public String joinGame(ModelMap mm,
+//            @ModelAttribute("loggedinuser") User user,
             @RequestParam("tableid") String tableid,
             HttpServletResponse response
     ) {
-
+        
+//        System.out.println(user.getUserid());
         Cookie cookie = new Cookie("tableidincookie", tableid);
         //TODO set path to specific game page. (check link)
         cookie.setPath("/");

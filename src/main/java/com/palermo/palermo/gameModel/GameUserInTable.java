@@ -6,6 +6,7 @@
 package com.palermo.palermo.gameModel;
 
 import com.palermo.palermo.entities.User;
+import com.palermo.palermo.entities.Userprofileview;
 
 /**
  *
@@ -13,7 +14,7 @@ import com.palermo.palermo.entities.User;
  */
 public class GameUserInTable {
 
-    private User user;
+    private Userprofileview userprofileview;
     private String usersessionid;
 
     public String getUsersessionid() {
@@ -27,12 +28,14 @@ public class GameUserInTable {
     public GameUserInTable() {
     }
 
-    public User getUser() {
-        return user;
+    public Userprofileview getUserprofileview() {
+        return userprofileview;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserprofileview(Userprofileview userprofileview) {
+        this.userprofileview = userprofileview;
     }
+
+
 
 }

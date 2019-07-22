@@ -76,10 +76,10 @@ function disconnect() {
 
 function sendChatMessage() {
     stompClient.send(`/app/chatsending/${tableid}`, {}, JSON.stringify({
-        'message': document.querySelector("#messagetextarea").value  ,
+        'message': document.querySelector("#messagetextarea").value,
         'name': checkCookie("usernameincookie")
     }));
-    
+
     document.querySelector("#messagetextarea").value = "";
 }
 
@@ -94,7 +94,7 @@ function sendVote() {
 
 function showChatmessage(message) {
     $("#incomingmessages").append("<tr><td>" + message + "</td></tr>");
-    document.querySelector("#chattablecontainer").scrollTop = document.querySelector("#chattablecontainer").scrollHeight ;
+    document.querySelector("#chattablecontainer").scrollTop = document.querySelector("#chattablecontainer").scrollHeight;
 }
 function showVote(votemessage) {
     $("#votes").append("<tr><td>" + votemessage + "</td></tr>");
@@ -108,28 +108,56 @@ function updateTableState(tablestate) {
 //    list.innerHTML = "";
 
     for (var elem in tablestate.usersintable) {
-        let usernamevalue = tablestate.usersintable[elem].user.username;
+        let usernamevalue = tablestate.usersintable[elem].userprofileview.username;
         newusersarray.push(usernamevalue);
 
         if (!allusers.includes(usernamevalue)) {
-            var li = document.createElement("li");
-            li.setAttribute("username", usernamevalue);
-            li.innerHTML = usernamevalue;
-            li.classList.add("userentrance");
-            list.appendChild(li);
+
+            if (usernamevalue == checkCookie("usernameincookie")) {
+                document.querySelector("#userinpageseat p").innerHTML = usernamevalue;
+
+                //Check if image is null in case default avatar needs to be displayed
+                if (tablestate.usersintable[elem].userprofileview.profileimagebase64 != "") {
+                    document.querySelector("#userinpageseat img").setAttribute("src", `data:image/png;base64, ${tablestate.usersintable[elem].userprofileview.profileimagebase64}`);
+                } else {
+                    document.querySelector("#userinpageseat img").setAttribute("src", "images/man-user.png");
+                }
+
+            } else {
+                var li = document.createElement("li");
+                li.setAttribute("username", usernamevalue);
+                var imgcontainer = document.createElement("div");
+                imgcontainer.setAttribute("class", "imgcontainer");
+                var img = document.createElement("img");
+
+                if (tablestate.usersintable[elem].userprofileview.profileimagebase64 != "") {
+                    img.setAttribute("src", `data:image/png;base64, ${tablestate.usersintable[elem].userprofileview.profileimagebase64}`);
+                } else {
+                    img.setAttribute("src", "images/man-user.png");
+                }
+                imgcontainer.appendChild(img);
+                var p = document.createElement("p");
+                p.innerHTML = usernamevalue;
+                
+                li.appendChild(imgcontainer);
+                li.appendChild(p);
+                li.classList.add("seat", "userentrance");
+                list.appendChild(li);
+            }
+
         }
-        
+
     }
-    
+
     function notincluded(elem) {
         return !newusersarray.includes(elem);
     }
     let userstoberemoved = allusers.filter(notincluded);
-    
+
     userstoberemoved.forEach((username) => {
         list.removeChild(list.querySelector(`li[username=${username}]`));
     });
-    
+
     allusers = newusersarray;
 }
 

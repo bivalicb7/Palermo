@@ -29,9 +29,9 @@ public class UserService {
     }
     
     public User getUserById(int userid) {
-        return userRepo.findById(userid).get();
+       return userRepo.findById(userid).get();
     }
-    
+     
     public void addUser(User user) {
         userRepo.save(user);
     }
