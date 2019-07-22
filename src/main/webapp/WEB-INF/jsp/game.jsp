@@ -66,6 +66,9 @@
                             </select>
                             <button id="voteoutperson-button">Vote out!</button>
                         </div>
+                        <div id="waitmessagecontainer" class="hidediv">
+                            <p id="waitmessage"> Please wait while killers pick their kill</p>                            
+                        </div>
                     </div>
                 </div>
             </div>
@@ -79,10 +82,22 @@
                         </tbody>
                     </table>
                 </div>
-
                 <textarea id="messagetextarea" placeholder="Type message.."></textarea>
                 <button id="sendchatmessage" type="submit">Send</button>
             </div>
+            
+            <div id="killer_chatcontainer" class="hidediv">
+                <h2>Killers Chat!</h2>
+                <div id="killer_chattablecontainer">
+                    <table id="killer_conversation" class="table table-striped">
+                        <tbody id="killer_incomingmessages">
+                        </tbody>
+                    </table>
+                </div>
+                <textarea id="killer_messagetextarea" placeholder="Type message.."></textarea>
+                <button id="killer_sendchatmessage" type="submit">Send</button>
+            </div>
+            
         </div>
     </body>
 </html>

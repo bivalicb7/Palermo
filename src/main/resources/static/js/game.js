@@ -8,6 +8,7 @@ var stompClient = null;
 var tableid = null;
 let allusers = [];
 let socketusersessionid = null;
+let ingamerole = null;
 
 
 
@@ -26,6 +27,9 @@ $(function () {
     });
     $("#sendchatmessage").click(function () {
         sendChatMessage();
+    });
+    $("#killer_sendchatmessage").click(function () {
+        sendKillerChatMessage();
     });
     $("#voteoutperson-button").click(function () {
         sendVote();
@@ -65,6 +69,10 @@ function connect() {
         stompClient.subscribe(`/topic/displayvote/${tableid}`, function (vote) {
             displayVote(JSON.parse(vote.body).voter, JSON.parse(vote.body).personvotedout);
         });
+
+        stompClient.subscribe(`/topic/nextphase/${tableid}`, function (phase) {
+            triggerNextPhase(JSON.parse(phase.body).typeofphase);
+        });
     });
 
 }
@@ -98,6 +106,15 @@ function sendChatMessage() {
     document.querySelector("#messagetextarea").value = "";
 }
 
+function sendKillerChatMessage() {
+    stompClient.send(`/app/killer_chatsending/${tableid}`, {}, JSON.stringify({
+        'message': document.querySelector("#killer_messagetextarea").value,
+        'name': checkCookie("usernameincookie")
+    }));
+
+    document.querySelector("#killer_messagetextarea").value = "";
+}
+
 function sendReadyToStart() {
     stompClient.send(`/app/vote/readystate/${tableid}`, {}, JSON.stringify({
 //        'message': document.querySelector("#messagetextarea").value,
@@ -128,6 +145,11 @@ function showChatmessage(message) {
     document.querySelector("#chattablecontainer").scrollTop = document.querySelector("#chattablecontainer").scrollHeight;
 }
 
+function showKillerChatmessage(message) {
+    $("#killer_incomingmessages").append("<tr><td>" + message + "</td></tr>");
+    document.querySelector("#killer_chattablecontainer").scrollTop = document.querySelector("#killer_chattablecontainer").scrollHeight;
+}
+
 function displayVote(voter, personvotedout) {
 
     var vote = document.createElement("div");
@@ -137,7 +159,7 @@ function displayVote(voter, personvotedout) {
     popup.classList.add("mytooltiptext");
 
     if (voter == socketusersessionid) {
-         popup.innerHTML = checkCookie("usernameincookie");
+        popup.innerHTML = checkCookie("usernameincookie");
     } else {
         popup.innerHTML = document.querySelector(`li[usersessionid=${voter}] > p`).innerHTML;
     }
@@ -154,6 +176,7 @@ function displayVote(voter, personvotedout) {
 function showAssignedRoles(roles) {
 
     document.querySelector("#ingamerole").innerHTML = roles[socketusersessionid];
+    ingamerole = roles[socketusersessionid];
 
     if (roles[socketusersessionid] == "spy" || roles[socketusersessionid] == "hiddenkiller") {
         for (var elem in roles) {
@@ -309,6 +332,30 @@ function checkIfReadyToStart(array) {
     }
 }
 
+function triggerNextPhase(typeofphase) {
+
+    if (typeofphase == "nightkill") {
+        if (ingamerole == "hiddenkiller" || ingamerole == "nothiddenkiller") {
+            showKillersChatAndSubscribe();
+        } else {
+            showWaitMessage();
+        }
+    }
+
+}
+
+function showKillersChatAndSubscribe() {
+    document.querySelector("#chatcontainer").classList.add("hidediv");
+    document.querySelector("#killer_chatcontainer").classList.remove("hidediv");
+
+    stompClient.subscribe(`/topic/killer_chatincoming/${tableid}`, function (chatmessage) {
+        showKillerChatmessage(JSON.parse(chatmessage.body).content);
+    });
+}
+
+function showWaitMessage() {
+    document.querySelector("#waitmessagecontainer").classList.remove("hidediv");
+}
 //Cookie play
 
 function getCookie(cname) {

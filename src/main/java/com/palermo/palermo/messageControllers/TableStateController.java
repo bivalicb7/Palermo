@@ -6,6 +6,7 @@
 package com.palermo.palermo.messageControllers;
 
 import com.palermo.palermo.gameModel.GameMain;
+import com.palermo.palermo.messageBeans.NextPhase;
 import com.palermo.palermo.messageBeans.Roles;
 import com.palermo.palermo.messageBeans.TableState;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,5 +35,9 @@ public class TableStateController {
 
     public void sendRoles(int tableid, Roles roles) {
         smp.convertAndSend("/topic/roles/" + tableid, roles);
+    }
+
+    public void triggerNextPhase(int tableid, NextPhase nextphase) {
+        smp.convertAndSend("/topic/nextphase/" + tableid, nextphase);
     }
 }

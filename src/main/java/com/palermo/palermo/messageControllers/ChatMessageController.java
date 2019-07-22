@@ -29,9 +29,15 @@ public class ChatMessageController {
     @MessageMapping("/chatsending/{variable}")
 //    @SendTo("/topic/greetings/1")
     public void greeting(ChatMessageFromClient message, @DestinationVariable String variable) throws Exception {
-        Thread.sleep(1000); // simulated delay
-        smp.convertAndSend("/topic/chatincoming/"+variable,
-                new ChatMessageToClient(HtmlUtils.htmlEscape(message.getName())+": "+ HtmlUtils.htmlEscape(message.getMessage())));
+//        Thread.sleep(1000); // simulated delay
+        smp.convertAndSend("/topic/chatincoming/"+variable, new ChatMessageToClient(HtmlUtils.htmlEscape(message.getName())+": "+ HtmlUtils.htmlEscape(message.getMessage())));
+    }
+    
+    @MessageMapping("/killer_chatsending/{variable}")
+//    @SendTo("/topic/greetings/1")
+    public void killerGreeting(ChatMessageFromClient message, @DestinationVariable String variable) throws Exception {
+//        Thread.sleep(1000); // simulated delay
+        smp.convertAndSend("/topic/killer_chatincoming/"+variable, new ChatMessageToClient(HtmlUtils.htmlEscape(message.getName())+": "+ HtmlUtils.htmlEscape(message.getMessage())));
     }
 
     //    @MessageMapping("/hello1")

@@ -39,7 +39,7 @@ body {
 }
 
 .hidediv {
-    display: none;
+    display: none !important;
 }
 
 .topnav {
@@ -210,6 +210,43 @@ body {
 }
 
 #incomingmessages {
+    overflow: scroll;
+}
+
+/* Killer's Chat */
+
+#killer_chatcontainer {
+    width: 30%;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    border: 5px solid red;
+}
+
+#killer_chattablecontainer, #killer_messagetextarea, #killer_sendchatmessage {
+    width: 100%;   
+}
+
+#killer_chattablecontainer {
+    height: 75%;
+    overflow-y: scroll;
+}
+
+#killer_chatcontainer h2 {
+    height: 5%;
+    margin: 0;
+}
+
+#killer_messagetextarea {
+    height: 15%;
+}
+
+#killer_sendchatmessage {
+    height: 5%;
+    padding: 0;
+}
+
+#killer_incomingmessages {
     overflow: scroll;
 }
 

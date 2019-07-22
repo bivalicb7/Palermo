@@ -8,6 +8,7 @@ package com.palermo.palermo.gameModel;
 import com.palermo.palermo.entities.User;
 import com.palermo.palermo.entities.Userprofile;
 import com.palermo.palermo.entities.Userprofileview;
+import com.palermo.palermo.messageBeans.NextPhase;
 import com.palermo.palermo.messageBeans.Roles;
 import com.palermo.palermo.messageBeans.Vote;
 import com.palermo.palermo.messageControllers.TableStateController;
@@ -138,8 +139,6 @@ public class GameMain {
     public void setUserDead(int tableid, String sessionid) {
         GameTable table = gametables.get(tableid);
         table.getUsersintable().get(sessionid).setDead(true);
-        
-        tableStateController.updateTableState(tableid);
     }
 
     public void collectVotes(int tableid, Vote vote) {
@@ -147,9 +146,15 @@ public class GameMain {
         table.openVote(vote);
 
         if (table.checkIfAllNonDeadUsersHaveVoted()) {
+
+            //if everyone has voted set person voted out as dead and update tablestate so that user see it
             String personvotedout = table.returnPersonVotedOut();
             setUserDead(tableid, personvotedout);
             System.out.println("Person voted out " + personvotedout);
+            tableStateController.updateTableState(tableid);
+
+            //After user has been killed trigger next phase ---> nighkill
+            tableStateController.triggerNextPhase(tableid, new NextPhase("nightkill"));
         }
     }
 

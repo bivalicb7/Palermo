@@ -31,12 +31,12 @@ public class VoteController {
     @Autowired
     SimpMessagingTemplate smp;
 
-    @MessageMapping("/vote/gamevote")
-    @SendTo("/topic/voting")
-    public ChatMessageToClient greeting(Vote vote) throws Exception {
-        Thread.sleep(1000); // simulated delay
-        return new ChatMessageToClient(HtmlUtils.htmlEscape(vote.getVoter()) + " voted for " + HtmlUtils.htmlEscape(vote.getPersonvotedout()) + "!");
-    }
+//    @MessageMapping("/vote/gamevote")
+//    @SendTo("/topic/voting")
+//    public ChatMessageToClient greeting(Vote vote) throws Exception {
+//        Thread.sleep(1000); // simulated delay
+//        return new ChatMessageToClient(HtmlUtils.htmlEscape(vote.getVoter()) + " voted for " + HtmlUtils.htmlEscape(vote.getPersonvotedout()) + "!");
+//    }
 
     @MessageMapping("/vote/readystate/{variable}")
 
@@ -98,6 +98,5 @@ public class VoteController {
         
         //Send vote back to table to be displayed
         smp.convertAndSend("/topic/displayvote/" + Integer.parseInt(variable), vote);
-
     }
 }
