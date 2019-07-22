@@ -9,6 +9,7 @@ import com.palermo.palermo.entities.User;
 import com.palermo.palermo.entities.Userprofile;
 import com.palermo.palermo.entities.Userprofileview;
 import com.palermo.palermo.messageBeans.Roles;
+import com.palermo.palermo.messageBeans.Vote;
 import com.palermo.palermo.messageControllers.TableStateController;
 import com.palermo.palermo.messageControllers.TablesInLobbyController;
 import com.palermo.palermo.services.UserProfileService;
@@ -32,10 +33,10 @@ public class GameMain {
     UserService userService;
     @Autowired
     UserProfileViewService userProfileViewService;
-        @Autowired
+    @Autowired
     TablesInLobbyController tablesInLobbyController;
-        @Autowired
-        TableStateController tableStateController;
+    @Autowired
+    TableStateController tableStateController;
 
     private static int nexttableid;
 
@@ -70,8 +71,6 @@ public class GameMain {
     public void setUsersintablesmapping(Map<String, Integer> usersintablesmapping) {
         this.usersintablesmapping = usersintablesmapping;
     }
-    
-    
 
     public int returnNextTableId() {
         GameMain.nexttableid = nexttableid + 1;
@@ -82,7 +81,7 @@ public class GameMain {
 
         GameTable table = gametables.get(tableid);
         GameUserInTable newuserintable = new GameUserInTable();
-        
+
         Userprofileview newuserprofileintable = userProfileViewService.getUserProfileViewById(userid);
 //        User newuseruserintable = userService.getUserById(userid);
         newuserintable.setUserprofileview(newuserprofileintable);
@@ -109,7 +108,7 @@ public class GameMain {
         //Also remove from the usersintablesmapping
         usersintablesmapping.remove(sessionid);
         System.out.println(usersintablesmapping.toString());
-        
+
         //Check if table is empty of users and remove it from the game
         removeTableFromMain(tableid);
     }
@@ -121,18 +120,37 @@ public class GameMain {
             tablesInLobbyController.updateTablesInLobby();
         }
     }
-    
+
     public void setUserReady(int tableid, String sessionid) {
+
+        //This method needs to be here so that tableStateController can be called. CANNOT call tableStateController from inside the table
         GameTable table = gametables.get(tableid);
         table.getUsersintable().get(sessionid).setReady(true);
-        
+
         //Everytime a user is ready check if all of them are ready in order to start game
-        if(table.checkIfAllUsersReady()) {
+        if (table.checkIfAllUsersReady()) {
             table.assignRoles();
-            Roles roles = table.returnRolesObject();
-            tableStateController.sendRoles(tableid, roles);
+            tableStateController.sendRoles(tableid, table.returnRolesObject());
         }
-        
+
     }
+
+    public void setUserDead(int tableid, String sessionid) {
+        GameTable table = gametables.get(tableid);
+        table.getUsersintable().get(sessionid).setDead(true);
         
+        tableStateController.updateTableState(tableid);
+    }
+
+    public void collectVotes(int tableid, Vote vote) {
+        GameTable table = gametables.get(tableid);
+        table.openVote(vote);
+
+        if (table.checkIfAllNonDeadUsersHaveVoted()) {
+            String personvotedout = table.returnPersonVotedOut();
+            setUserDead(tableid, personvotedout);
+            System.out.println("Person voted out " + personvotedout);
+        }
+    }
+
 }

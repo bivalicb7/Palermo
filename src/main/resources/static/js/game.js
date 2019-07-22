@@ -14,6 +14,7 @@ let socketusersessionid = null;
 $(function () {
 
     tableid = getCookie("tableidincookie");
+
     $("form").on("submit", function (e) {
         e.preventDefault();
     });
@@ -26,7 +27,7 @@ $(function () {
     $("#sendchatmessage").click(function () {
         sendChatMessage();
     });
-    $("#sendvote").click(function () {
+    $("#voteoutperson-button").click(function () {
         sendVote();
     });
     $("#startbutton").click(function () {
@@ -58,6 +59,11 @@ function connect() {
 
         stompClient.subscribe(`/topic/roles/${tableid}`, function (roles) {
             showAssignedRoles(JSON.parse(roles.body).roles);
+            showVotingOptions();
+        });
+
+        stompClient.subscribe(`/topic/displayvote/${tableid}`, function (vote) {
+            displayVote(JSON.parse(vote.body).voter, JSON.parse(vote.body).personvotedout);
         });
     });
 
@@ -101,52 +107,112 @@ function sendReadyToStart() {
 }
 
 function sendVote() {
-    stompClient.send("/app/vote", {}, JSON.stringify(
-            {
-                'voter': $("#voter").val(),
-                'personvotedout': $("#personvotedout").val()
-            }
-    ));
+
+    if ($("#voteoutperson-select").val() != "") {
+        stompClient.send(`/app/vote/gamevote/${tableid}`, {}, JSON.stringify(
+                {
+//                'voter' : socketusersessionid;
+                    'personvotedout': $("#voteoutperson-select").val()
+                }
+        ));
+        document.querySelector("#voteoutperson-button").disabled = true;
+        document.querySelector("#votingoptions label").innerHTML = "Choose Player";
+    } else {
+        document.querySelector("#votingoptions label").innerHTML = "You need to choose a player to vote out!";
+    }
+
 }
 
 function showChatmessage(message) {
     $("#incomingmessages").append("<tr><td>" + message + "</td></tr>");
     document.querySelector("#chattablecontainer").scrollTop = document.querySelector("#chattablecontainer").scrollHeight;
 }
-function showVote(votemessage) {
-    $("#votes").append("<tr><td>" + votemessage + "</td></tr>");
+
+function displayVote(voter, personvotedout) {
+
+    var vote = document.createElement("div");
+    vote.classList.add("mytooltip");
+
+    var popup = document.createElement("span");
+    popup.classList.add("mytooltiptext");
+
+    if (voter == socketusersessionid) {
+         popup.innerHTML = checkCookie("usernameincookie");
+    } else {
+        popup.innerHTML = document.querySelector(`li[usersessionid=${voter}] > p`).innerHTML;
+    }
+
+    vote.appendChild(popup);
+
+    if (personvotedout == socketusersessionid) {
+        document.querySelector("#votesoutreceived").appendChild(vote);
+    } else {
+        document.querySelector(`li[usersessionid=${personvotedout}] .votesoutreceived`).appendChild(vote);
+    }
 }
 
 function showAssignedRoles(roles) {
 
     document.querySelector("#ingamerole").innerHTML = roles[socketusersessionid];
 
-    if (roles[socketusersessionid] == "spy" || roles[socketusersessionid] == "hiddenkiller" ) {
+    if (roles[socketusersessionid] == "spy" || roles[socketusersessionid] == "hiddenkiller") {
         for (var elem in roles) {
             if (roles[elem] == "nothiddenkiller") {
-                  document.querySelector("#otheruserrole").innerHTML = "nothiddenkiller";
-                  document.querySelector("#otherusername").innerHTML = document.querySelector(`li[usersessionid="${elem}"] > p`).innerHTML;
+                document.querySelector("#otheruserrole").innerHTML = "nothiddenkiller";
+
+                //here the " " around ${elem} need to be removed!!!!
+                document.querySelector("#otherusername").innerHTML = document.querySelector(`li[usersessionid=${elem}] > p`).innerHTML;
+                //here the " " around ${elem} need to be removed!!!!
+
+                document.querySelector("#extrainfo").classList.remove("hidediv");
             }
         }
-    }  
-    else if (roles[socketusersessionid] == "nothiddenkiller") {
+    } else if (roles[socketusersessionid] == "nothiddenkiller") {
         for (var elem in roles) {
             if (roles[elem] == "hiddenkiller") {
-                  document.querySelector("#otheruserrole").innerHTML = "hiddenkiller";
-                  document.querySelector("#otherusername").innerHTML = document.querySelector(`li[usersessionid="${elem}"] > p`).innerHTML;
+                document.querySelector("#otheruserrole").innerHTML = "hiddenkiller";
+                document.querySelector("#otherusername").innerHTML = document.querySelector(`li[usersessionid=${elem}] > p`).innerHTML;
+                document.querySelector("#extrainfo").classList.remove("hidediv");
+
             }
         }
-    }
-    else {
-                      document.querySelector("#otheruserrole").innerHTML = "";
-                  document.querySelector("#otherusername").innerHTML = "";
+    } else {
+        document.querySelector("#otheruserrole").innerHTML = "";
+        document.querySelector("#otherusername").innerHTML = "";
+        document.querySelector("#extrainfo").classList.add("hidediv");
+
     }
 
+}
 
+function showVotingOptions() {
+    document.querySelector("#startgamecontainer").classList.add("hidediv");
+
+    allusers.forEach(function (elem) {
+
+        if (socketusersessionid != elem) {
+            var option = document.createElement("option");
+            option.setAttribute("value", elem);
+            option.innerHTML = document.querySelector(`li[usersessionid=${elem}] > p`).innerHTML;
+            document.querySelector("#voteoutperson-select").appendChild(option);
+        }
+    });
+
+    document.querySelector("#votingoptions").classList.remove("hidediv");
 }
 
 function updateTableState(tablestate) {
 
+    //Display new Users or remove users that have disconnected
+    checkIfUsersAreaExistsElseDisplay(tablestate);
+    //Check if table is full in order to start the game
+    checkIfReadyToStart(allusers);
+    //Check if user is dead
+    checkIfDead(tablestate);
+
+}
+
+function checkIfUsersAreaExistsElseDisplay(tablestate) {
     let newusersarray = [];
 
     var list = document.querySelector("#userslist");
@@ -190,8 +256,12 @@ function updateTableState(tablestate) {
                 var p = document.createElement("p");
                 p.innerHTML = usernamevalue;
 
+                var votesoutreceived = document.createElement("div");
+                votesoutreceived.classList.add("votesoutreceived");
+
                 li.appendChild(imgcontainer);
                 li.appendChild(p);
+                li.appendChild(votesoutreceived);
                 li.classList.add("seat", "userentrance");
                 list.appendChild(li);
             }
@@ -210,10 +280,24 @@ function updateTableState(tablestate) {
         list.removeChild(list.querySelector(`li[usersessionid=${elem}]`));
     });
 
-    //Check if table is full in order to start the game
-    checkIfReadyToStart(newusersarray);
-
     allusers = newusersarray;
+}
+
+function checkIfDead(tablestate) {
+
+    for (var elem in tablestate.usersintable) {
+
+        if (tablestate.usersintable[elem].dead == true) {
+            if (tablestate.usersintable[elem].userprofileview.username == checkCookie("usernameincookie")) {
+                document.querySelector("#votingarea").innerHTML = "DEAD";
+            } else {
+                document.querySelector(`li[usersessionid=${elem}]`).classList.add("dead");
+            }
+
+        }
+    }
+
+
 }
 
 function checkIfReadyToStart(array) {

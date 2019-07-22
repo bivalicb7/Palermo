@@ -6,6 +6,7 @@
 package com.palermo.palermo.gameModel;
 
 import com.palermo.palermo.messageBeans.Roles;
+import com.palermo.palermo.messageBeans.Vote;
 import com.palermo.palermo.messageControllers.TableStateController;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,6 +25,8 @@ public class GameTable {
 
     // Key: String user websocket sessiodin  Value: GameUserInTable
     private Map<String, GameUserInTable> usersintable = new HashMap();
+
+    private ArrayList<String> usersthatgotvotes = new ArrayList();
 
     public GameTable() {
     }
@@ -72,7 +75,44 @@ public class GameTable {
         return IterableUtils.matchesAll(usersintable.values(), user -> (user.isReady()));
     }
 
-    public Roles returnRolesObject() {   
+    public Roles returnRolesObject() {
         return new Roles(usersintable);
+    }
+
+    public boolean checkIfAllNonDeadUsersHaveVoted() {
+        boolean checkresult = IterableUtils.matchesAll(IterableUtils.filteredIterable(usersintable.values(), user -> !user.isDead()), user -> (user.isHasvoted()));
+
+        //If everyone has voted then automatically reset their hasvoted field
+        if (checkresult) {
+            IterableUtils.forEach(IterableUtils.filteredIterable(usersintable.values(), user -> (user.isHasvoted())), user -> user.setHasvoted(false));
+        }
+
+        return checkresult;
+    }
+
+    public void openVote(Vote vote) {
+        usersintable.get(vote.getVoter()).setHasvoted(true);
+        usersthatgotvotes.add(vote.getPersonvotedout());
+
+        System.out.println("Voter " + vote.getVoter() + " Voted for " + vote.getPersonvotedout());
+        System.out.println("Votes at the moment " + usersthatgotvotes.toString());
+    }
+
+    public String returnPersonVotedOut() {
+        String personvotedout = null;
+        int highestoccurancesofar = 0;
+
+        for (String person : usersthatgotvotes) {
+            int frequency = IterableUtils.frequency(usersthatgotvotes, person);
+            if (frequency > highestoccurancesofar) {
+                highestoccurancesofar = frequency;
+                personvotedout = person;
+            }
+        }
+        
+        //reset votes for next round
+        usersthatgotvotes.clear();
+
+        return personvotedout;
     }
 }

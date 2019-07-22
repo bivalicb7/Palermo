@@ -19,6 +19,15 @@ public class GameUserInTable {
     private String ingamerole;
     private boolean ready;
     private boolean dead;
+    private boolean hasvoted;
+
+    public boolean isHasvoted() {
+        return hasvoted;
+    }
+
+    public void setHasvoted(boolean hasvoted) {
+        this.hasvoted = hasvoted;
+    }
 
     public GameUserInTable() {
         this.dead = false;

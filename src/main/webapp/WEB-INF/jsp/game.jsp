@@ -35,28 +35,36 @@
 
             <div id="tablecontainer">
                 <!--<div id="usersintable">-->
-                    <ul id="userslist">
+                <ul id="userslist">
 
-                    </ul>
+                </ul>
                 <!--</div>-->
                 <div id="userinpageseat">
                     <div class="userinpageimgcontainer">
-                    <img src="images/man-user.png" alt="user's image">
+                        <img src="images/man-user.png" alt="user's image">
                     </div>
                     <p></p>
                     <div id="ingamerolecontainer">
                         <img/>
                         <p id="ingamerole"></p>
                     </div>
-                    <div id="extrainfo" style="border: 1px solid;">
+                    <div id="extrainfo"  class="hidediv" style="border: 1px solid;">
                         <p id="otheruserrole"></p>
                         <p id="otherusername"></p>
                     </div>
+                    <div id="votesoutreceived"></div>
                 </div>
                 <div id="votingareacont">
                     <div id="votingarea">
                         <div id="startgamecontainer">
                             <button id="startbutton" disabled="true">Start game</button>
+                        </div>
+                        <div id="votingoptions" class="hidediv">
+                            <label for="voteoutperson-select">Choose Player</label>
+                            <select id="voteoutperson-select">
+                                <option value=""></option>
+                            </select>
+                            <button id="voteoutperson-button">Vote out!</button>
                         </div>
                     </div>
                 </div>

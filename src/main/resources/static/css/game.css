@@ -38,6 +38,10 @@ body {
     box-sizing: border-box;
 }
 
+.hidediv {
+    display: none;
+}
+
 .topnav {
     height: 10%;
     width: 100vw;
@@ -57,7 +61,7 @@ body {
 }
 
 #tablecontainer {
-    width: 60%;
+    width: 70%;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -84,6 +88,10 @@ body {
 
 /* Seat */
 
+.dead {
+    opacity: 0.5;
+}
+
 .seat {
     width: 100%;
     /* height for 5 users on the side */
@@ -93,9 +101,9 @@ body {
     /*border: 1px solid black;*/
     justify-content: space-around;
     align-items: center;
-    -webkit-box-shadow: 10px 10px 12px -4px rgba(0,0,0,0.75);
-    -moz-box-shadow: 10px 10px 12px -4px rgba(0,0,0,0.75);
-    box-shadow: 10px 10px 12px -4px rgba(0,0,0,0.75);
+    -webkit-box-shadow: 10px 10px 12px -4px rgba(150,150,150,0.75);
+    -moz-box-shadow: 10px 10px 12px -4px rgba(150,150,150,0.75);
+    box-shadow: 10px 10px 12px -4px rgba(150,150,150,0.75);
 }
 
 .seat .imgcontainer {
@@ -121,7 +129,7 @@ body {
 
 #userinpageseat {
     width: 60%;
-    height: 50%;
+    height: 70%;
     display: flex;
     flex-wrap: wrap;
     /* border: 3px solid red; */
@@ -153,7 +161,7 @@ body {
 
 #votingareacont {
     width: 60%;
-    height: 50%;
+    height: 30%;
     /* border: 3px solid green; */
 }
 
@@ -163,15 +171,16 @@ body {
     background-color: lightgray;
 }
 
-#startbutton:disabled {
+#startbutton:disabled, #voteoutperson-button:disabled {
     opacity: 0.5;
 }
+
 
 
 /* Chat */
 
 #chatcontainer {
-    width: 40%;
+    width: 30%;
     height: 100%;
     display: flex;
     flex-wrap: wrap;
@@ -202,4 +211,35 @@ body {
 
 #incomingmessages {
     overflow: scroll;
+}
+
+/*Received votes*/
+
+
+.mytooltip {
+  width: 10px;
+  height: 10px;
+  background-color: red;
+  z-index: 2;
+  border-radius: 5px;
+}
+
+/* Tooltip text */
+.mytooltip .mytooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: red;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+ 
+  /* Position the tooltip text - see examples below! */
+  position: absolute;
+  z-index: 1;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.mytooltip:hover > .mytooltiptext {
+  visibility: visible;
 }

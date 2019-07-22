@@ -45,14 +45,59 @@ public class VoteController {
         gamemain.setUserReady(Integer.parseInt(variable), sessionid);
 
         //TO Be DELETED
-        gamemain.setUserReady(Integer.parseInt(variable), "1");
-        gamemain.setUserReady(Integer.parseInt(variable), "2");
-        gamemain.setUserReady(Integer.parseInt(variable), "3");
-        gamemain.setUserReady(Integer.parseInt(variable), "4");
-        gamemain.setUserReady(Integer.parseInt(variable), "5");
-
+        gamemain.setUserReady(Integer.parseInt(variable), "a");
+        gamemain.setUserReady(Integer.parseInt(variable), "b");
+        gamemain.setUserReady(Integer.parseInt(variable), "c");
+        gamemain.setUserReady(Integer.parseInt(variable), "d");
+        gamemain.setUserReady(Integer.parseInt(variable), "e");
 
         //TO Be DELETED
+    }
+
+    @MessageMapping("/vote/gamevote/{variable}")
+
+    public void incomingVote(Vote vote, @Headers Map headers, @DestinationVariable String variable) throws Exception {
+
+        //Check if  vote is empty
+        if (!vote.getPersonvotedout().isEmpty()) {
+
+            String sessionid = headers.get("simpSessionId").toString();
+            vote.setVoter(sessionid);
+            gamemain.collectVotes(Integer.parseInt(variable), vote);
+
+        }
+
+        //TO Be DELETED
+//        gamemain.getGametables().get(Integer.parseInt(variable)).getUsersintable().get("a").setDead(true);
+//        gamemain.getGametables().get(Integer.parseInt(variable)).getUsersintable().get("b").setDead(true);
+//        System.out.println(gamemain.getGametables().get(Integer.parseInt(variable)).getUsersintable().get("a").isDead());
+//        System.out.println(gamemain.getGametables().get(Integer.parseInt(variable)).getUsersintable().get("b").isDead());
+//        
+        Vote testvote = new Vote();
+        testvote.setVoter("a");
+        testvote.setPersonvotedout("c");
+        gamemain.collectVotes(Integer.parseInt(variable), testvote);
+
+        testvote.setVoter("b");
+        testvote.setPersonvotedout("a");
+        gamemain.collectVotes(Integer.parseInt(variable), testvote);
+
+        testvote.setVoter("c");
+        testvote.setPersonvotedout("b");
+        gamemain.collectVotes(Integer.parseInt(variable), testvote);
+
+        testvote.setVoter("d");
+        testvote.setPersonvotedout("a");
+        gamemain.collectVotes(Integer.parseInt(variable), testvote);
+
+        testvote.setVoter("e");
+        testvote.setPersonvotedout("a");
+        gamemain.collectVotes(Integer.parseInt(variable), testvote);
+
+        //TO Be DELETED
+        
+        //Send vote back to table to be displayed
+        smp.convertAndSend("/topic/displayvote/" + Integer.parseInt(variable), vote);
 
     }
 }

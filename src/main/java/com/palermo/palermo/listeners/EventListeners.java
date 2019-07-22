@@ -39,11 +39,11 @@ public class EventListeners {
 
             //TO BE DELETED
             //Add 5 more dummy players to the table to  go on with development
-            gamemain.addUserToTable(Integer.parseInt(sha.getNativeHeader("tableid").get(0)), 5, "1");
-            gamemain.addUserToTable(Integer.parseInt(sha.getNativeHeader("tableid").get(0)), 6, "2");
-            gamemain.addUserToTable(Integer.parseInt(sha.getNativeHeader("tableid").get(0)), 9, "3");
-            gamemain.addUserToTable(Integer.parseInt(sha.getNativeHeader("tableid").get(0)), 10, "4");
-            gamemain.addUserToTable(Integer.parseInt(sha.getNativeHeader("tableid").get(0)), 7, "5");
+            gamemain.addUserToTable(Integer.parseInt(sha.getNativeHeader("tableid").get(0)), 5, "a");
+            gamemain.addUserToTable(Integer.parseInt(sha.getNativeHeader("tableid").get(0)), 6, "b");
+            gamemain.addUserToTable(Integer.parseInt(sha.getNativeHeader("tableid").get(0)), 9, "c");
+            gamemain.addUserToTable(Integer.parseInt(sha.getNativeHeader("tableid").get(0)), 10, "d");
+            gamemain.addUserToTable(Integer.parseInt(sha.getNativeHeader("tableid").get(0)), 7, "e");
             
             
 //            gamemain.getGametables().get(Integer.parseInt(sha.getNativeHeader("tableid").get(0))).assignRoles();
