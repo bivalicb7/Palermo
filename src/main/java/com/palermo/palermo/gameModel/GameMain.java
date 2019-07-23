@@ -143,7 +143,11 @@ public class GameMain {
 
     public void collectVotes(int tableid, Vote vote) {
         GameTable table = gametables.get(tableid);
-        table.openVote(vote);
+
+        //Check if person voting is not dead for extra security
+        if (!table.getUsersintable().get(vote.getVoter()).isDead()) {
+            table.openVote(vote);
+        }
 
         if (table.checkIfAllNonDeadUsersHaveVoted()) {
 

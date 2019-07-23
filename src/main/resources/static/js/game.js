@@ -7,6 +7,7 @@
 var stompClient = null;
 var tableid = null;
 let allusers = [];
+let alldeadusers = [];
 let socketusersessionid = null;
 let ingamerole = null;
 
@@ -213,11 +214,31 @@ function showVotingOptions() {
 
     allusers.forEach(function (elem) {
 
-        if (socketusersessionid != elem) {
+        if (socketusersessionid != elem && !alldeadusers.includes(elem)) {
             var option = document.createElement("option");
             option.setAttribute("value", elem);
             option.innerHTML = document.querySelector(`li[usersessionid=${elem}] > p`).innerHTML;
             document.querySelector("#voteoutperson-select").appendChild(option);
+        }
+    });
+
+    document.querySelector("#votingoptions").classList.remove("hidediv");
+}
+
+function showKillerVotingOptions() {
+//    document.querySelector("#startgamecontainer").classList.add("hidediv");
+    allusers.forEach(function (elem) {
+
+        if (!alldeadusers.includes(elem)) {
+            var option = document.createElement("option");
+            option.setAttribute("value", elem);
+
+            if (socketusersessionid == elem) {
+                option.innerHTML = checkCookie("usernameincookie");
+            } else {
+                option.innerHTML = document.querySelector(`li[usersessionid=${elem}] > p`).innerHTML;
+            }
+            document.querySelector("#killer_voteoutperson-select").appendChild(option);
         }
     });
 
@@ -307,10 +328,14 @@ function checkIfUsersAreaExistsElseDisplay(tablestate) {
 }
 
 function checkIfDead(tablestate) {
+    let newdeadlist = [];
 
     for (var elem in tablestate.usersintable) {
 
         if (tablestate.usersintable[elem].dead == true) {
+
+            newdeadlist.push(elem);
+
             if (tablestate.usersintable[elem].userprofileview.username == checkCookie("usernameincookie")) {
                 document.querySelector("#votingarea").innerHTML = "DEAD";
             } else {
@@ -319,7 +344,7 @@ function checkIfDead(tablestate) {
 
         }
     }
-
+    alldeadusers = newdeadlist;
 
 }
 
@@ -347,6 +372,7 @@ function triggerNextPhase(typeofphase) {
 function showKillersChatAndSubscribe() {
     document.querySelector("#chatcontainer").classList.add("hidediv");
     document.querySelector("#killer_chatcontainer").classList.remove("hidediv");
+    showKillerVotingOptions();
 
     stompClient.subscribe(`/topic/killer_chatincoming/${tableid}`, function (chatmessage) {
         showKillerChatmessage(JSON.parse(chatmessage.body).content);

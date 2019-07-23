@@ -37,7 +37,6 @@ public class VoteController {
 //        Thread.sleep(1000); // simulated delay
 //        return new ChatMessageToClient(HtmlUtils.htmlEscape(vote.getVoter()) + " voted for " + HtmlUtils.htmlEscape(vote.getPersonvotedout()) + "!");
 //    }
-
     @MessageMapping("/vote/readystate/{variable}")
 
     public void ready(@Headers Map headers, @DestinationVariable String variable) throws Exception {
@@ -58,6 +57,11 @@ public class VoteController {
 
     public void incomingVote(Vote vote, @Headers Map headers, @DestinationVariable String variable) throws Exception {
 
+        //TO Be DELETED
+        gamemain.getGametables().get(Integer.parseInt(variable)).getUsersintable().get("a").setDead(true);
+        gamemain.getGametables().get(Integer.parseInt(variable)).getUsersintable().get("b").setDead(true);
+        //TO Be DELETED
+
         //Check if  vote is empty
         if (!vote.getPersonvotedout().isEmpty()) {
 
@@ -68,18 +72,16 @@ public class VoteController {
         }
 
         //TO Be DELETED
-//        gamemain.getGametables().get(Integer.parseInt(variable)).getUsersintable().get("a").setDead(true);
-//        gamemain.getGametables().get(Integer.parseInt(variable)).getUsersintable().get("b").setDead(true);
 //        System.out.println(gamemain.getGametables().get(Integer.parseInt(variable)).getUsersintable().get("a").isDead());
 //        System.out.println(gamemain.getGametables().get(Integer.parseInt(variable)).getUsersintable().get("b").isDead());
 //        
         Vote testvote = new Vote();
         testvote.setVoter("a");
-        testvote.setPersonvotedout("c");
+        testvote.setPersonvotedout("b");
         gamemain.collectVotes(Integer.parseInt(variable), testvote);
 
         testvote.setVoter("b");
-        testvote.setPersonvotedout("a");
+        testvote.setPersonvotedout("b");
         gamemain.collectVotes(Integer.parseInt(variable), testvote);
 
         testvote.setVoter("c");

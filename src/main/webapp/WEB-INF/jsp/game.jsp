@@ -85,9 +85,16 @@
                 <textarea id="messagetextarea" placeholder="Type message.."></textarea>
                 <button id="sendchatmessage" type="submit">Send</button>
             </div>
-            
+
             <div id="killer_chatcontainer" class="hidediv">
                 <h2>Killers Chat!</h2>
+                <div id="killer_votingoptions">
+                    <label for="killer_voteoutperson-select">Choose Player</label>
+                    <select id="killer_voteoutperson-select">
+                        <option value=""></option>
+                    </select>
+                    <button id="killer_voteoutperson-button">Kill!</button>
+                </div>
                 <div id="killer_chattablecontainer">
                     <table id="killer_conversation" class="table table-striped">
                         <tbody id="killer_incomingmessages">
@@ -97,7 +104,7 @@
                 <textarea id="killer_messagetextarea" placeholder="Type message.."></textarea>
                 <button id="killer_sendchatmessage" type="submit">Send</button>
             </div>
-            
+
         </div>
     </body>
 </html>

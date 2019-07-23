@@ -228,13 +228,17 @@ body {
 }
 
 #killer_chattablecontainer {
-    height: 75%;
+    height: 70%;
     overflow-y: scroll;
 }
 
 #killer_chatcontainer h2 {
     height: 5%;
     margin: 0;
+}
+
+#killer_votingoptions {
+    height: 5%;
 }
 
 #killer_messagetextarea {
