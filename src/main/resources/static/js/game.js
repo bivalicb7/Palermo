@@ -130,6 +130,7 @@ function sendVote() {
         stompClient.send(`/app/vote/gamevote/${tableid}`, {}, JSON.stringify(
                 {
 //                'voter' : socketusersessionid;
+                    'phase' : 'daykill', 
                     'personvotedout': $("#voteoutperson-select").val()
                 }
         ));
@@ -365,7 +366,9 @@ function triggerNextPhase(typeofphase) {
         } else {
             showWaitMessage();
         }
-    }
+    } else if(typeofphase == "daykill") {
+        resetTableForNewRound(); //To be implemented
+    } 
 
 }
 

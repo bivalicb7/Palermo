@@ -77,27 +77,31 @@ public class VoteController {
 //        
         Vote testvote = new Vote();
         testvote.setVoter("a");
+        testvote.setPhase("daykill");
         testvote.setPersonvotedout("b");
         gamemain.collectVotes(Integer.parseInt(variable), testvote);
 
         testvote.setVoter("b");
+        testvote.setPhase("daykill");
         testvote.setPersonvotedout("b");
         gamemain.collectVotes(Integer.parseInt(variable), testvote);
 
         testvote.setVoter("c");
+        testvote.setPhase("daykill");
         testvote.setPersonvotedout("b");
         gamemain.collectVotes(Integer.parseInt(variable), testvote);
 
         testvote.setVoter("d");
+        testvote.setPhase("daykill");
         testvote.setPersonvotedout("a");
         gamemain.collectVotes(Integer.parseInt(variable), testvote);
 
         testvote.setVoter("e");
+        testvote.setPhase("daykill");
         testvote.setPersonvotedout("a");
         gamemain.collectVotes(Integer.parseInt(variable), testvote);
 
         //TO Be DELETED
-        
         //Send vote back to table to be displayed
         smp.convertAndSend("/topic/displayvote/" + Integer.parseInt(variable), vote);
     }

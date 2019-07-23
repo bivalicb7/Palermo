@@ -90,6 +90,24 @@ public class GameTable {
         return checkresult;
     }
 
+    public boolean checkIfAllNonDeadKillersHaveVoted() {
+        boolean checkresult = IterableUtils.matchesAll(
+                IterableUtils.filteredIterable(
+                        IterableUtils.filteredIterable(
+                                //                                IterableUtils.filteredIterable(
+                                usersintable.values(), user -> user.getIngamerole().endsWith("hiddenkiller")
+                        //                                ), user -> !user.getIngamerole().equals("nothiddenkiller")
+                        ), user -> !user.isDead()
+                ), user -> (user.isHasvoted()));
+
+        //If everyone has voted then automatically reset their hasvoted field
+        if (checkresult) {
+            IterableUtils.forEach(IterableUtils.filteredIterable(usersintable.values(), user -> (user.isHasvoted())), user -> user.setHasvoted(false));
+        }
+
+        return checkresult;
+    }
+
     public void openVote(Vote vote) {
         usersintable.get(vote.getVoter()).setHasvoted(true);
         usersthatgotvotes.add(vote.getPersonvotedout());
@@ -109,10 +127,43 @@ public class GameTable {
                 personvotedout = person;
             }
         }
-        
+
         //reset votes for next round
         usersthatgotvotes.clear();
 
         return personvotedout;
     }
+
+    public String returnPersonKilled() {
+        String personkilled = null;
+        int highestoccurancesofar = 0;
+
+        for (String person : usersthatgotvotes) {
+            int frequency = IterableUtils.frequency(usersthatgotvotes, person);
+            if (frequency > highestoccurancesofar) {
+                highestoccurancesofar = frequency;
+                personkilled = person;
+            }
+        }
+
+        //reset votes for next round
+        usersthatgotvotes.clear();
+
+        return personkilled;
+    }
+
+    public boolean checkKillersCongruence() {
+
+        int voteslength = usersthatgotvotes.size();
+
+        int frequency = IterableUtils.frequency(usersthatgotvotes, usersthatgotvotes.get(0));
+
+        if (frequency == voteslength) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
 }

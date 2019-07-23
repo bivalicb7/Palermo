@@ -144,20 +144,41 @@ public class GameMain {
     public void collectVotes(int tableid, Vote vote) {
         GameTable table = gametables.get(tableid);
 
-        //Check if person voting is not dead for extra security
-        if (!table.getUsersintable().get(vote.getVoter()).isDead()) {
-            table.openVote(vote);
+        if(vote.getPhase().equals("daykill")) {
+            //Check if person voting is not dead for extra security
+            if (!table.getUsersintable().get(vote.getVoter()).isDead()) {
+                table.openVote(vote);
 
-            if (table.checkIfAllNonDeadUsersHaveVoted()) {
+                if (table.checkIfAllNonDeadUsersHaveVoted()) {
 
-                //if everyone has voted set person voted out as dead and update tablestate so that user see it
-                String personvotedout = table.returnPersonVotedOut();
-                setUserDead(tableid, personvotedout);
-                System.out.println("Person voted out " + personvotedout);
-                tableStateController.updateTableState(tableid);
+                    //if everyone has voted set person voted out as dead and update tablestate so that user see it
+                    String personvotedout = table.returnPersonVotedOut();
+                    setUserDead(tableid, personvotedout);
+                    System.out.println("Person voted out " + personvotedout);
+                    tableStateController.updateTableState(tableid);
 
-                //After user has been killed trigger next phase ---> nighkill
-                tableStateController.triggerNextPhase(tableid, new NextPhase("nightkill"));
+                    //After user has been killed trigger next phase ---> nighkill
+                    tableStateController.triggerNextPhase(tableid, new NextPhase("nightkill"));
+                }
+            }
+        }
+        
+        if(vote.getPhase().equals("nightkill")) {
+             //Check if person voting is not dead for extra security
+            if (!table.getUsersintable().get(vote.getVoter()).isDead() && (table.getUsersintable().get(vote.getVoter()).getIngamerole().equals("nothiddenkiller") || table.getUsersintable().get(vote.getVoter()).getIngamerole().equals("hiddenkiller"))) {
+                table.openVote(vote);
+
+                if (table.checkIfAllNonDeadUsersHaveVoted()) {
+
+                    //if everyone has voted set person voted out as dead and update tablestate so that user see it
+                    String personvotedout = table.returnPersonVotedOut();
+                    setUserDead(tableid, personvotedout);
+                    System.out.println("Person voted out " + personvotedout);
+                    tableStateController.updateTableState(tableid);
+
+                    //After user has been killed trigger next phase ---> nighkill
+                    tableStateController.triggerNextPhase(tableid, new NextPhase("nightkill"));
+                }
             }
         }
 
