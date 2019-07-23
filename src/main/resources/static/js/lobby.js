@@ -45,8 +45,11 @@ function checkTables(tablesinlobby) {
         //Check if table doesn't exist and display 
         if (!allexistingtableids.includes(elem)) {
             displayTable(tablesinlobby, elem);
+            checkIfTableIsFull(elem);
+
         } else {
             updateUsersInTable(tablesinlobby, elem);
+            checkIfTableIsFull(elem);
         }
     }
 
@@ -126,6 +129,16 @@ function updateUsersInTable(tablesinlobby, id) {
             li.classList.add("userentrance");
         }
         list.appendChild(li);
+    }
+}
+
+function checkIfTableIsFull(elem) {
+    let table = document.querySelector(`#table_id${elem}`);
+    if (table.querySelector(".userslist").querySelectorAll("li").length == 6) {
+        console.log("FULL TABLE");
+        table.querySelector("a").style.display = "none";
+    } else {
+        table.querySelector("a").style.display = "block";
     }
 }
 

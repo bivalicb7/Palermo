@@ -6,6 +6,8 @@
 package com.palermo.palermo.messageControllers;
 
 import com.palermo.palermo.gameModel.GameMain;
+import com.palermo.palermo.messageBeans.NextPhase;
+import com.palermo.palermo.messageBeans.Roles;
 import com.palermo.palermo.messageBeans.TableState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -26,8 +28,16 @@ public class TableStateController {
 
     public void updateTableState(int tableid) {
         TableState tablestate = new TableState();
-        
+
         tablestate.setUsersintable(gamemain.getGametables().get(tableid).getUsersintable());
-        smp.convertAndSend("/topic/tablestate/" + tableid,   tablestate);
+        smp.convertAndSend("/topic/tablestate/" + tableid, tablestate);
+    }
+
+    public void sendRoles(int tableid, Roles roles) {
+        smp.convertAndSend("/topic/roles/" + tableid, roles);
+    }
+
+    public void triggerNextPhase(int tableid, NextPhase nextphase) {
+        smp.convertAndSend("/topic/nextphase/" + tableid, nextphase);
     }
 }

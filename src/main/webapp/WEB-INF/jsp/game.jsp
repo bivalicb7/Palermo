@@ -35,19 +35,40 @@
 
             <div id="tablecontainer">
                 <!--<div id="usersintable">-->
-                    <ul id="userslist">
+                <ul id="userslist">
 
-                    </ul>
+                </ul>
                 <!--</div>-->
                 <div id="userinpageseat">
                     <div class="userinpageimgcontainer">
-                    <img src="images/man-user.png" alt="user's image">
+                        <img src="images/man-user.png" alt="user's image">
                     </div>
                     <p></p>
+                    <div id="ingamerolecontainer">
+                        <img/>
+                        <p id="ingamerole"></p>
+                    </div>
+                    <div id="extrainfo"  class="hidediv" style="border: 1px solid;">
+                        <p id="otheruserrole"></p>
+                        <p id="otherusername"></p>
+                    </div>
+                    <div id="votesoutreceived"></div>
                 </div>
                 <div id="votingareacont">
                     <div id="votingarea">
-                        
+                        <div id="startgamecontainer">
+                            <button id="startbutton" disabled="true">Start game</button>
+                        </div>
+                        <div id="votingoptions" class="hidediv">
+                            <label for="voteoutperson-select">Choose Player</label>
+                            <select id="voteoutperson-select">
+                                <option value=""></option>
+                            </select>
+                            <button id="voteoutperson-button">Vote out!</button>
+                        </div>
+                        <div id="waitmessagecontainer" class="hidediv">
+                            <p id="waitmessage"> Please wait while killers pick their kill</p>                            
+                        </div>
                     </div>
                 </div>
             </div>
@@ -61,10 +82,29 @@
                         </tbody>
                     </table>
                 </div>
-
                 <textarea id="messagetextarea" placeholder="Type message.."></textarea>
                 <button id="sendchatmessage" type="submit">Send</button>
             </div>
+
+            <div id="killer_chatcontainer" class="hidediv">
+                <h2>Killers Chat!</h2>
+                <div id="killer_votingoptions">
+                    <label for="killer_voteoutperson-select">Choose Player</label>
+                    <select id="killer_voteoutperson-select">
+                        <option value=""></option>
+                    </select>
+                    <button id="killer_voteoutperson-button">Kill!</button>
+                </div>
+                <div id="killer_chattablecontainer">
+                    <table id="killer_conversation" class="table table-striped">
+                        <tbody id="killer_incomingmessages">
+                        </tbody>
+                    </table>
+                </div>
+                <textarea id="killer_messagetextarea" placeholder="Type message.."></textarea>
+                <button id="killer_sendchatmessage" type="submit">Send</button>
+            </div>
+
         </div>
     </body>
 </html>

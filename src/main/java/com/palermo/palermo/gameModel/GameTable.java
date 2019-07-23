@@ -5,10 +5,15 @@
  */
 package com.palermo.palermo.gameModel;
 
+import com.palermo.palermo.messageBeans.Roles;
+import com.palermo.palermo.messageBeans.Vote;
+import com.palermo.palermo.messageControllers.TableStateController;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
+import java.util.Random;
+import org.apache.commons.collections4.IterableUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
@@ -20,6 +25,8 @@ public class GameTable {
 
     // Key: String user websocket sessiodin  Value: GameUserInTable
     private Map<String, GameUserInTable> usersintable = new HashMap();
+
+    private ArrayList<String> usersthatgotvotes = new ArrayList();
 
     public GameTable() {
     }
@@ -40,4 +47,72 @@ public class GameTable {
         this.usersintable = usersintable;
     }
 
+    public void assignRoles() {
+        ArrayList<String> roleslist = new ArrayList();
+        roleslist.add("nothiddenkiller");
+        roleslist.add("hiddenkiller");
+        roleslist.add("spy");
+        roleslist.add("civilian");
+        roleslist.add("civilian");
+        roleslist.add("civilian");
+
+        for (Map.Entry<String, GameUserInTable> entry : usersintable.entrySet()) {
+
+            //Get random index
+            Random r = new Random();
+            int index = r.nextInt((roleslist.size() - 1) + 1) + 1;
+
+            //set role and remove role from list
+            entry.getValue().setIngamerole(roleslist.get(index - 1));
+            System.out.println(entry.getKey() + " = " + roleslist.get(index - 1));
+
+            roleslist.remove(index - 1);
+        }
+
+    }
+
+    public boolean checkIfAllUsersReady() {
+        return IterableUtils.matchesAll(usersintable.values(), user -> (user.isReady()));
+    }
+
+    public Roles returnRolesObject() {
+        return new Roles(usersintable);
+    }
+
+    public boolean checkIfAllNonDeadUsersHaveVoted() {
+        boolean checkresult = IterableUtils.matchesAll(IterableUtils.filteredIterable(usersintable.values(), user -> !user.isDead()), user -> (user.isHasvoted()));
+
+        //If everyone has voted then automatically reset their hasvoted field
+        if (checkresult) {
+            IterableUtils.forEach(IterableUtils.filteredIterable(usersintable.values(), user -> (user.isHasvoted())), user -> user.setHasvoted(false));
+        }
+
+        return checkresult;
+    }
+
+    public void openVote(Vote vote) {
+        usersintable.get(vote.getVoter()).setHasvoted(true);
+        usersthatgotvotes.add(vote.getPersonvotedout());
+
+        System.out.println("Voter " + vote.getVoter() + " Voted for " + vote.getPersonvotedout());
+        System.out.println("Votes at the moment " + usersthatgotvotes.toString());
+    }
+
+    public String returnPersonVotedOut() {
+        String personvotedout = null;
+        int highestoccurancesofar = 0;
+
+        for (String person : usersthatgotvotes) {
+            int frequency = IterableUtils.frequency(usersthatgotvotes, person);
+            if (frequency > highestoccurancesofar) {
+                highestoccurancesofar = frequency;
+                personvotedout = person;
+            }
+        }
+        
+        //reset votes for next round
+        usersthatgotvotes.clear();
+
+        return personvotedout;
+    }
 }
