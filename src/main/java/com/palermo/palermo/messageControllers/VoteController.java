@@ -58,8 +58,8 @@ public class VoteController {
     public void incomingVote(Vote vote, @Headers Map headers, @DestinationVariable String variable) throws Exception {
 
         //TO Be DELETED
-        gamemain.getGametables().get(Integer.parseInt(variable)).getUsersintable().get("a").setDead(true);
-        gamemain.getGametables().get(Integer.parseInt(variable)).getUsersintable().get("b").setDead(true);
+//        gamemain.getGametables().get(Integer.parseInt(variable)).getUsersintable().get("a").setDead(true);
+//        gamemain.getGametables().get(Integer.parseInt(variable)).getUsersintable().get("b").setDead(true);
         //TO Be DELETED
 
         //Check if  vote is empty

@@ -35,6 +35,9 @@ $(function () {
     $("#voteoutperson-button").click(function () {
         sendVote();
     });
+    $("#killer_voteoutperson-button").click(function () {
+        sendKillerVote();
+    });
     $("#startbutton").click(function () {
         sendReadyToStart();
     });
@@ -138,6 +141,24 @@ function sendVote() {
         document.querySelector("#votingoptions label").innerHTML = "Choose Player";
     } else {
         document.querySelector("#votingoptions label").innerHTML = "You need to choose a player to vote out!";
+    }
+
+}
+
+function sendKillerVote() {
+
+    if ($("#killer_voteoutperson-select").val() != "") {
+        stompClient.send(`/app/vote/gamevote/${tableid}`, {}, JSON.stringify(
+                {
+//                'voter' : socketusersessionid;
+                    'phase' : 'nightkill', 
+                    'personvotedout': $("#killer_voteoutperson-select").val()
+                }
+        ));
+        document.querySelector("#killer_voteoutperson-button").disabled = true;
+        document.querySelector("#killer_votingoptions label").innerHTML = "Choose Player";
+    } else {
+        document.querySelector("#killer_votingoptions label").innerHTML = "You need to choose a player to vote out!";
     }
 
 }

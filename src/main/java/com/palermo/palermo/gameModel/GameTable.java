@@ -128,7 +128,7 @@ public class GameTable {
             }
         }
 
-        //reset votes for next round
+        //reset votes list for next round
         usersthatgotvotes.clear();
 
         return personvotedout;
@@ -150,6 +150,35 @@ public class GameTable {
         usersthatgotvotes.clear();
 
         return personkilled;
+    }
+
+    public boolean checkIfTie() {
+        int highestoccurancesofar = 0;
+        ArrayList<String> tietestpersonswithvoteslist = new ArrayList();
+
+        for (String person : usersthatgotvotes) {
+            int frequency = IterableUtils.frequency(usersthatgotvotes, person);
+            if (frequency > highestoccurancesofar) {
+                highestoccurancesofar = frequency;
+            }
+        }
+
+        for (String person : usersthatgotvotes) {
+            int frequency = IterableUtils.frequency(usersthatgotvotes, person);
+            if (frequency == highestoccurancesofar) {
+                if (!tietestpersonswithvoteslist.contains(person)) {
+                    tietestpersonswithvoteslist.add(person);
+                }
+            }
+        }
+
+        if (tietestpersonswithvoteslist.size() == 1) {
+            return false;
+        } else {
+            System.out.println("We've got a tie between " + tietestpersonswithvoteslist.toString());
+            return true;
+        }
+
     }
 
     public boolean checkKillersCongruence() {
