@@ -10,7 +10,7 @@ package com.palermo.palermo.messageBeans;
  * @author Los_e
  */
 public class Vote {
-
+    
     private String voter;
     private String personvotedout;
 
