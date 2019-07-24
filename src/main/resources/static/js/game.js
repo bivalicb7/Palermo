@@ -74,8 +74,9 @@ function connect() {
             displayVote(JSON.parse(vote.body).voter, JSON.parse(vote.body).personvotedout);
         });
 
-        stompClient.subscribe(`/topic/nextphase/${tableid}`, function (phase) {
-            triggerNextPhase(JSON.parse(phase.body).typeofphase);
+        stompClient.subscribe(`/topic/nextphase/${tableid}`, function (nextphase) {
+            updateTableState(JSON.parse(nextphase.body).tablestate);
+            triggerNextPhase(JSON.parse(nextphase.body).typeofphase);
         });
 
         stompClient.subscribe(`/topic/tievote/${tableid}`, function (tielist) {
@@ -408,9 +409,9 @@ function checkIfDead(tablestate) {
                     usernameofdead = document.querySelector(`li[usersessionid=${elem}] > p`).innerHTML;
                 }
 
-                if (tablestate.phase == "daykill") {
+                if (tablestate.phase == "nightkill") {
                     message = "User " + usernameofdead + " was voted out!";
-                } else if (tablestate.phase == "nightkill") {
+                } else if (tablestate.phase == "daykill") {
                     message = "User " + usernameofdead + " was killed during the night!";
                 }
 
@@ -429,7 +430,7 @@ function checkIfDead(tablestate) {
     }
 
     //If there is no new dead user that means that killers did not agree to killing someone so they lost their chance
-    if (alldeadusers.length == newdeadlist.length && alldeadusers.length != 0 ) {
+    if (alldeadusers.length == newdeadlist.length && alldeadusers.length != 0) {
         updateGameFlowInfo("Killers lost their chance to kill someone!");
     }
 
@@ -453,9 +454,11 @@ function triggerNextPhase(typeofphase) {
 
         if (ingamerole == "hiddenkiller" || ingamerole == "nothiddenkiller") {
             showKillersChatAndSubscribe();
-            updateGameFlowInfo("Night has fallen! You get to kill one person. \n Beware that if you don't vote for the same person, your chance is lost");
+            let message = document.querySelector("#gameflowinfo textarea").innerHTML;
+            updateGameFlowInfo(message + "\nNight has fallen! You get to kill one person. \n Beware that if you don't vote for the same person, your chance is lost.");
         } else {
-            updateGameFlowInfo("Wait while killers pick their kill");
+            let message = document.querySelector("#gameflowinfo textarea").innerHTML;
+            updateGameFlowInfo(message + "\nWait while killers pick their kill...");
         }
     } else if (typeofphase == "daykill") {
         resetTableForNewRound(); //To be implemented
@@ -482,7 +485,7 @@ function handleTie(usersintielist) {
     usersintielist.forEach(function (elem) {
         message = message + document.querySelector(`li[usersessionid=${elem}] > p`).innerHTML + " ";
     });
-    
+
     message = message + "\nSafe players get to vote once again. Attention: In case of another tie, Russian Roulette mode will be activated!"
     updateGameFlowInfo(message);
 

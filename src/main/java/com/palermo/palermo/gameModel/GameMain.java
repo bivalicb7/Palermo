@@ -10,6 +10,7 @@ import com.palermo.palermo.entities.Userprofile;
 import com.palermo.palermo.entities.Userprofileview;
 import com.palermo.palermo.messageBeans.NextPhase;
 import com.palermo.palermo.messageBeans.Roles;
+import com.palermo.palermo.messageBeans.TableState;
 import com.palermo.palermo.messageBeans.TieVoteUsers;
 import com.palermo.palermo.messageBeans.Vote;
 import com.palermo.palermo.messageControllers.TableStateController;
@@ -78,6 +79,15 @@ public class GameMain {
     public int returnNextTableId() {
         GameMain.nexttableid = nexttableid + 1;
         return GameMain.nexttableid;
+    }
+    
+    public TableState returnTableState(int tableid) {
+        TableState tablestate = new TableState();
+        
+        tablestate.setPhase(gametables.get(tableid).getPhase());
+        tablestate.setUsersintable(gametables.get(tableid).getUsersintable());
+        
+        return tablestate;
     }
 
     public void addUserToTable(int tableid, int userid, String sessionid) {
@@ -161,11 +171,12 @@ public class GameMain {
 
                         setUserDead(tableid, personvotedout.get(0));
                         System.out.println("Person voted out " + personvotedout);
-                        tableStateController.updateTableState(tableid);
+                        table.setPhase("nightkill");
+                        
+                       
 
                         //After user has been killed trigger next phase ---> nighkill
-                        table.setPhase("nightkill");
-                        tableStateController.triggerNextPhase(tableid, new NextPhase("nightkill"));
+                        tableStateController.triggerNextPhase(tableid, new NextPhase("nightkill", returnTableState(tableid)));
                     } else {
                         //Handle tie
                         tableStateController.votingTieHandler(tableid, new TieVoteUsers(personvotedout));
@@ -188,15 +199,15 @@ public class GameMain {
                         String personkilled = table.returnPersonKilled();
                         setUserDead(tableid, personkilled);
                         System.out.println("Person killed " + personkilled);
+                        table.setPhase("daykill");
                         tableStateController.updateTableState(tableid);
 
                         //After user has been killed trigger next phase ---> daykill
-                        table.setPhase("daykill");
-                        tableStateController.triggerNextPhase(tableid, new NextPhase("daykill"));
+                        tableStateController.triggerNextPhase(tableid, new NextPhase("daykill", returnTableState(tableid)));
                     } else {
 
                         //If killers don't vote for the same person they lose their night kill 
-                        tableStateController.triggerNextPhase(tableid, new NextPhase("daykill"));
+                        tableStateController.triggerNextPhase(tableid, new NextPhase("daykill", returnTableState(tableid)));
                     }
 
                 }

@@ -29,10 +29,7 @@ public class TableStateController {
     GameMain gamemain;
 
     public void updateTableState(int tableid) {
-        TableState tablestate = new TableState();
-        
-        tablestate.setPhase(gamemain.getGametables().get(tableid).getPhase());
-        tablestate.setUsersintable(gamemain.getGametables().get(tableid).getUsersintable());
+        TableState tablestate = gamemain.returnTableState(tableid);
         smp.convertAndSend("/topic/tablestate/" + tableid, tablestate);
     }
 
