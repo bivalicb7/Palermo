@@ -22,17 +22,36 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class GameTable {
 
     private int gametableid;
+    private String phase;
 
     // Key: String user websocket sessiodin  Value: GameUserInTable
     private Map<String, GameUserInTable> usersintable = new HashMap();
 
+    //This could change to a MAP in order to map users' votes. This will change implementation of methods using it 
     private ArrayList<String> usersthatgotvotes = new ArrayList();
 
     public GameTable() {
+        this.phase = "daykill";
     }
 
     public int getGametableid() {
         return gametableid;
+    }
+
+    public String getPhase() {
+        return phase;
+    }
+
+    public void setPhase(String phase) {
+        this.phase = phase;
+    }
+
+    public ArrayList<String> getUsersthatgotvotes() {
+        return usersthatgotvotes;
+    }
+
+    public void setUsersthatgotvotes(ArrayList<String> usersthatgotvotes) {
+        this.usersthatgotvotes = usersthatgotvotes;
     }
 
     public void setGametableid(int gametableid) {
@@ -116,24 +135,23 @@ public class GameTable {
         System.out.println("Votes at the moment " + usersthatgotvotes.toString());
     }
 
-    public String returnPersonVotedOut() {
-        String personvotedout = null;
-        int highestoccurancesofar = 0;
-
-        for (String person : usersthatgotvotes) {
-            int frequency = IterableUtils.frequency(usersthatgotvotes, person);
-            if (frequency > highestoccurancesofar) {
-                highestoccurancesofar = frequency;
-                personvotedout = person;
-            }
-        }
-
-        //reset votes list for next round
-        usersthatgotvotes.clear();
-
-        return personvotedout;
-    }
-
+//    public String returnPersonOrPersonsVotedOut() {
+//        String personvotedout = null;
+//        int highestoccurancesofar = 0;
+//
+//        for (String person : usersthatgotvotes) {
+//            int frequency = IterableUtils.frequency(usersthatgotvotes, person);
+//            if (frequency > highestoccurancesofar) {
+//                highestoccurancesofar = frequency;
+//                personvotedout = person;
+//            }
+//        }
+//
+//        //reset votes list for next voting
+//        usersthatgotvotes.clear();
+//
+//        return personvotedout;
+//    }
     public String returnPersonKilled() {
         String personkilled = null;
         int highestoccurancesofar = 0;
@@ -146,15 +164,15 @@ public class GameTable {
             }
         }
 
-        //reset votes for next round
+        //reset votes for next voting
         usersthatgotvotes.clear();
 
         return personkilled;
     }
 
-    public boolean checkIfTie() {
+    public ArrayList<String> returnPersonOrPersonsVotedOut() {
         int highestoccurancesofar = 0;
-        ArrayList<String> tietestpersonswithvoteslist = new ArrayList();
+        ArrayList<String> personswithvoteslist = new ArrayList();
 
         for (String person : usersthatgotvotes) {
             int frequency = IterableUtils.frequency(usersthatgotvotes, person);
@@ -166,18 +184,16 @@ public class GameTable {
         for (String person : usersthatgotvotes) {
             int frequency = IterableUtils.frequency(usersthatgotvotes, person);
             if (frequency == highestoccurancesofar) {
-                if (!tietestpersonswithvoteslist.contains(person)) {
-                    tietestpersonswithvoteslist.add(person);
+                if (!personswithvoteslist.contains(person)) {
+                    personswithvoteslist.add(person);
                 }
             }
         }
 
-        if (tietestpersonswithvoteslist.size() == 1) {
-            return false;
-        } else {
-            System.out.println("We've got a tie between " + tietestpersonswithvoteslist.toString());
-            return true;
-        }
+        //reset votes for next voting
+        usersthatgotvotes.clear();
+
+        return personswithvoteslist;
 
     }
 

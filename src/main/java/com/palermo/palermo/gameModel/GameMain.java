@@ -10,12 +10,14 @@ import com.palermo.palermo.entities.Userprofile;
 import com.palermo.palermo.entities.Userprofileview;
 import com.palermo.palermo.messageBeans.NextPhase;
 import com.palermo.palermo.messageBeans.Roles;
+import com.palermo.palermo.messageBeans.TieVoteUsers;
 import com.palermo.palermo.messageBeans.Vote;
 import com.palermo.palermo.messageControllers.TableStateController;
 import com.palermo.palermo.messageControllers.TablesInLobbyController;
 import com.palermo.palermo.services.UserProfileService;
 import com.palermo.palermo.services.UserProfileViewService;
 import com.palermo.palermo.services.UserService;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -131,6 +133,7 @@ public class GameMain {
         //Everytime a user is ready check if all of them are ready in order to start game
         if (table.checkIfAllUsersReady()) {
             table.assignRoles();
+            table.setPhase("daykill");
             tableStateController.sendRoles(tableid, table.returnRolesObject());
         }
 
@@ -144,40 +147,58 @@ public class GameMain {
     public void collectVotes(int tableid, Vote vote) {
         GameTable table = gametables.get(tableid);
 
-        if(vote.getPhase().equals("daykill")) {
+        if (vote.getPhase().equals("daykill") && table.getPhase().equals("daykill")) {
             //Check if person voting is not dead for extra security
             if (!table.getUsersintable().get(vote.getVoter()).isDead()) {
                 table.openVote(vote);
 
-                if (table.checkIfAllNonDeadUsersHaveVoted() && !table.checkIfTie()) {
+                if (table.checkIfAllNonDeadUsersHaveVoted()) {
+                    //if everyone has voted tally the votes and see if there is a tie. else set person dead and move on to next phase
+                    ArrayList<String> personvotedout = table.returnPersonOrPersonsVotedOut();
 
-                    //if everyone has voted set person voted out as dead and update tablestate so that user see it
-                    String personvotedout = table.returnPersonVotedOut();
-                    setUserDead(tableid, personvotedout);
-                    System.out.println("Person voted out " + personvotedout);
-                    tableStateController.updateTableState(tableid);
+                    //Check if there is a tie or not
+                    if (personvotedout.size() == 1) {
 
-                    //After user has been killed trigger next phase ---> nighkill
-                    tableStateController.triggerNextPhase(tableid, new NextPhase("nightkill"));
+                        setUserDead(tableid, personvotedout.get(0));
+                        System.out.println("Person voted out " + personvotedout);
+                        tableStateController.updateTableState(tableid);
+
+                        //After user has been killed trigger next phase ---> nighkill
+                        table.setPhase("nightkill");
+                        tableStateController.triggerNextPhase(tableid, new NextPhase("nightkill"));
+                    } else {
+                        //Handle tie
+                        tableStateController.votingTieHandler(tableid, new TieVoteUsers(personvotedout));
+                        System.out.println("We've got a tie between: " + personvotedout.toString());
+                    }
+
                 }
             }
         }
-        
-        if(vote.getPhase().equals("nightkill")) {
-             //Check if person voting is not dead for extra security
+
+        if (vote.getPhase().equals("nightkill") && table.getPhase().equals("nightkill")) {
+            //Check if person voting is not dead for extra security
             if (!table.getUsersintable().get(vote.getVoter()).isDead() && (table.getUsersintable().get(vote.getVoter()).getIngamerole().equals("nothiddenkiller") || table.getUsersintable().get(vote.getVoter()).getIngamerole().equals("hiddenkiller"))) {
                 table.openVote(vote);
 
-                if (table.checkIfAllNonDeadKillersHaveVoted() && table.checkKillersCongruence()) {
+                if (table.checkIfAllNonDeadKillersHaveVoted()) {
 
-                    //if everyone has voted set person voted out as dead and update tablestate so that user see it
-                    String personkilled = table.returnPersonKilled();
-                    setUserDead(tableid, personkilled);
-                    System.out.println("Person killed " + personkilled);
-                    tableStateController.updateTableState(tableid);
+                    if (table.checkKillersCongruence()) {
+                        //if everyone has voted set person voted out as dead and update tablestate so that user see it
+                        String personkilled = table.returnPersonKilled();
+                        setUserDead(tableid, personkilled);
+                        System.out.println("Person killed " + personkilled);
+                        tableStateController.updateTableState(tableid);
 
-                    //After user has been killed trigger next phase ---> nighkill
-                    tableStateController.triggerNextPhase(tableid, new NextPhase("daykill"));
+                        //After user has been killed trigger next phase ---> daykill
+                        table.setPhase("daykill");
+                        tableStateController.triggerNextPhase(tableid, new NextPhase("daykill"));
+                    } else {
+
+                        //If killers don't vote for the same person they lose their night kill 
+                        tableStateController.triggerNextPhase(tableid, new NextPhase("daykill"));
+                    }
+
                 }
             }
         }

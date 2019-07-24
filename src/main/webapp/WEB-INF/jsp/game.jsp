@@ -40,10 +40,13 @@
                 </ul>
                 <!--</div>-->
                 <div id="userinpageseat">
+                    <div id="status">
+                        <p>Alive</p>
+                    </div>
                     <div class="userinpageimgcontainer">
                         <img src="images/man-user.png" alt="user's image">
                     </div>
-                    <p></p>
+                    <p id="userinpageusername"></p>
                     <div id="ingamerolecontainer">
                         <img/>
                         <p id="ingamerole"></p>
@@ -54,11 +57,16 @@
                     </div>
                     <div id="votesoutreceived"></div>
                 </div>
+
+                <div id="gameflowinfo">
+                    <textarea>Click "Start Game" to start</textarea>
+                    <div id="startgamecontainer">
+                        <button id="startbutton" disabled="true">Start game</button>
+                    </div>
+                </div>
+
                 <div id="votingareacont">
                     <div id="votingarea">
-                        <div id="startgamecontainer">
-                            <button id="startbutton" disabled="true">Start game</button>
-                        </div>
                         <div id="votingoptions" class="hidediv">
                             <label for="voteoutperson-select">Choose Player</label>
                             <select id="voteoutperson-select">
@@ -66,9 +74,7 @@
                             </select>
                             <button id="voteoutperson-button">Vote out!</button>
                         </div>
-                        <div id="waitmessagecontainer" class="hidediv">
-                            <p id="waitmessage"> Please wait while killers pick their kill</p>                            
-                        </div>
+                        
                     </div>
                 </div>
             </div>

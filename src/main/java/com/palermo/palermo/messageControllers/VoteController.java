@@ -61,7 +61,6 @@ public class VoteController {
 //        gamemain.getGametables().get(Integer.parseInt(variable)).getUsersintable().get("a").setDead(true);
 //        gamemain.getGametables().get(Integer.parseInt(variable)).getUsersintable().get("b").setDead(true);
         //TO Be DELETED
-
         //Check if  vote is empty
         if (!vote.getPersonvotedout().isEmpty()) {
 
@@ -103,6 +102,8 @@ public class VoteController {
 
         //TO Be DELETED
         //Send vote back to table to be displayed
-        smp.convertAndSend("/topic/displayvote/" + Integer.parseInt(variable), vote);
+        if (vote.getPhase().equals("daykill")) {
+            smp.convertAndSend("/topic/displayvote/" + Integer.parseInt(variable), vote);
+        }
     }
 }

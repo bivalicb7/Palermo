@@ -16,6 +16,15 @@ import java.util.Map;
 public class TableState {
 
     // Key: String user websocket sessiodin  Value: GameUserInTable
+    private String phase;
+
+    public String getPhase() {
+        return phase;
+    }
+
+    public void setPhase(String phase) {
+        this.phase = phase;
+    }
     private Map<String, GameUserInTable> usersintable = new HashMap();
 
     public TableState() {
