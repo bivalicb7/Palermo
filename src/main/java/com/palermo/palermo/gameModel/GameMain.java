@@ -80,13 +80,13 @@ public class GameMain {
         GameMain.nexttableid = nexttableid + 1;
         return GameMain.nexttableid;
     }
-    
+
     public TableState returnTableState(int tableid) {
         TableState tablestate = new TableState();
-        
+
         tablestate.setPhase(gametables.get(tableid).getPhase());
         tablestate.setUsersintable(gametables.get(tableid).getUsersintable());
-        
+
         return tablestate;
     }
 
@@ -172,15 +172,25 @@ public class GameMain {
                         setUserDead(tableid, personvotedout.get(0));
                         System.out.println("Person voted out " + personvotedout);
                         table.setPhase("nightkill");
-                        
-                       
 
                         //After user has been killed trigger next phase ---> nighkill
-                        tableStateController.triggerNextPhase(tableid, new NextPhase("nightkill", returnTableState(tableid)));
+                        tableStateController.triggerNextPhase(tableid, new NextPhase("nightkill", returnTableState(tableid), false));
                     } else {
-                        //Handle tie
-                        tableStateController.votingTieHandler(tableid, new TieVoteUsers(personvotedout));
-                        System.out.println("We've got a tie between: " + personvotedout.toString());
+                        //Handle tie for the first time. Users get to vote one more time between the nominees
+
+                        if (!table.isIntiebreakmode()) {
+                            table.setIntiebreakmode(true);
+                            tableStateController.votingTieHandler(tableid, new TieVoteUsers(personvotedout));
+                            System.out.println("We've got a tie between: " + personvotedout.toString());
+                        } else {
+                            //Activate russian roulette
+
+                            table.russianRoulette();
+                            table.setIntiebreakmode(false);
+                            tableStateController.triggerNextPhase(tableid, new NextPhase("nightkill", returnTableState(tableid), false));
+
+                        }
+
                     }
 
                 }
@@ -203,11 +213,11 @@ public class GameMain {
                         tableStateController.updateTableState(tableid);
 
                         //After user has been killed trigger next phase ---> daykill
-                        tableStateController.triggerNextPhase(tableid, new NextPhase("daykill", returnTableState(tableid)));
+                        tableStateController.triggerNextPhase(tableid, new NextPhase("daykill", returnTableState(tableid), false));
                     } else {
 
                         //If killers don't vote for the same person they lose their night kill 
-                        tableStateController.triggerNextPhase(tableid, new NextPhase("daykill", returnTableState(tableid)));
+                        tableStateController.triggerNextPhase(tableid, new NextPhase("daykill", returnTableState(tableid), false));
                     }
 
                 }

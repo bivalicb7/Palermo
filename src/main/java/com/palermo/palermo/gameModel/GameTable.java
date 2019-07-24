@@ -23,6 +23,7 @@ public class GameTable {
 
     private int gametableid;
     private String phase;
+    private boolean intiebreakmode;
 
     // Key: String user websocket sessiodin  Value: GameUserInTable
     private Map<String, GameUserInTable> usersintable = new HashMap();
@@ -32,6 +33,15 @@ public class GameTable {
 
     public GameTable() {
         this.phase = "daykill";
+        this.intiebreakmode = false;
+    }
+
+    public boolean isIntiebreakmode() {
+        return intiebreakmode;
+    }
+
+    public void setIntiebreakmode(boolean intiebreakmode) {
+        this.intiebreakmode = intiebreakmode;
     }
 
     public int getGametableid() {
@@ -194,6 +204,15 @@ public class GameTable {
         usersthatgotvotes.clear();
 
         return personswithvoteslist;
+
+    }
+
+    public void russianRoulette() {
+        
+        Random r = new Random();
+        int index = r.nextInt(((int)IterableUtils.countMatches(usersintable.values(), user -> !user.isDead()) - 1) + 1) + 1;
+
+        IterableUtils.get(IterableUtils.filteredIterable(usersintable.values(), user -> !user.isDead()), index-1).setDead(true);
 
     }
 

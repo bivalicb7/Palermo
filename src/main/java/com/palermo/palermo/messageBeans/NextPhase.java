@@ -12,11 +12,13 @@ package com.palermo.palermo.messageBeans;
 public class NextPhase {
     private TableState tablestate;
     private String typeofphase;
+    private boolean killbyrussianroulette;
 
 
-    public NextPhase(String typeofphase, TableState tablestate) {
+    public NextPhase(String typeofphase, TableState tablestate, boolean killbyrussianroulette) {
         this.tablestate = tablestate;
         this.typeofphase = typeofphase;
+        this.killbyrussianroulette = killbyrussianroulette;
     }
 
     public String getTypeofphase() {
