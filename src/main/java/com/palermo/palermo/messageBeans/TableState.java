@@ -16,7 +16,9 @@ import java.util.Map;
 public class TableState {
 
     // Key: String user websocket sessiodin  Value: GameUserInTable
+    private Map<String, GameUserInTable> usersintable = new HashMap();
     private String phase;
+    private boolean killbyrussianroulette;
 
     public String getPhase() {
         return phase;
@@ -25,7 +27,14 @@ public class TableState {
     public void setPhase(String phase) {
         this.phase = phase;
     }
-    private Map<String, GameUserInTable> usersintable = new HashMap();
+
+    public boolean isKillbyrussianroulette() {
+        return killbyrussianroulette;
+    }
+
+    public void setKillbyrussianroulette(boolean killbyrussianroulette) {
+        this.killbyrussianroulette = killbyrussianroulette;
+    } 
 
     public TableState() {
     }

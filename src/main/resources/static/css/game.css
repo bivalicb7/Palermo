@@ -190,7 +190,7 @@ body {
     background-color: lightgray;
 }
 
-#startbutton:disabled, #voteoutperson-button:disabled {
+#startbutton:disabled, #voteoutperson-button:disabled, #killer_voteoutperson-button:disabled {
     opacity: 0.5;
 }
 

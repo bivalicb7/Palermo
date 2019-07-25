@@ -410,7 +410,11 @@ function checkIfDead(tablestate) {
                 }
 
                 if (tablestate.phase == "nightkill") {
-                    message = "User " + usernameofdead + " was voted out!";
+                    if (tablestate.killbyrussianroulette == true) {
+                        message = "User " + usernameofdead + " was killed in Russian Roulette!"
+                    } else {
+                        message = "User " + usernameofdead + " was voted out!";
+                    }
                 } else if (tablestate.phase == "daykill") {
                     message = "User " + usernameofdead + " was killed during the night!";
                 }

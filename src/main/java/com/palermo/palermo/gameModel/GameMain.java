@@ -84,6 +84,7 @@ public class GameMain {
     public TableState returnTableState(int tableid) {
         TableState tablestate = new TableState();
 
+        tablestate.setKillbyrussianroulette(gametables.get(tableid).isIntiebreakmode());
         tablestate.setPhase(gametables.get(tableid).getPhase());
         tablestate.setUsersintable(gametables.get(tableid).getUsersintable());
 
@@ -172,9 +173,10 @@ public class GameMain {
                         setUserDead(tableid, personvotedout.get(0));
                         System.out.println("Person voted out " + personvotedout);
                         table.setPhase("nightkill");
+                        table.setIntiebreakmode(false);
 
                         //After user has been killed trigger next phase ---> nighkill
-                        tableStateController.triggerNextPhase(tableid, new NextPhase("nightkill", returnTableState(tableid), false));
+                        tableStateController.triggerNextPhase(tableid, new NextPhase("nightkill", returnTableState(tableid)));
                     } else {
                         //Handle tie for the first time. Users get to vote one more time between the nominees
 
@@ -186,8 +188,9 @@ public class GameMain {
                             //Activate russian roulette
 
                             table.russianRoulette();
+                            table.setPhase("nightkill");
+                            tableStateController.triggerNextPhase(tableid, new NextPhase("nightkill", returnTableState(tableid)));
                             table.setIntiebreakmode(false);
-                            tableStateController.triggerNextPhase(tableid, new NextPhase("nightkill", returnTableState(tableid), false));
 
                         }
 
@@ -213,11 +216,11 @@ public class GameMain {
                         tableStateController.updateTableState(tableid);
 
                         //After user has been killed trigger next phase ---> daykill
-                        tableStateController.triggerNextPhase(tableid, new NextPhase("daykill", returnTableState(tableid), false));
+                        tableStateController.triggerNextPhase(tableid, new NextPhase("daykill", returnTableState(tableid)));
                     } else {
 
                         //If killers don't vote for the same person they lose their night kill 
-                        tableStateController.triggerNextPhase(tableid, new NextPhase("daykill", returnTableState(tableid), false));
+                        tableStateController.triggerNextPhase(tableid, new NextPhase("daykill", returnTableState(tableid)));
                     }
 
                 }
