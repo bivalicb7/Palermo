@@ -76,6 +76,33 @@ public class GameTable {
         this.usersintable = usersintable;
     }
 
+    //TO BE DELETED
+    public void assignFakeRoles() {
+        ArrayList<String> roleslist = new ArrayList();
+        roleslist.add("nothiddenkiller");
+        roleslist.add("hiddenkiller");
+        
+        int index = 2;
+        for (Map.Entry<String, GameUserInTable> entry : usersintable.entrySet()) {
+
+            if (entry.getKey().equals("tmpa")) {
+                entry.getValue().setIngamerole("civilian");
+            } else if (entry.getKey().equals("tmpb")) {
+                entry.getValue().setIngamerole("civilian");
+            } else if (entry.getKey().equals("tmpc")) {
+                entry.getValue().setIngamerole("civilian");
+            } else if (entry.getKey().equals("tmpd")) {
+                entry.getValue().setIngamerole("spy");
+            } else {
+                entry.getValue().setIngamerole(roleslist.get(index - 1));
+                index = index-1;
+            }
+
+        }
+
+    }
+
+    //TO BE DELETED
     public void assignRoles() {
         ArrayList<String> roleslist = new ArrayList();
         roleslist.add("nothiddenkiller");
@@ -208,11 +235,11 @@ public class GameTable {
     }
 
     public void russianRoulette() {
-        
-        Random r = new Random();
-        int index = r.nextInt(((int)IterableUtils.countMatches(usersintable.values(), user -> !user.isDead()) - 1) + 1) + 1;
 
-        IterableUtils.get(IterableUtils.filteredIterable(usersintable.values(), user -> !user.isDead()), index-1).setDead(true);
+        Random r = new Random();
+        int index = r.nextInt(((int) IterableUtils.countMatches(usersintable.values(), user -> !user.isDead()) - 1) + 1) + 1;
+
+        IterableUtils.get(IterableUtils.filteredIterable(usersintable.values(), user -> !user.isDead()), index - 1).setDead(true);
 
     }
 

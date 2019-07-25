@@ -143,8 +143,9 @@ public class GameMain {
 
         //Everytime a user is ready check if all of them are ready in order to start game
         if (table.checkIfAllUsersReady()) {
-            table.assignRoles();
-            table.setPhase("daykill");
+//            table.assignRoles();
+            table.assignFakeRoles();
+//            table.setPhase("daykill");
             tableStateController.sendRoles(tableid, table.returnRolesObject());
         }
 
@@ -163,8 +164,10 @@ public class GameMain {
             if (!table.getUsersintable().get(vote.getVoter()).isDead()) {
                 table.openVote(vote);
 
+                //if everyone has voted tally the votes and see if there is a tie. else set person dead and move on to next phase
                 if (table.checkIfAllNonDeadUsersHaveVoted()) {
-                    //if everyone has voted tally the votes and see if there is a tie. else set person dead and move on to next phase
+
+                    //Get result from voting
                     ArrayList<String> personvotedout = table.returnPersonOrPersonsVotedOut();
 
                     //Check if there is a tie or not
@@ -213,7 +216,7 @@ public class GameMain {
                         setUserDead(tableid, personkilled);
                         System.out.println("Person killed " + personkilled);
                         table.setPhase("daykill");
-                        tableStateController.updateTableState(tableid);
+//                        tableStateController.updateTableState(tableid);
 
                         //After user has been killed trigger next phase ---> daykill
                         tableStateController.triggerNextPhase(tableid, new NextPhase("daykill", returnTableState(tableid)));

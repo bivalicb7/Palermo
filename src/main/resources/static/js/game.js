@@ -432,6 +432,8 @@ function checkIfDead(tablestate) {
 
         }
     }
+    console.log("Dead people before: ", alldeadusers.length);
+    console.log("Dead people after: ", newdeadlist.length);
 
     //If there is no new dead user that means that killers did not agree to killing someone so they lost their chance
     if (alldeadusers.length == newdeadlist.length && alldeadusers.length != 0) {
@@ -465,7 +467,7 @@ function triggerNextPhase(typeofphase) {
             updateGameFlowInfo(message + "\nWait while killers pick their kill...");
         }
     } else if (typeofphase == "daykill") {
-        resetTableForNewRound(); //To be implemented
+//        resetTableForNewRound(); //To be implemented
         console.log("a new day has started");
     }
 
@@ -482,7 +484,7 @@ function showKillersChatAndSubscribe() {
 }
 
 function handleTie(usersintielist) {
-
+    clearVotes();
     //Create game flow info message
     let message = "Vote tie between: ";
 
@@ -499,6 +501,12 @@ function handleTie(usersintielist) {
     }
 }
 
+function clearVotes() {
+    document.querySelector("#votesoutreceived").innerHTML = "";
+    Array.from(document.querySelectorAll(".votesoutreceived ")).forEach(function(elem) {
+        elem.innerHTML = "";
+    });
+}
 
 
 function updateGameFlowInfo(message) {
