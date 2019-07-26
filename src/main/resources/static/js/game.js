@@ -422,10 +422,6 @@ function checkIfDead(tablestate) {
                     document.querySelector(`li[usersessionid=${elem}]`).classList.add("dead");
                 }
 
-
-
-
-
             }
         }
     }
@@ -441,14 +437,19 @@ function checkIfDead(tablestate) {
     if (tablestate.phase == "daykill") {
 //        debugger;
         //If there is no new dead user that means that killers did not agree to killing someone so they lost their chance
-        if (alldeadusers.length == newdeadlist.length && alldeadusers.length != 0) {
-            message = "Killers lost their chance to kill someone!";
-        } else {
-            message = "User " + usernameofdead + " was killed during the night!";
+
+        if (alldeadusers != 0) {
+            if (alldeadusers.length == newdeadlist.length) {
+                message = "Killers lost their chance to kill someone!";
+            } else {
+                message = "User " + usernameofdead + " was killed during the night!";
+            }
         }
     }
 
-    updateGameFlowInfo(message);
+    if (newdeadlist != 0) {
+        updateGameFlowInfo(message);
+    }
     console.log("Dead people before: (AlldeadUsers)", alldeadusers.length, alldeadusers);
     console.log("Dead people after: (New deadlist)", newdeadlist.length, newdeadlist);
 
@@ -491,8 +492,10 @@ function triggerNextPhase(typeofphase) {
 function showKillersChatAndSubscribe() {
     document.querySelector("#chatcontainer").classList.add("hidediv");
     document.querySelector("#killer_chatcontainer").classList.remove("hidediv");
-    showKillerVotingOptions();
 
+    if (!alldeadusers.includes(socketusersessionid)) {
+        showKillerVotingOptions();
+    }
     stompClient.subscribe(`/topic/killer_chatincoming/${tableid}`, function (chatmessage) {
         showKillerChatmessage(JSON.parse(chatmessage.body).content);
     });
@@ -515,9 +518,9 @@ function handleTie(usersintielist) {
     updateGameFlowInfo(message);
 
     //show voting options
-    if (!usersintielist.includes(socketusersessionid)) {
-        showTieVotingOptions(usersintielist);
-    }
+//    if (!usersintielist.includes(socketusersessionid)) {
+    showTieVotingOptions(usersintielist);
+//    }
 }
 
 function clearVotes() {
