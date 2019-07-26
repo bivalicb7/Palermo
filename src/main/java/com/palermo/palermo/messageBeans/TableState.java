@@ -17,6 +17,24 @@ public class TableState {
 
     // Key: String user websocket sessiodin  Value: GameUserInTable
     private Map<String, GameUserInTable> usersintable = new HashMap();
+    private String phase;
+    private boolean killbyrussianroulette;
+
+    public String getPhase() {
+        return phase;
+    }
+
+    public void setPhase(String phase) {
+        this.phase = phase;
+    }
+
+    public boolean isKillbyrussianroulette() {
+        return killbyrussianroulette;
+    }
+
+    public void setKillbyrussianroulette(boolean killbyrussianroulette) {
+        this.killbyrussianroulette = killbyrussianroulette;
+    } 
 
     public TableState() {
     }

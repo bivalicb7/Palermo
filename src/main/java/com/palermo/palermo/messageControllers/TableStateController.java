@@ -9,6 +9,8 @@ import com.palermo.palermo.gameModel.GameMain;
 import com.palermo.palermo.messageBeans.NextPhase;
 import com.palermo.palermo.messageBeans.Roles;
 import com.palermo.palermo.messageBeans.TableState;
+import com.palermo.palermo.messageBeans.TieVoteUsers;
+import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
@@ -27,9 +29,7 @@ public class TableStateController {
     GameMain gamemain;
 
     public void updateTableState(int tableid) {
-        TableState tablestate = new TableState();
-
-        tablestate.setUsersintable(gamemain.getGametables().get(tableid).getUsersintable());
+        TableState tablestate = gamemain.returnTableState(tableid);
         smp.convertAndSend("/topic/tablestate/" + tableid, tablestate);
     }
 
@@ -39,5 +39,9 @@ public class TableStateController {
 
     public void triggerNextPhase(int tableid, NextPhase nextphase) {
         smp.convertAndSend("/topic/nextphase/" + tableid, nextphase);
+    }
+
+    public void votingTieHandler(int tableid, TieVoteUsers usersintie) {
+        smp.convertAndSend("/topic/tievote/" + tableid, usersintie);
     }
 }

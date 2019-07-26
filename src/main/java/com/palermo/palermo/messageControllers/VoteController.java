@@ -41,14 +41,14 @@ public class VoteController {
 
     public void ready(@Headers Map headers, @DestinationVariable String variable) throws Exception {
         String sessionid = headers.get("simpSessionId").toString();
-        gamemain.setUserReady(Integer.parseInt(variable), sessionid);
+        gamemain.setUserReady(Integer.parseInt(variable), "tmp" + sessionid);
 
         //TO Be DELETED
-        gamemain.setUserReady(Integer.parseInt(variable), "a");
-        gamemain.setUserReady(Integer.parseInt(variable), "b");
-        gamemain.setUserReady(Integer.parseInt(variable), "c");
-        gamemain.setUserReady(Integer.parseInt(variable), "d");
-        gamemain.setUserReady(Integer.parseInt(variable), "e");
+        gamemain.setUserReady(Integer.parseInt(variable), "tmpa");
+        gamemain.setUserReady(Integer.parseInt(variable), "tmpb");
+        gamemain.setUserReady(Integer.parseInt(variable), "tmpc");
+        gamemain.setUserReady(Integer.parseInt(variable), "tmpd");
+//        gamemain.setUserReady(Integer.parseInt(variable), "e");
 
         //TO Be DELETED
     }
@@ -58,47 +58,119 @@ public class VoteController {
     public void incomingVote(Vote vote, @Headers Map headers, @DestinationVariable String variable) throws Exception {
 
         //TO Be DELETED
-        gamemain.getGametables().get(Integer.parseInt(variable)).getUsersintable().get("a").setDead(true);
-        gamemain.getGametables().get(Integer.parseInt(variable)).getUsersintable().get("b").setDead(true);
+//        gamemain.getGametables().get(Integer.parseInt(variable)).getUsersintable().get("a").setDead(true);
+//        gamemain.getGametables().get(Integer.parseInt(variable)).getUsersintable().get("b").setDead(true);
         //TO Be DELETED
-
         //Check if  vote is empty
         if (!vote.getPersonvotedout().isEmpty()) {
 
-            String sessionid = headers.get("simpSessionId").toString();
+            String sessionid = "tmp" + headers.get("simpSessionId").toString();
             vote.setVoter(sessionid);
-            gamemain.collectVotes(Integer.parseInt(variable), vote);
 
+            if (!gamemain.getGametables().get(Integer.parseInt(variable)).getUsersintable().get(vote.getVoter()).isHasvoted() && !gamemain.getGametables().get(Integer.parseInt(variable)).getUsersintable().get(vote.getPersonvotedout()).isDead()) {
+
+                //Send vote back to table to be displayed if  it is a daykill
+                if (vote.getPhase().equals("daykill")) {
+                    smp.convertAndSend("/topic/displayvote/" + Integer.parseInt(variable), vote);
+                }
+
+                gamemain.collectVotes(Integer.parseInt(variable), vote);
+
+            }
         }
 
-        //TO Be DELETED
-//        System.out.println(gamemain.getGametables().get(Integer.parseInt(variable)).getUsersintable().get("a").isDead());
-//        System.out.println(gamemain.getGametables().get(Integer.parseInt(variable)).getUsersintable().get("b").isDead());
-//        
-        Vote testvote = new Vote();
-        testvote.setVoter("a");
-        testvote.setPersonvotedout("b");
-        gamemain.collectVotes(Integer.parseInt(variable), testvote);
-
-        testvote.setVoter("b");
-        testvote.setPersonvotedout("b");
-        gamemain.collectVotes(Integer.parseInt(variable), testvote);
-
-        testvote.setVoter("c");
-        testvote.setPersonvotedout("b");
-        gamemain.collectVotes(Integer.parseInt(variable), testvote);
-
-        testvote.setVoter("d");
-        testvote.setPersonvotedout("a");
-        gamemain.collectVotes(Integer.parseInt(variable), testvote);
-
-        testvote.setVoter("e");
-        testvote.setPersonvotedout("a");
-        gamemain.collectVotes(Integer.parseInt(variable), testvote);
-
-        //TO Be DELETED
-        
-        //Send vote back to table to be displayed
-        smp.convertAndSend("/topic/displayvote/" + Integer.parseInt(variable), vote);
+//        //TO Be DELETED
+////        System.out.println(gamemain.getGametables().get(Integer.parseInt(variable)).getUsersintable().get("a").isDead());
+////        System.out.println(gamemain.getGametables().get(Integer.parseInt(variable)).getUsersintable().get("b").isDead());
+////        
+//        Vote testvote1 = new Vote();
+//
+//        testvote1.setVoter("tmpa");
+//        testvote1.setPhase("daykill");
+//        testvote1.setPersonvotedout("tmpc");
+////        gamemain.collectVotes(Integer.parseInt(variable), testvote1);
+//
+//        if (!testvote1.getPersonvotedout().isEmpty()) {
+//
+//            if (!gamemain.getGametables().get(Integer.parseInt(variable)).getUsersintable().get(testvote1.getVoter()).isHasvoted() && !gamemain.getGametables().get(Integer.parseInt(variable)).getUsersintable().get(testvote1.getPersonvotedout()).isDead()) {
+//
+//                //Send vote back to table to be displayed if  it is a daykill
+////                if (testvote1.getPhase().equals("daykill")) {
+////                    smp.convertAndSend("/topic/displayvote/" + Integer.parseInt(variable), testvote1);
+////                }
+//
+//                gamemain.collectVotes(Integer.parseInt(variable), testvote1);
+//
+//            }
+//        }
+//
+//        Vote testvote2 = new Vote();
+//
+//        testvote2.setVoter("tmpb");
+//        testvote2.setPhase("daykill");
+//        testvote2.setPersonvotedout("tmpb");
+////        gamemain.collectVotes(Integer.parseInt(variable), testvote2);
+//
+//        if (!testvote2.getPersonvotedout().isEmpty()) {
+//
+//            if (!gamemain.getGametables().get(Integer.parseInt(variable)).getUsersintable().get(testvote2.getVoter()).isHasvoted() && !gamemain.getGametables().get(Integer.parseInt(variable)).getUsersintable().get(testvote2.getPersonvotedout()).isDead()) {
+//
+//                //Send vote back to table to be displayed if  it is a daykill
+////                if (testvote2.getPhase().equals("daykill")) {
+////                    smp.convertAndSend("/topic/displayvote/" + Integer.parseInt(variable), testvote2);
+////                }
+//
+//                gamemain.collectVotes(Integer.parseInt(variable), testvote2);
+//
+//            }
+//        }
+//
+//        Vote testvote3 = new Vote();
+//
+//        testvote3.setVoter("tmpc");
+//        testvote3.setPhase("daykill");
+//        testvote3.setPersonvotedout("tmpb");
+////        gamemain.collectVotes(Integer.parseInt(variable), testvote3);
+//
+//        if (!testvote3.getPersonvotedout().isEmpty()) {
+//
+//            if (!gamemain.getGametables().get(Integer.parseInt(variable)).getUsersintable().get(testvote3.getVoter()).isHasvoted() && !gamemain.getGametables().get(Integer.parseInt(variable)).getUsersintable().get(testvote3.getPersonvotedout()).isDead()) {
+//
+//                //Send vote back to table to be displayed if  it is a daykill
+////                if (testvote3.getPhase().equals("daykill")) {
+////                    smp.convertAndSend("/topic/displayvote/" + Integer.parseInt(variable), testvote3);
+////                }
+//
+//                gamemain.collectVotes(Integer.parseInt(variable), testvote3);
+//
+//            }
+//        }
+//
+//        Vote testvote4 = new Vote();
+//
+//        testvote4.setVoter("tmpd");
+//        testvote4.setPhase("daykill");
+//        testvote4.setPersonvotedout("tmpc");
+////        gamemain.collectVotes(Integer.parseInt(variable), testvote4);
+//
+//    if (!testvote4.getPersonvotedout().isEmpty()) {
+//
+//            if (!gamemain.getGametables().get(Integer.parseInt(variable)).getUsersintable().get(testvote4.getVoter()).isHasvoted() && !gamemain.getGametables().get(Integer.parseInt(variable)).getUsersintable().get(testvote4.getPersonvotedout()).isDead()) {
+//
+//                //Send vote back to table to be displayed if  it is a daykill
+////                if (testvote4.getPhase().equals("daykill")) {
+////                    smp.convertAndSend("/topic/displayvote/" + Integer.parseInt(variable), testvote4);
+////                }
+//
+//                gamemain.collectVotes(Integer.parseInt(variable), testvote4);
+//
+//            }
+//        }
+//
+////        testvote.setVoter("tmpe");
+////        testvote.setPhase("daykill");
+////        testvote.setPersonvotedout("a");
+////        gamemain.collectVotes(Integer.parseInt(variable), testvote);
+//        //TO Be DELETED
     }
 }

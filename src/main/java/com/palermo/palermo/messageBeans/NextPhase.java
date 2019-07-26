@@ -10,9 +10,12 @@ package com.palermo.palermo.messageBeans;
  * @author Los_e
  */
 public class NextPhase {
+    private TableState tablestate;
     private String typeofphase;
 
-    public NextPhase(String typeofphase) {
+
+    public NextPhase(String typeofphase, TableState tablestate) {
+        this.tablestate = tablestate;
         this.typeofphase = typeofphase;
     }
 
@@ -22,6 +25,14 @@ public class NextPhase {
 
     public void setTypeofphase(String typeofphase) {
         this.typeofphase = typeofphase;
+    }
+
+    public TableState getTablestate() {
+        return tablestate;
+    }
+
+    public void setTablestate(TableState tablestate) {
+        this.tablestate = tablestate;
     }
     
     
