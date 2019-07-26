@@ -20,7 +20,7 @@
         <title>JSP Page</title>
         <link href="css/userprofile.css" rel="stylesheet">
     </head>
-    <body>
+    <body id="page">
         <c:if test="${loggedinuser.userid eq null}">
             <%@include file="errorpage.jsp"%>
             </c:if>
