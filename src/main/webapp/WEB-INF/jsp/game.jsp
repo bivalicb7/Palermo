@@ -26,6 +26,11 @@
         <script src="js/game.js"></script>
     </head>
     <body>
+        <c:if test="${loggedinuser.userid eq null}">
+            <%@include file="errorpage.jsp"%>
+            </c:if>
+        <c:if test="${loggedinuser.userid ne null}">
+            
         <%@ include file="navbar.jsp" %>
         <noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being
             enabled. Please enable
@@ -112,5 +117,6 @@
             </div>
 
         </div>
+            </c:if>
     </body>
 </html>
