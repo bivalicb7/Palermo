@@ -130,6 +130,8 @@ function sendReadyToStart() {
 //        'name': checkCookie("usernameincookie")
     }));
 
+    document.querySelector("#startbutton").disabled = true;
+
 }
 
 function sendVote() {
@@ -391,17 +393,22 @@ function checkIfUsersAreaExistsElseDisplay(tablestate) {
 
 function checkIfDead(tablestate) {
     let newdeadlist = [];
+    let message = null;
+    let usernameofdead = null;
     console.log("table state ", tablestate);
     for (var elem in tablestate.usersintable) {
 
 
 
         if (tablestate.usersintable[elem].dead == true) {
-            let message = null;
+            newdeadlist.push(elem);
 
-            //update game flow info message to announce new dead person
+
+
+            //update game flow info message to announce new dead person plus do all needed actions
             if (!alldeadusers.includes(elem)) {
-                let usernameofdead = null;
+
+
 
                 if (socketusersessionid == elem) {
                     usernameofdead = checkCookie("usernameincookie");
@@ -409,36 +416,43 @@ function checkIfDead(tablestate) {
                     usernameofdead = document.querySelector(`li[usersessionid=${elem}] > p`).innerHTML;
                 }
 
-                if (tablestate.phase == "nightkill") {
-                    if (tablestate.killbyrussianroulette == true) {
-                        message = "User " + usernameofdead + " was killed in Russian Roulette!"
-                    } else {
-                        message = "User " + usernameofdead + " was voted out!";
-                    }
-                } else if (tablestate.phase == "daykill") {
-                    message = "User " + usernameofdead + " was killed during the night!";
+                if (tablestate.usersintable[elem].userprofileview.username == checkCookie("usernameincookie")) {
+                    document.querySelector("#status p").innerHTML = "DEAD";
+                } else {
+                    document.querySelector(`li[usersessionid=${elem}]`).classList.add("dead");
                 }
 
-                updateGameFlowInfo(message);
+
+
+
+
             }
-
-            newdeadlist.push(elem);
-
-            if (tablestate.usersintable[elem].userprofileview.username == checkCookie("usernameincookie")) {
-                document.querySelector("#status p").innerHTML = "DEAD";
-            } else {
-                document.querySelector(`li[usersessionid=${elem}]`).classList.add("dead");
-            }
-
         }
     }
-    console.log("Dead people before: ", alldeadusers.length);
-    console.log("Dead people after: ", newdeadlist.length);
 
-    //If there is no new dead user that means that killers did not agree to killing someone so they lost their chance
-    if (alldeadusers.length == newdeadlist.length && alldeadusers.length != 0) {
-        updateGameFlowInfo("Killers lost their chance to kill someone!");
+    if (tablestate.phase == "nightkill") {
+        if (tablestate.killbyrussianroulette == true) {
+            message = "User " + usernameofdead + " was killed in Russian Roulette!"
+        } else {
+            message = "User " + usernameofdead + " was voted out!";
+        }
     }
+
+    if (tablestate.phase == "daykill") {
+//        debugger;
+        //If there is no new dead user that means that killers did not agree to killing someone so they lost their chance
+        if (alldeadusers.length == newdeadlist.length && alldeadusers.length != 0) {
+            message = "Killers lost their chance to kill someone!";
+        } else {
+            message = "User " + usernameofdead + " was killed during the night!";
+        }
+    }
+
+    updateGameFlowInfo(message);
+    console.log("Dead people before: (AlldeadUsers)", alldeadusers.length, alldeadusers);
+    console.log("Dead people after: (New deadlist)", newdeadlist.length, newdeadlist);
+
+
 
     alldeadusers = newdeadlist;
 
@@ -456,7 +470,6 @@ function checkIfReadyToStart(array) {
 function triggerNextPhase(typeofphase) {
 
     if (typeofphase == "nightkill") {
-        console.log("Night fell on Palermo!");
 
         if (ingamerole == "hiddenkiller" || ingamerole == "nothiddenkiller") {
             showKillersChatAndSubscribe();
@@ -467,8 +480,10 @@ function triggerNextPhase(typeofphase) {
             updateGameFlowInfo(message + "\nWait while killers pick their kill...");
         }
     } else if (typeofphase == "daykill") {
-//        resetTableForNewRound(); //To be implemented
-        console.log("a new day has started");
+        let message = document.querySelector("#gameflowinfo textarea").innerHTML;
+        updateGameFlowInfo(message + "\nA new day has started. ");
+        resetTableForNewRound(); //To be implemented
+
     }
 
 }
@@ -489,7 +504,11 @@ function handleTie(usersintielist) {
     let message = "Vote tie between: ";
 
     usersintielist.forEach(function (elem) {
-        message = message + document.querySelector(`li[usersessionid=${elem}] > p`).innerHTML + " ";
+        if (socketusersessionid == elem) {
+            message = message + checkCookie("usernameincookie") + " ";
+        } else {
+            message = message + document.querySelector(`li[usersessionid=${elem}] > p`).innerHTML + " ";
+        }
     });
 
     message = message + "\nSafe players get to vote once again. Attention: In case of another tie, Russian Roulette mode will be activated!"
@@ -503,7 +522,7 @@ function handleTie(usersintielist) {
 
 function clearVotes() {
     document.querySelector("#votesoutreceived").innerHTML = "";
-    Array.from(document.querySelectorAll(".votesoutreceived ")).forEach(function(elem) {
+    Array.from(document.querySelectorAll(".votesoutreceived ")).forEach(function (elem) {
         elem.innerHTML = "";
     });
 }
@@ -511,6 +530,13 @@ function clearVotes() {
 
 function updateGameFlowInfo(message) {
     document.querySelector("#gameflowinfo textarea").innerHTML = message;
+}
+
+function resetTableForNewRound() {
+    document.querySelector("#killer_chatcontainer").classList.add("hidediv");
+    document.querySelector("#chatcontainer").classList.remove("hidediv");
+    clearVotes();
+    showVotingOptions();
 }
 //Cookie play
 

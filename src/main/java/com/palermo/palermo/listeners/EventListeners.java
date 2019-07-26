@@ -39,10 +39,10 @@ public class EventListeners {
 
             //TO BE DELETED
             //Add 5 more dummy players to the table to  go on with development
-            gamemain.addUserToTable(Integer.parseInt(sha.getNativeHeader("tableid").get(0)), 5, "tmpa");
-            gamemain.addUserToTable(Integer.parseInt(sha.getNativeHeader("tableid").get(0)), 6, "tmpb");
-            gamemain.addUserToTable(Integer.parseInt(sha.getNativeHeader("tableid").get(0)), 9, "tmpc");
-            gamemain.addUserToTable(Integer.parseInt(sha.getNativeHeader("tableid").get(0)), 10, "tmpd");
+//            gamemain.addUserToTable(Integer.parseInt(sha.getNativeHeader("tableid").get(0)), 5, "tmpa");
+//            gamemain.addUserToTable(Integer.parseInt(sha.getNativeHeader("tableid").get(0)), 6, "tmpb");
+//            gamemain.addUserToTable(Integer.parseInt(sha.getNativeHeader("tableid").get(0)), 9, "tmpc");
+//            gamemain.addUserToTable(Integer.parseInt(sha.getNativeHeader("tableid").get(0)), 10, "tmpd");
 //            gamemain.addUserToTable(Integer.parseInt(sha.getNativeHeader("tableid").get(0)), 7, "e");
             
             
@@ -72,15 +72,15 @@ public class EventListeners {
 
         //TO BE DELETED
         //Remove all 5 more dummy players to closetable 
-        gamemain.removeUserFromTable("tmpa");
-        gamemain.removeUserFromTable("tmpb");
-        gamemain.removeUserFromTable("tmpc");
-        gamemain.removeUserFromTable("tmpd");
+//        gamemain.removeUserFromTable("tmpa");
+//        gamemain.removeUserFromTable("tmpb");
+//        gamemain.removeUserFromTable("tmpc");
+//        gamemain.removeUserFromTable("tmpd");
 //        gamemain.removeUserFromTable("tmpe");
 
         //TO BE DELETED
-        //Check if table still exists and users are still connected
         
+        //Check if table still exists and users are still connected        
         if (gamemain.getGametables().get(tableid) != null) {
             tableStateController.updateTableState(tableid);
         }

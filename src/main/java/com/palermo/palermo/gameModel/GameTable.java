@@ -101,8 +101,8 @@ public class GameTable {
         }
 
     }
-
     //TO BE DELETED
+    
     public void assignRoles() {
         ArrayList<String> roleslist = new ArrayList();
         roleslist.add("nothiddenkiller");

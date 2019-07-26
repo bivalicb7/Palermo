@@ -143,8 +143,8 @@ public class GameMain {
 
         //Everytime a user is ready check if all of them are ready in order to start game
         if (table.checkIfAllUsersReady()) {
-//            table.assignRoles();
-            table.assignFakeRoles();
+            table.assignRoles();
+//            table.assignFakeRoles();
 //            table.setPhase("daykill");
             tableStateController.sendRoles(tableid, table.returnRolesObject());
         }
@@ -223,6 +223,7 @@ public class GameMain {
                     } else {
 
                         //If killers don't vote for the same person they lose their night kill 
+                        table.setPhase("daykill");
                         tableStateController.triggerNextPhase(tableid, new NextPhase("daykill", returnTableState(tableid)));
                     }
 
