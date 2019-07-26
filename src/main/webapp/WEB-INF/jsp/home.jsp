@@ -29,6 +29,12 @@
 
     </head>
     <body>
+        <c:if test="${loggedinuser.userid eq null}">
+            <%@include file="errorpage.jsp"%>
+            </c:if>
+        <c:if test="${loggedinuser.userid ne null}">
+        
+            
         <%@ include file="navbar.jsp" %>
         <h1>Userid = ${loggedinuser.userid}</h1>
         <h1>Username = ${sessionScope.loggedinuser.username}</h1>
@@ -44,5 +50,6 @@
         <%--</c:if>--%>
 
         <a href="lobby/startgame">Create new game</a>
+        </c:if>
     </body>
 </html>

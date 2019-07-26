@@ -5,6 +5,14 @@
 --%>
 
 <!-- <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
+
+<c:set var="req" value="${pageContext.request}" />
+<c:set var="url">${req.requestURL}</c:set>
+<c:set var="uri" value="${req.requestURI}" />
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -55,69 +63,23 @@ body {
 </body>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-        .bg-img {background:url("${pageContext.request.contextPath}/img/palermo3.jpg");
+    <base href="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/" />
 
-                 min-height: 300px;
-                 background-position: center;
-                 background-repeat: no-repeat;
-                 background-size: cover;
-                 position: relative;
-        }
-
-        body {
-            margin: 0;
-            font-family: Arial, Helvetica, sans-serif;
-        }
-
-        .topnav {
-            overflow: hidden;
-            background-color: #333;
-        }
-
-        .topnav a {
-            float: left;
-            color: #f2f2f2;
-            text-align: center;
-            padding: 14px 16px;
-            text-decoration: none;
-            font-size: 17px;
-        }
-
-        .topnav p {
-            /*  float: right;*/
-            color: #f2f2f2;
-            text-align: center;
-            padding: 14px 16px;
-            text-decoration: none;
-            font-size: 17px;
-            position: absolute;
-            right: -1px;
-        }
-
-        .topnav a:hover {
-            background-color: #ddd;
-            color: black;
-        }
-
-        .topnav a.active {
-            background-color: #4CAF50;
-            color: white;
-        }
-    </style>
+    <link href="css/navbar.css" rel="stylesheet">
 </head>
 <body>
     <!--<div class="bg-img">-->
 
-        <div class="topnav">
-            <a href="${pageContext.request.contextPath}/myprofile/showmyprofile">Update my data</a>
-            <a href="main">Main</a>
-            <a href="contact">Contact</a>
-            <a href="about">About</a>
-            <a href="${pageContext.request.contextPath}/updateprofile/showmydata">My profile</a>
-            <p>${loggedinuser.username}</p>
+    <div class="topnav">
+        <a href="lobby/home">Lobby</a>
+        <a href="myprofile/showmyprofile">Update my data</a>
+        <a href="updateprofile/showmydata">My profile</a>
+        <a href="contact">Contact</a>
+        <a href="about">About</a>
 
-        </div>
+        <p>${loggedinuser.username}</p>
+
+    </div>
 
 
 
