@@ -46,3 +46,24 @@ and open the template in the editor.
         opacity: 1;
     }
 }
+
+#creategamecontainer{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+/*#creategamecontainer input {
+    background-color: black;
+    border-radius: 5px;
+  box-shadow: 0 5px 0 darkred;
+  color: white;
+  padding: 1em 1.5em;
+  position: relative;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+#creategamecontainer input:hover {
+  background-color: grey;
+  cursor: pointer;
+}*/

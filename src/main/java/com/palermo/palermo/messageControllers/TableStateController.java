@@ -6,6 +6,7 @@
 package com.palermo.palermo.messageControllers;
 
 import com.palermo.palermo.gameModel.GameMain;
+import com.palermo.palermo.messageBeans.EndOfGame;
 import com.palermo.palermo.messageBeans.NextPhase;
 import com.palermo.palermo.messageBeans.Roles;
 import com.palermo.palermo.messageBeans.TableState;
@@ -43,5 +44,9 @@ public class TableStateController {
 
     public void votingTieHandler(int tableid, TieVoteUsers usersintie) {
         smp.convertAndSend("/topic/tievote/" + tableid, usersintie);
+    }
+
+    public void triggerEndOfGame(int tableid, EndOfGame returnEndOfGame) {
+        smp.convertAndSend("/topic/endofgame/" + tableid, returnEndOfGame);
     }
 }

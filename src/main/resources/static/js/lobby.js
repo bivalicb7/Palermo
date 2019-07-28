@@ -75,8 +75,8 @@ function  displayTable(tablesinlobby, elem) {
     divcont.setAttribute("id", `table_id${tablesinlobby.gametablesinlobby[elem].gametableid}`);
     divcont.setAttribute("style", "border: 3px solid black; width: auto; margin: 0 10px 10px 10px;");
 
-    var tableid = document.createElement("p");
-    tableid.innerHTML = `Table id: ${tablesinlobby.gametablesinlobby[elem].gametableid}`;
+    var numberofseats = document.createElement("p");
+    numberofseats.innerHTML = `Seats: ${tablesinlobby.gametablesinlobby[elem].numofplayers}`;
     var numofusers = document.createElement("p");
     numofusers.innerHTML = `Num of users: ${Object.keys(tablesinlobby.gametablesinlobby[elem].usersintable).length}`;
     var userslist = document.createElement("ul");
@@ -94,7 +94,7 @@ function  displayTable(tablesinlobby, elem) {
     jointablelink.innerHTML = "Join table";
     jointablelink.setAttribute("href", `lobby/joingame?tableid=${tablesinlobby.gametablesinlobby[elem].gametableid}`);
 
-    divcont.appendChild(tableid);
+    divcont.appendChild(numberofseats);
     divcont.appendChild(numofusers);
     divcont.appendChild(userslist);
     divcont.appendChild(jointablelink);

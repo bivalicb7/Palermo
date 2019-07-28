@@ -19,6 +19,24 @@ public class TableState {
     private Map<String, GameUserInTable> usersintable = new HashMap();
     private String phase;
     private boolean killbyrussianroulette;
+    private String numofplayers;
+    private String gameid;
+
+    public String getGameid() {
+        return gameid;
+    }
+
+    public void setGameid(String gameid) {
+        this.gameid = gameid;
+    }
+
+    public String getNumofplayers() {
+        return numofplayers;
+    }
+
+    public void setNumofplayers(String numofplayers) {
+        this.numofplayers = numofplayers;
+    }
 
     public String getPhase() {
         return phase;

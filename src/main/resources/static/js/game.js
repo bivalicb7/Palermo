@@ -6,6 +6,8 @@
 
 var stompClient = null;
 var tableid = null;
+let numofplayers = null;
+let gameid = null;
 let allusers = [];
 let alldeadusers = [];
 let socketusersessionid = null;
@@ -40,6 +42,9 @@ $(function () {
     });
     $("#startbutton").click(function () {
         sendReadyToStart();
+    });
+    $("#replaybutton").click(function () {
+        sendResetGame();
     });
 });
 
@@ -81,6 +86,10 @@ function connect() {
 
         stompClient.subscribe(`/topic/tievote/${tableid}`, function (tielist) {
             handleTie(JSON.parse(tielist.body).tievoteuserslist);
+        });
+
+        stompClient.subscribe(`/topic/endofgame/${tableid}`, function (endofgame) {
+            endOfGame(JSON.parse(endofgame.body));
         });
     });
 
@@ -132,6 +141,13 @@ function sendReadyToStart() {
 
     document.querySelector("#startbutton").disabled = true;
 
+}
+
+function sendResetGame() {
+    stompClient.send(`/app/vote/reset/${tableid}`, {}, JSON.stringify({
+//        'message': document.querySelector("#messagetextarea").value,
+//        'name': checkCookie("usernameincookie")
+    }));
 }
 
 function sendVote() {
@@ -287,7 +303,7 @@ function showTieVotingOptions(tielist) {
 }
 
 function showKillerVotingOptions() {
-    document.querySelector("#killer_voteoutperson-select:not(:first-child)").innerHTML = `<option value=""></option>`;
+    document.querySelector("#killer_voteoutperson-select").innerHTML = `<option value=""></option>`;
 
 //    document.querySelector("#startgamecontainer").classList.add("hidediv");
     allusers.forEach(function (elem) {
@@ -310,7 +326,11 @@ function showKillerVotingOptions() {
 }
 
 function updateTableState(tablestate) {
-
+    numofplayers = tablestate.numofplayers;
+    
+    //Check if there's a new gameid in order to reset the table
+    checkIfNewGameId(tablestate.gameid);
+    
     //Display new Users or remove users that have disconnected
     checkIfUsersAreaExistsElseDisplay(tablestate);
     //Check if table is full in order to start the game
@@ -318,6 +338,17 @@ function updateTableState(tablestate) {
     //Check if user is dead
     checkIfDead(tablestate);
 
+}
+
+function checkIfNewGameId(newgameid) {
+    
+    //If there is a new game id then that means that the table has been reset in back-end and so it needs to be displayed
+    //this may happen after replay has been pressed or after a non-dead user has left the game
+    if(gameid != newgameid) {
+        restartGame();
+        gameid=newgameid;
+    }
+    
 }
 
 function checkIfUsersAreaExistsElseDisplay(tablestate) {
@@ -459,9 +490,9 @@ function checkIfDead(tablestate) {
 
 }
 
-function checkIfReadyToStart(array) {
+function checkIfReadyToStart(allusers) {
 
-    if (array.length == 6) {
+    if (allusers.length == numofplayers) {
         document.querySelector("#startbutton").disabled = false;
     } else {
         document.querySelector("#startbutton").disabled = true;
@@ -483,7 +514,7 @@ function triggerNextPhase(typeofphase) {
     } else if (typeofphase == "daykill") {
         let message = document.querySelector("#gameflowinfo textarea").innerHTML;
         updateGameFlowInfo(message + "\nA new day has started. ");
-        resetTableForNewRound(); //To be implemented
+        resetTableForNewRound();
 
     }
 
@@ -495,6 +526,8 @@ function showKillersChatAndSubscribe() {
 
     if (!alldeadusers.includes(socketusersessionid)) {
         showKillerVotingOptions();
+    } else {
+        document.querySelector("#killer_voteoutperson-select").innerHTML = `<option value=""></option>`;
     }
     stompClient.subscribe(`/topic/killer_chatincoming/${tableid}`, function (chatmessage) {
         showKillerChatmessage(JSON.parse(chatmessage.body).content);
@@ -540,6 +573,66 @@ function resetTableForNewRound() {
     document.querySelector("#chatcontainer").classList.remove("hidediv");
     clearVotes();
     showVotingOptions();
+}
+
+function endOfGame(endofgame) {
+    let result = document.querySelector("#endresult");
+    let userlist = document.querySelector("#endresultuserslist");
+
+    if (endofgame.roleofwinners == "tie") {
+        result.innerHTML = "The game has ended in a tie!";
+    } else {
+        if (endofgame.winners.length > 1) {
+            result.innerHTML = "The winners are: ";
+        } else {
+            result.innerHTML = "The winner is: ";
+        }
+    }
+
+    for (var elem in endofgame.winners) {
+        let img = null;
+        let username = null;
+
+        var li = document.createElement("li");
+//        li.setAttribute("usersessionid", elem);
+
+        let role = document.createElement("p");
+        role.classList.add("winnerrole");
+        role.innerHTML = endofgame.winners[elem];
+
+        if (socketusersessionid == elem) {
+            img = document.querySelector(".userinpageimgcontainer").cloneNode(true);
+            username = document.querySelector("#userinpageusername").cloneNode(true);
+        } else {
+            img = document.querySelector(`li[usersessionid=${elem}] > .imgcontainer`).cloneNode(true);
+            username = document.querySelector(`li[usersessionid=${elem}] > p`).cloneNode(true);
+        }
+
+        li.appendChild(role);
+        li.appendChild(img);
+        li.appendChild(username);
+        userlist.appendChild(li);
+    }
+
+    document.querySelector("#endingmodalcont").classList.remove("hidediv");
+}
+
+function restartGame() {
+
+    document.querySelector("#endingmodalcont").classList.add("hidediv");
+    document.querySelector("#killer_chatcontainer").classList.add("hidediv");
+    document.querySelector("#killer_incomingmessages").innerHTML = "";
+    document.querySelector("#chatcontainer").classList.remove("hidediv");
+    document.querySelector("#incomingmessages").innerHTML = "";
+    document.querySelector("#startgamecontainer").classList.remove("hidediv");
+    document.querySelector("#gameflowinfo textarea").innerHTML = `Click "Start Game" to start`;
+    document.querySelector("#voteoutperson-select").innerHTML = `<option value=""></option>`;
+    document.querySelector("#status p").innerHTML = "Alive";
+    Array.from(document.querySelectorAll("#userslist li")).forEach(function (elem) {
+        elem.classList.remove("dead");
+    });
+    clearVotes();
+
 }
 //Cookie play
 
