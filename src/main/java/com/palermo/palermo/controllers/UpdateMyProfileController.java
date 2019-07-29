@@ -48,7 +48,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Controller
 @SessionAttributes("loggedinuser")
 @RequestMapping(value = "myprofile")
-public class MyProfileController {
+public class UpdateMyProfileController {
 
     @Autowired
     private UserRepo UserRepo;
@@ -129,14 +129,14 @@ public class MyProfileController {
                 multipartBase64 = Base64.getEncoder().encodeToString(IOUtils.toByteArray(targetStream));
 
             } catch (IOException ex) {
-                Logger.getLogger(MyProfileController.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(UpdateMyProfileController.class.getName()).log(Level.SEVERE, null, ex);
             }
 
             //Save multipart as blob in DB
 //        try {
 //            userprofile.setProfileimage(sourcefile.getBytes());
 //        } catch (IOException ex) {
-//            Logger.getLogger(MyProfileController.class.getName()).log(Level.SEVERE, null, ex);
+//            Logger.getLogger(UpdateMyProfileController.class.getName()).log(Level.SEVERE, null, ex);
 //        }
             userprofile.setProfileimageoriginalfilename(sourcefile.getOriginalFilename());
             userprofile.setProfileimagebase64(multipartBase64);

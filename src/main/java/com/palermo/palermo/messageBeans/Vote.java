@@ -10,12 +10,21 @@ package com.palermo.palermo.messageBeans;
  * @author Los_e
  */
 public class Vote {
-
+    
+    private String phase;
     private String voter;
     private String personvotedout;
 
     public Vote() {
 
+    }
+
+    public String getPhase() {
+        return phase;
+    }
+
+    public void setPhase(String phase) {
+        this.phase = phase;
     }
 
     public String getVoter() {

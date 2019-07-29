@@ -43,8 +43,8 @@ public class LobbyController {
 
     @RequestMapping(value = "/home", method = RequestMethod.GET)
     public String showLobby(ModelMap mm) {
-        
-        System.out.println("Tables running" + gamemain.getGametables().size() );
+
+        System.out.println("Tables running" + gamemain.getGametables().size());
         Map<Integer, GameTable> map = gamemain.getGametables();
         mm.addAttribute("runningtables", map);
         return "home";
@@ -52,12 +52,15 @@ public class LobbyController {
 
     @RequestMapping(value = "/startgame", method = RequestMethod.GET)
     public String startGame(ModelMap mm,
+            @RequestParam("numofplayers") String numofplayers,
             HttpServletResponse response
     ) {
-        
+
         int newtableid = gamemain.returnNextTableId();
         GameTable newtable = new GameTable();
         newtable.setGametableid(newtableid);
+        newtable.setNumofplayers(numofplayers);
+        newtable.setGameid(gamemain.returnGameId());
         gamemain.getGametables().put(newtableid, newtable);
 
         Cookie cookie = new Cookie("tableidincookie", Integer.toString(newtableid));
@@ -68,15 +71,15 @@ public class LobbyController {
 
         return "game";
     }
-    
+
     @RequestMapping(value = "/joingame", method = RequestMethod.GET)
 
     public String joinGame(ModelMap mm,
-//            @ModelAttribute("loggedinuser") User user,
+            //            @ModelAttribute("loggedinuser") User user,
             @RequestParam("tableid") String tableid,
             HttpServletResponse response
     ) {
-        
+
 //        System.out.println(user.getUserid());
         Cookie cookie = new Cookie("tableidincookie", tableid);
         //TODO set path to specific game page. (check link)

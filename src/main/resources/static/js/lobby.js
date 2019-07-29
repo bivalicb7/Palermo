@@ -45,8 +45,11 @@ function checkTables(tablesinlobby) {
         //Check if table doesn't exist and display 
         if (!allexistingtableids.includes(elem)) {
             displayTable(tablesinlobby, elem);
+            checkIfTableIsFull(tablesinlobby.gametablesinlobby[elem]);
+
         } else {
             updateUsersInTable(tablesinlobby, elem);
+            checkIfTableIsFull(tablesinlobby.gametablesinlobby[elem]);
         }
     }
 
@@ -72,9 +75,11 @@ function  displayTable(tablesinlobby, elem) {
     divcont.setAttribute("id", `table_id${tablesinlobby.gametablesinlobby[elem].gametableid}`);
     divcont.setAttribute("style", "border: 3px solid black; width: auto; margin: 0 10px 10px 10px;");
 
-    var tableid = document.createElement("p");
-    tableid.innerHTML = `Table id: ${tablesinlobby.gametablesinlobby[elem].gametableid}`;
+    var numberofseats = document.createElement("p");
+    numberofseats.classList.add("numberofseats");
+    numberofseats.innerHTML = `Seats: ${tablesinlobby.gametablesinlobby[elem].numofplayers}`;
     var numofusers = document.createElement("p");
+    numofusers.classList.add("numofusers");
     numofusers.innerHTML = `Num of users: ${Object.keys(tablesinlobby.gametablesinlobby[elem].usersintable).length}`;
     var userslist = document.createElement("ul");
     userslist.setAttribute("class", "userslist");
@@ -91,7 +96,7 @@ function  displayTable(tablesinlobby, elem) {
     jointablelink.innerHTML = "Join table";
     jointablelink.setAttribute("href", `lobby/joingame?tableid=${tablesinlobby.gametablesinlobby[elem].gametableid}`);
 
-    divcont.appendChild(tableid);
+    divcont.appendChild(numberofseats);
     divcont.appendChild(numofusers);
     divcont.appendChild(userslist);
     divcont.appendChild(jointablelink);
@@ -110,6 +115,7 @@ function removeInactiveTables(tableidsarray) {
 
 function updateUsersInTable(tablesinlobby, id) {
     let list = document.querySelector(`#table_id${id} > .userslist`);
+    let numofusers = 0;
 
     let usernames = [];
 
@@ -119,6 +125,7 @@ function updateUsersInTable(tablesinlobby, id) {
 
     list.innerHTML = "";
     for (var userelem in tablesinlobby.gametablesinlobby[id].usersintable) {
+        ++numofusers;
         var li = document.createElement("li");
         li.innerHTML = `${tablesinlobby.gametablesinlobby[id].usersintable[userelem].userprofileview.username} ${tablesinlobby.gametablesinlobby[id].usersintable[userelem].userprofileview.firstname} ${tablesinlobby.gametablesinlobby[id].usersintable[userelem].userprofileview.lastname} `;
 
@@ -126,6 +133,24 @@ function updateUsersInTable(tablesinlobby, id) {
             li.classList.add("userentrance");
         }
         list.appendChild(li);
+    }
+    document.querySelector(`#table_id${id} > .numofusers`).innerHTML = `Num of users: ${numofusers}`;
+}
+
+function checkIfTableIsFull(tableparam) {
+    console.log("tableparam ", tableparam);
+    let table = document.querySelector(`#table_id${tableparam.gametableid}`);
+    if (table.querySelector(".userslist").querySelectorAll("li").length == tableparam.numofplayers) {
+        console.log("FULL TABLE");
+        table.querySelector("a").style.display = "none";
+    } else {
+
+        if (tableparam.gamestarted) {
+            console.log("Ongoing game! Can't join right now");
+            table.querySelector("a").style.display = "none";
+        } else {
+            table.querySelector("a").style.display = "block";
+        }
     }
 }
 

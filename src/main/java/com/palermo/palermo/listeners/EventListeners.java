@@ -35,7 +35,7 @@ public class EventListeners {
 
         if (sha.getDestination().matches("/topic/tablestate/\\d*")) {
 
-            gamemain.addUserToTable(Integer.parseInt(sha.getNativeHeader("tableid").get(0)), Integer.parseInt(sha.getNativeHeader("userid").get(0)), sha.getSessionId());
+            gamemain.addUserToTable(Integer.parseInt(sha.getNativeHeader("tableid").get(0)), Integer.parseInt(sha.getNativeHeader("userid").get(0)), "tmp"+sha.getSessionId());
             tableStateController.updateTableState(Integer.parseInt(sha.getNativeHeader("tableid").get(0)));
             tablesInLobbyController.updateTablesInLobby();
 
@@ -47,21 +47,11 @@ public class EventListeners {
 
     }
 
-//    @EventListener
-//    public void handleContextStart(SessionConnectedEvent sce) {
-//        StompHeaderAccessor sha = StompHeaderAccessor.wrap(sce.getMessage());
-//    }
+
     @EventListener
     public void handleContextStart(SessionDisconnectEvent sde) {
         StompHeaderAccessor sha = StompHeaderAccessor.wrap(sde.getMessage());
-
-        int tableid = gamemain.getUsersintablesmapping().get(sha.getSessionId());
-        gamemain.removeUserFromTable(sha.getSessionId());
-
-        //Check if table still exists and users are still connected
-        if (gamemain.getGametables().get(tableid) != null) {
-            tableStateController.updateTableState(tableid);
-        }
+        gamemain.removeUserFromTable("tmp"+sha.getSessionId());
     }
 
 }

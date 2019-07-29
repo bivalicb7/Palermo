@@ -1,0 +1,46 @@
+#ProfilePage
+{
+    /* Move it off the top of the page, then centre it horizontally */
+    margin: 50px auto;
+    width: 635px;
+    border-radius: 20px;
+/* For visibility. Delete me */
+border: 1px solid red;
+}
+#Info
+{
+    width: 400px;
+    text-align: center;
+    background-color:red;
+    /* Move it to the right */
+    float: left;
+    border-radius: 20px;
+/* For visibility. Delete me */
+border: 2px solid black;
+}
+
+#Info strong
+{
+    /* Give it a width */
+    display: inline-block;
+    width: 100px;
+    background-color:white;
+    border-radius: 15px;
+/* For visibility. Delete me */
+border: 2px solid black;
+}
+
+#Info span
+{
+    /* Give it a width */
+    display: inline-block;
+    width: 250px;
+    background-color:white;
+    border-radius: 20px;
+/* For visibility. Delete me */
+border: 2px solid rgb(0, 0, 0);
+}
+a href {
+    color: red;
+  }
+  #page {background-color:burlywood};

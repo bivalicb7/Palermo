@@ -18,8 +18,9 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <base href="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/" />
         <title>JSP Page</title>
+        <link href="css/userprofile.css" rel="stylesheet">
     </head>
-    <body>
+    <body id="page">
         <c:if test="${loggedinuser.userid eq null}">
             <%@include file="errorpage.jsp"%>
             </c:if>
@@ -34,24 +35,36 @@
             <img src="images/man-user.png"/>
         </c:if>
 
-        <table>
-            <thead>
-                <tr>
-                    <td >first name</td>
-                    <td >date of birthday</td>
-                    <td >last name</td>
-
-                </tr>
-            </thead>
-            <tbody>
-
-                <tr>
-                    <td >${myprofile.firstname}</td>
-                    <td >${myprofile.dateofbirthday}</td>
-                    <td >${myprofile.lastname}</td>
-            </tbody>
-
+            </br></br>
             <a href="myprofile/updatemydata">Edit user data</a>
+           
+    
+        <div id="Info">
+            <p>
+                <strong>First Name:</strong>
+                <span>${myprofile.firstname}</span>
+            </p>
+            <p>
+                <strong>Last Name:</strong>
+                <span>${myprofile.lastname}</span>
+            </p>
+            <p>
+                <strong>Date of birth:</strong>
+                <span>${myprofile.dateofbirthday}</span>
+            </p>
+            <p>
+                <strong>Number of wins:</strong>
+                <span type="number"> 10 </span>
+            </p>
+            <p>
+                <strong>Number of losts:</strong>
+                <span type="numner"> 1  </span>
+            </p>
+        </div>
+    
+        <!-- Needed because other elements inside ProfilePage have floats -->
+        <div style="clear:both"></div>
+    </div>
             </c:if>
     </body>
 </html>
