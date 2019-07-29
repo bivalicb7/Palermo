@@ -83,7 +83,7 @@ public class GameMain {
     }
 
     public String returnGameId() {
-        
+
         String gameid = UUID.randomUUID().toString();
         System.out.println("New game id " + gameid);
         return gameid;
@@ -125,16 +125,48 @@ public class GameMain {
 
     public void removeUserFromTable(String sessionid) {
         int tableid = usersintablesmapping.get(sessionid);
-
         GameTable table = gametables.get(tableid);
-        table.getUsersintable().remove(sessionid);
 
-        //Also remove from the usersintablesmapping
-        usersintablesmapping.remove(sessionid);
-        System.out.println(usersintablesmapping.toString());
+        //Check if table still exists and users are still connected and if a game was on handle what happens depending on user's dead status
+        if (getGametables().get(tableid) != null) {
+
+            //check if the game has started (by checking their ready status)
+            //This check is not efficient enough since it may needlessly reset the table even for fewer users than the number of seats if they somehow enable the "start game" button
+            if (table.checkIfAllUsersReady()) {
+                //Check if user is dead. If the user is not dead and has left the game then the game must end
+                if (!table.getUsersintable().get(sessionid).isDead()) {
+
+                    table.getUsersintable().remove(sessionid);
+                    //Also remove from the usersintablesmapping
+                    usersintablesmapping.remove(sessionid);
+
+                    table.setGamefinished(true);
+                    resetTableForNewGame(tableid);
+
+                } else {
+
+                    //If the game is running don't update table just yet so that it doesn't mess with the flow.
+                    //Let the update in the state happen after a user has died
+                    //But also update the dead users list on client side so that it can detect the new dead user
+                    table.getUsersintable().remove(sessionid);
+                    //Also remove from the usersintablesmapping
+                    usersintablesmapping.remove(sessionid);
+                    tableStateController.deadUserLefttheTable(tableid, sessionid);
+                }
+
+            } else {
+                table.getUsersintable().remove(sessionid);
+                //Also remove from the usersintablesmapping
+                usersintablesmapping.remove(sessionid);
+                //Update table state to show user gone if there is not a game going on
+                tableStateController.updateTableState(tableid);
+            }
+        }
 
         //Check if table is empty of users and remove it from the game
         removeTableFromMain(tableid);
+        tablesInLobbyController.updateTablesInLobby();
+
     }
 
     public void removeTableFromMain(int tableid) {
@@ -153,6 +185,7 @@ public class GameMain {
 
         //Everytime a user is ready check if all of them are ready in order to start game
         if (table.checkIfAllUsersReady()) {
+            table.setGamestarted(true);
             table.assignRoles();
 //            table.assignFakeRoles();
 //            table.setPhase("daykill");

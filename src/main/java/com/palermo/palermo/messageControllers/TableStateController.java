@@ -6,6 +6,7 @@
 package com.palermo.palermo.messageControllers;
 
 import com.palermo.palermo.gameModel.GameMain;
+import com.palermo.palermo.messageBeans.DeadUser;
 import com.palermo.palermo.messageBeans.EndOfGame;
 import com.palermo.palermo.messageBeans.NextPhase;
 import com.palermo.palermo.messageBeans.Roles;
@@ -48,5 +49,9 @@ public class TableStateController {
 
     public void triggerEndOfGame(int tableid, EndOfGame returnEndOfGame) {
         smp.convertAndSend("/topic/endofgame/" + tableid, returnEndOfGame);
+    }
+    
+    public void deadUserLefttheTable(int tableid, String sessionid) {
+        smp.convertAndSend("/topic/deaduserleftthetable/" + tableid, new DeadUser(sessionid));
     }
 }

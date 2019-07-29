@@ -28,6 +28,7 @@ public class GameTable {
     private boolean intiebreakmode;
     private String numofplayers;
     private boolean gamefinished;
+    private boolean gamestarted;
     private String gameid;
 
     // Key: String user websocket sessiodin  Value: GameUserInTable
@@ -40,6 +41,15 @@ public class GameTable {
         this.phase = "daykill";
         this.intiebreakmode = false;
         this.gamefinished = false;
+        this.gamestarted = false;
+    }
+
+    public boolean isGamestarted() {
+        return gamestarted;
+    }
+
+    public void setGamestarted(boolean gamestarted) {
+        this.gamestarted = gamestarted;
     }
 
     public boolean isGamefinished() {
@@ -56,14 +66,6 @@ public class GameTable {
 
     public void setGameid(String gameid) {
         this.gameid = gameid;
-    }
-
-    public boolean isGameginished() {
-        return gamefinished;
-    }
-
-    public void setGameginished(boolean gameginished) {
-        this.gamefinished = gameginished;
     }
 
     public String getNumofplayers() {
@@ -355,6 +357,7 @@ public class GameTable {
         }
 
         gamefinished = true;
+        gamestarted = false;
         return endofgame;
     }
 
@@ -364,6 +367,7 @@ public class GameTable {
             this.phase = "daykill";
             this.intiebreakmode = false;
             this.gamefinished = false;
+            this.gamestarted = false;
 
             for (Map.Entry<String, GameUserInTable> entry : usersintable.entrySet()) {
 

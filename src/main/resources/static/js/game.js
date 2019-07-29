@@ -12,6 +12,7 @@ let allusers = [];
 let alldeadusers = [];
 let socketusersessionid = null;
 let ingamerole = null;
+let firstround = true;
 
 
 
@@ -90,6 +91,10 @@ function connect() {
 
         stompClient.subscribe(`/topic/endofgame/${tableid}`, function (endofgame) {
             endOfGame(JSON.parse(endofgame.body));
+        });
+
+        stompClient.subscribe(`/topic/deaduserleftthetable/${tableid}`, function (update) {
+            updateAllDeadUsersList(JSON.parse(update.body).content);
         });
     });
 
@@ -327,10 +332,10 @@ function showKillerVotingOptions() {
 
 function updateTableState(tablestate) {
     numofplayers = tablestate.numofplayers;
-    
+
     //Check if there's a new gameid in order to reset the table
     checkIfNewGameId(tablestate.gameid);
-    
+
     //Display new Users or remove users that have disconnected
     checkIfUsersAreaExistsElseDisplay(tablestate);
     //Check if table is full in order to start the game
@@ -341,14 +346,14 @@ function updateTableState(tablestate) {
 }
 
 function checkIfNewGameId(newgameid) {
-    
+
     //If there is a new game id then that means that the table has been reset in back-end and so it needs to be displayed
     //this may happen after replay has been pressed or after a non-dead user has left the game
-    if(gameid != newgameid) {
+    if (gameid != newgameid) {
         restartGame();
-        gameid=newgameid;
+        gameid = newgameid;
     }
-    
+
 }
 
 function checkIfUsersAreaExistsElseDisplay(tablestate) {
@@ -469,7 +474,7 @@ function checkIfDead(tablestate) {
 //        debugger;
         //If there is no new dead user that means that killers did not agree to killing someone so they lost their chance
 
-        if (alldeadusers != 0) {
+        if (!firstround) {
             if (alldeadusers.length == newdeadlist.length) {
                 message = "Killers lost their chance to kill someone!";
             } else {
@@ -500,6 +505,8 @@ function checkIfReadyToStart(allusers) {
 }
 
 function triggerNextPhase(typeofphase) {
+    
+    firstround= false;
 
     if (typeofphase == "nightkill") {
 
@@ -582,7 +589,7 @@ function endOfGame(endofgame) {
     if (endofgame.roleofwinners == "tie") {
         result.innerHTML = "The game has ended in a tie!";
     } else {
-        if (endofgame.winners.length > 1) {
+        if (Object.keys(endofgame.winners).length > 1) {
             result.innerHTML = "The winners are: ";
         } else {
             result.innerHTML = "The winner is: ";
@@ -618,12 +625,17 @@ function endOfGame(endofgame) {
 }
 
 function restartGame() {
+        firstround=true;
 
     document.querySelector("#endingmodalcont").classList.add("hidediv");
     document.querySelector("#killer_chatcontainer").classList.add("hidediv");
     document.querySelector("#killer_incomingmessages").innerHTML = "";
     document.querySelector("#chatcontainer").classList.remove("hidediv");
     document.querySelector("#incomingmessages").innerHTML = "";
+    document.querySelector("#ingamerole").innerHTML = "";
+    document.querySelector("#endresult").innerHTML = "";
+    document.querySelector("#endresultuserslist").innerHTML = "";
+    document.querySelector("#extrainfo").classList.add("hidediv");
     document.querySelector("#startgamecontainer").classList.remove("hidediv");
     document.querySelector("#gameflowinfo textarea").innerHTML = `Click "Start Game" to start`;
     document.querySelector("#voteoutperson-select").innerHTML = `<option value=""></option>`;
@@ -633,6 +645,22 @@ function restartGame() {
     });
     clearVotes();
 
+}
+
+function updateAllDeadUsersList(sessionid) {
+    let usersleft = [];
+    
+    if (alldeadusers.includes(sessionid)) {
+
+        function notincluded(elem) {
+            return elem != sessionid;
+        }
+        usersleft = alldeadusers.filter(notincluded);
+        
+        console.log("usersleft: ", usersleft);
+    }
+    
+    alldeadusers = usersleft;
 }
 //Cookie play
 
