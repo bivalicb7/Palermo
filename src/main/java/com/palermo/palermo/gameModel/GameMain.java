@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -81,11 +82,20 @@ public class GameMain {
         return GameMain.nexttableid;
     }
 
+    public String returnGameId() {
+
+        String gameid = UUID.randomUUID().toString();
+        System.out.println("New game id " + gameid);
+        return gameid;
+    }
+
     public TableState returnTableState(int tableid) {
         TableState tablestate = new TableState();
 
         tablestate.setKillbyrussianroulette(gametables.get(tableid).isIntiebreakmode());
         tablestate.setPhase(gametables.get(tableid).getPhase());
+        tablestate.setNumofplayers(gametables.get(tableid).getNumofplayers());
+        tablestate.setGameid(gametables.get(tableid).getGameid());
         tablestate.setUsersintable(gametables.get(tableid).getUsersintable());
 
         return tablestate;
@@ -115,16 +125,48 @@ public class GameMain {
 
     public void removeUserFromTable(String sessionid) {
         int tableid = usersintablesmapping.get(sessionid);
-
         GameTable table = gametables.get(tableid);
-        table.getUsersintable().remove(sessionid);
 
-        //Also remove from the usersintablesmapping
-        usersintablesmapping.remove(sessionid);
-        System.out.println(usersintablesmapping.toString());
+        //Check if table still exists and users are still connected and if a game was on handle what happens depending on user's dead status
+        if (getGametables().get(tableid) != null) {
+
+            //check if the game has started (by checking their ready status)
+            //This check is not efficient enough since it may needlessly reset the table even for fewer users than the number of seats if they somehow enable the "start game" button
+            if (table.checkIfAllUsersReady()) {
+                //Check if user is dead. If the user is not dead and has left the game then the game must end
+                if (!table.getUsersintable().get(sessionid).isDead()) {
+
+                    table.getUsersintable().remove(sessionid);
+                    //Also remove from the usersintablesmapping
+                    usersintablesmapping.remove(sessionid);
+
+                    table.setGamefinished(true);
+                    resetTableForNewGame(tableid);
+
+                } else {
+
+                    //If the game is running don't update table just yet so that it doesn't mess with the flow.
+                    //Let the update in the state happen after a user has died
+                    //But also update the dead users list on client side so that it can detect the new dead user
+                    table.getUsersintable().remove(sessionid);
+                    //Also remove from the usersintablesmapping
+                    usersintablesmapping.remove(sessionid);
+                    tableStateController.deadUserLefttheTable(tableid, sessionid);
+                }
+
+            } else {
+                table.getUsersintable().remove(sessionid);
+                //Also remove from the usersintablesmapping
+                usersintablesmapping.remove(sessionid);
+                //Update table state to show user gone if there is not a game going on
+                tableStateController.updateTableState(tableid);
+            }
+        }
 
         //Check if table is empty of users and remove it from the game
         removeTableFromMain(tableid);
+        tablesInLobbyController.updateTablesInLobby();
+
     }
 
     public void removeTableFromMain(int tableid) {
@@ -143,6 +185,7 @@ public class GameMain {
 
         //Everytime a user is ready check if all of them are ready in order to start game
         if (table.checkIfAllUsersReady()) {
+            table.setGamestarted(true);
             table.assignRoles();
 //            table.assignFakeRoles();
 //            table.setPhase("daykill");
@@ -178,8 +221,15 @@ public class GameMain {
                         table.setPhase("nightkill");
                         table.setIntiebreakmode(false);
 
-                        //After user has been killed trigger next phase ---> nighkill
-                        tableStateController.triggerNextPhase(tableid, new NextPhase("nightkill", returnTableState(tableid)));
+                        //After a person has been killed check if the game has ended
+                        if (!table.checkIfWinner()) {
+                            //After user has been killed trigger next phase ---> nighkill
+                            tableStateController.triggerNextPhase(tableid, new NextPhase("nightkill", returnTableState(tableid)));
+                        } else {
+                            tableStateController.updateTableState(tableid);
+                            tableStateController.triggerEndOfGame(tableid, table.returnEndOfGame());
+                        }
+
                     } else {
                         //Handle tie for the first time. Users get to vote one more time between the nominees
 
@@ -192,7 +242,13 @@ public class GameMain {
 
                             table.russianRoulette();
                             table.setPhase("nightkill");
-                            tableStateController.triggerNextPhase(tableid, new NextPhase("nightkill", returnTableState(tableid)));
+
+                            if (!table.checkIfWinner()) {
+                                tableStateController.triggerNextPhase(tableid, new NextPhase("nightkill", returnTableState(tableid)));
+                            } else {
+                                tableStateController.updateTableState(tableid);
+                                tableStateController.triggerEndOfGame(tableid, table.returnEndOfGame());
+                            }
                             table.setIntiebreakmode(false);
 
                         }
@@ -218,18 +274,42 @@ public class GameMain {
                         table.setPhase("daykill");
 //                        tableStateController.updateTableState(tableid);
 
-                        //After user has been killed trigger next phase ---> daykill
-                        tableStateController.triggerNextPhase(tableid, new NextPhase("daykill", returnTableState(tableid)));
-                    } else {
+                        if (!table.checkIfWinner()) {
+                            //After user has been killed trigger next phase ---> daykill
+                            tableStateController.triggerNextPhase(tableid, new NextPhase("daykill", returnTableState(tableid)));
+                        } else {
+                            tableStateController.updateTableState(tableid);
+                            tableStateController.triggerEndOfGame(tableid, table.returnEndOfGame());
+                        }
 
-                        //If killers don't vote for the same person they lose their night kill 
+                    } else {
                         table.setPhase("daykill");
-                        tableStateController.triggerNextPhase(tableid, new NextPhase("daykill", returnTableState(tableid)));
+
+                        if (!table.checkIfWinner()) {
+                            //If killers don't vote for the same person they lose their night kill 
+                            tableStateController.triggerNextPhase(tableid, new NextPhase("daykill", returnTableState(tableid)));
+                        } else {
+                            tableStateController.updateTableState(tableid);
+                            tableStateController.triggerEndOfGame(tableid, table.returnEndOfGame());
+                        }
+
                     }
 
                 }
             }
         }
+
+    }
+
+    public void resetTableForNewGame(int tableid) {
+        GameTable table = gametables.get(tableid);
+
+        if (table.isGamefinished()) {
+            table.setGameid(returnGameId());
+            table.resetTableForNewGame();
+        }
+
+        tableStateController.updateTableState(tableid);
 
     }
 

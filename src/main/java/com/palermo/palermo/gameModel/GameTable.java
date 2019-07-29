@@ -5,6 +5,7 @@
  */
 package com.palermo.palermo.gameModel;
 
+import com.palermo.palermo.messageBeans.EndOfGame;
 import com.palermo.palermo.messageBeans.Roles;
 import com.palermo.palermo.messageBeans.Vote;
 import com.palermo.palermo.messageControllers.TableStateController;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 import org.apache.commons.collections4.IterableUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -24,6 +26,10 @@ public class GameTable {
     private int gametableid;
     private String phase;
     private boolean intiebreakmode;
+    private String numofplayers;
+    private boolean gamefinished;
+    private boolean gamestarted;
+    private String gameid;
 
     // Key: String user websocket sessiodin  Value: GameUserInTable
     private Map<String, GameUserInTable> usersintable = new HashMap();
@@ -34,6 +40,40 @@ public class GameTable {
     public GameTable() {
         this.phase = "daykill";
         this.intiebreakmode = false;
+        this.gamefinished = false;
+        this.gamestarted = false;
+    }
+
+    public boolean isGamestarted() {
+        return gamestarted;
+    }
+
+    public void setGamestarted(boolean gamestarted) {
+        this.gamestarted = gamestarted;
+    }
+
+    public boolean isGamefinished() {
+        return gamefinished;
+    }
+
+    public void setGamefinished(boolean gamefinished) {
+        this.gamefinished = gamefinished;
+    }
+
+    public String getGameid() {
+        return gameid;
+    }
+
+    public void setGameid(String gameid) {
+        this.gameid = gameid;
+    }
+
+    public String getNumofplayers() {
+        return numofplayers;
+    }
+
+    public void setNumofplayers(String numofplayers) {
+        this.numofplayers = numofplayers;
     }
 
     public boolean isIntiebreakmode() {
@@ -77,40 +117,40 @@ public class GameTable {
     }
 
     //TO BE DELETED
-    public void assignFakeRoles() {
-        ArrayList<String> roleslist = new ArrayList();
-        roleslist.add("nothiddenkiller");
-        roleslist.add("hiddenkiller");
-        
-        int index = 2;
-        for (Map.Entry<String, GameUserInTable> entry : usersintable.entrySet()) {
-
-            if (entry.getKey().equals("tmpa")) {
-                entry.getValue().setIngamerole("civilian");
-            } else if (entry.getKey().equals("tmpb")) {
-                entry.getValue().setIngamerole("civilian");
-            } else if (entry.getKey().equals("tmpc")) {
-                entry.getValue().setIngamerole("civilian");
-            } else if (entry.getKey().equals("tmpd")) {
-                entry.getValue().setIngamerole("spy");
-            } else {
-                entry.getValue().setIngamerole(roleslist.get(index - 1));
-                index = index-1;
-            }
-
-        }
-
-    }
+//    public void assignFakeRoles() {
+//        ArrayList<String> roleslist = new ArrayList();
+//        roleslist.add("nothiddenkiller");
+//        roleslist.add("hiddenkiller");
+//        
+//        int index = 2;
+//        for (Map.Entry<String, GameUserInTable> entry : usersintable.entrySet()) {
+//
+//            if (entry.getKey().equals("tmpa")) {
+//                entry.getValue().setIngamerole("civilian");
+//            } else if (entry.getKey().equals("tmpb")) {
+//                entry.getValue().setIngamerole("civilian");
+//            } else if (entry.getKey().equals("tmpc")) {
+//                entry.getValue().setIngamerole("civilian");
+//            } else if (entry.getKey().equals("tmpd")) {
+//                entry.getValue().setIngamerole("spy");
+//            } else {
+//                entry.getValue().setIngamerole(roleslist.get(index - 1));
+//                index = index-1;
+//            }
+//
+//        }
+//
+//    }
     //TO BE DELETED
-    
     public void assignRoles() {
         ArrayList<String> roleslist = new ArrayList();
         roleslist.add("nothiddenkiller");
         roleslist.add("hiddenkiller");
         roleslist.add("spy");
-        roleslist.add("civilian");
-        roleslist.add("civilian");
-        roleslist.add("civilian");
+
+        for (int i = 0; i < (Integer.parseInt(numofplayers) - 3); i++) {
+            roleslist.add("civilian");
+        }
 
         for (Map.Entry<String, GameUserInTable> entry : usersintable.entrySet()) {
 
@@ -245,6 +285,7 @@ public class GameTable {
 
     public boolean checkKillersCongruence() {
 
+        //For two killers. If there were more killers all killers should agree with this implementation
         int voteslength = usersthatgotvotes.size();
 
         int frequency = IterableUtils.frequency(usersthatgotvotes, usersthatgotvotes.get(0));
@@ -253,6 +294,89 @@ public class GameTable {
             return true;
         } else {
             return false;
+        }
+
+    }
+
+    public boolean checkIfWinner() {
+        int usersalive = IterableUtils.size(IterableUtils.filteredIterable(usersintable.values(), user -> !user.isDead()));
+
+        int numofkillers = IterableUtils.size(IterableUtils.filteredIterable(usersintable.values(), user -> (!user.isDead() && user.getIngamerole().endsWith("hiddenkiller"))));
+        int numofciviliansspy = IterableUtils.size(IterableUtils.filteredIterable(usersintable.values(), user -> (!user.isDead() && (user.getIngamerole().equals("civilian") || user.getIngamerole().equals("spy")))));
+
+        System.out.println("Num of killers " + numofkillers + " Num of civilspies " + numofciviliansspy + "Users alive " + usersalive);
+
+        //If both killers have diesd  or all civilians have died game ends
+        if (numofkillers == 0 || numofciviliansspy == 0) {
+            return true;
+        } else if (usersalive == 2) {
+
+            if (phase.equals("daykill")) {
+
+                // here we've got a tie
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    public EndOfGame returnEndOfGame() {
+
+        EndOfGame endofgame = new EndOfGame();
+        int numofkillers = IterableUtils.size(IterableUtils.filteredIterable(usersintable.values(), user -> (!user.isDead() && user.getIngamerole().endsWith("hiddenkiller"))));
+        int numofciviliansspy = IterableUtils.size(IterableUtils.filteredIterable(usersintable.values(), user -> (!user.isDead() && (user.getIngamerole().equals("civilian") || user.getIngamerole().equals("spy")))));
+
+//        System.out.println("Num of killers " + numofkillers + " Num of civilspies " + numofciviliansspy + "Users alive " + usersalive);
+        //If bothkillers have diesd game ends
+        if (numofkillers == 0) {
+
+            endofgame.setRoleofwinners("civilians");
+            System.out.println("Winners: civilians!");
+
+        } else if (numofciviliansspy == 0) {
+
+            endofgame.setRoleofwinners("killers");
+            System.out.println("Winners: killers!");
+
+        } else if (numofkillers == numofciviliansspy) {
+
+            endofgame.setRoleofwinners("tie");
+            System.out.println("Tie!");
+        }
+
+        //Get users alive and their roles
+        for (Map.Entry<String, GameUserInTable> entry : usersintable.entrySet()) {
+
+            if (!entry.getValue().isDead()) {
+                endofgame.getWinners().put(entry.getKey(), entry.getValue().getIngamerole());
+                System.out.println("In list:" + entry.getKey() + " " + entry.getValue().getIngamerole());
+            }
+        }
+
+        gamefinished = true;
+        gamestarted = false;
+        return endofgame;
+    }
+
+    public void resetTableForNewGame() {
+
+        if (gamefinished) {
+            this.phase = "daykill";
+            this.intiebreakmode = false;
+            this.gamefinished = false;
+            this.gamestarted = false;
+
+            for (Map.Entry<String, GameUserInTable> entry : usersintable.entrySet()) {
+
+                entry.getValue().setDead(false);
+                entry.getValue().setHasvoted(false);
+                entry.getValue().setIngamerole(null);
+                entry.getValue().setReady(false);
+
+            }
         }
 
     }

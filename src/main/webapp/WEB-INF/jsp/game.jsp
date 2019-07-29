@@ -79,7 +79,7 @@
                             </select>
                             <button id="voteoutperson-button">Vote out!</button>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
@@ -118,5 +118,16 @@
 
         </div>
             </c:if>
+
+        <div id="endingmodalcont" class="hidediv">
+            <div id="endingmodal" >
+                <p id="endheader">The game is over!</p>
+                <p id="endresult"></p>
+                <ul id="endresultuserslist"></ul>            
+                <button id="replaybutton">Replay</button>
+            </div>
+
+        </div>
+
     </body>
 </html>

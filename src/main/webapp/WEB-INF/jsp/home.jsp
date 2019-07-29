@@ -31,25 +31,40 @@
     <body>
         <c:if test="${loggedinuser.userid eq null}">
             <%@include file="errorpage.jsp"%>
-            </c:if>
+        </c:if>
         <c:if test="${loggedinuser.userid ne null}">
-        
-            
-        <%@ include file="navbar.jsp" %>
-        <h1>Userid = ${loggedinuser.userid}</h1>
-        <h1>Username = ${sessionScope.loggedinuser.username}</h1>
-
-        <div id="tableslist"></div>
-
-        <%--<c:if test="${param.success ne null}">--%>
-        <!--<div id="overlay">-->
-        <!--<a id="close" href="#overlay">&times;</a>-->
 
 
-        <!--</div>-->
-        <%--</c:if>--%>
+            <%@ include file="navbar.jsp" %>
+            <h1>Userid = ${loggedinuser.userid}</h1>
+            <h1>Username = ${sessionScope.loggedinuser.username}</h1>
 
-        <a href="lobby/startgame">Create new game</a>
+            <div id="tableslist"></div>
+
+            <%--<c:if test="${param.success ne null}">--%>
+            <!--<div id="overlay">-->
+            <!--<a id="close" href="#overlay">&times;</a>-->
+
+
+            <!--</div>-->
+            <%--</c:if>--%>
+            <!--<div >-->
+                <form id="creategamecontainer" action="lobby/startgame">
+                <label for="creategame_seat_total">Choose number of players</label>
+                <select id="creategame_seat_total" name="numofplayers">
+                    <option value=""></option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                </select>
+                <input type="submit" value="Create new game">
+                <!--<a href="lobby/startgame">Create new game</a>-->
+                </form>
+            <!--</div>-->
         </c:if>
     </body>
 </html>

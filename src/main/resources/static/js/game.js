@@ -6,10 +6,13 @@
 
 var stompClient = null;
 var tableid = null;
+let numofplayers = null;
+let gameid = null;
 let allusers = [];
 let alldeadusers = [];
 let socketusersessionid = null;
 let ingamerole = null;
+let firstround = true;
 
 
 
@@ -40,6 +43,9 @@ $(function () {
     });
     $("#startbutton").click(function () {
         sendReadyToStart();
+    });
+    $("#replaybutton").click(function () {
+        sendResetGame();
     });
 });
 
@@ -81,6 +87,14 @@ function connect() {
 
         stompClient.subscribe(`/topic/tievote/${tableid}`, function (tielist) {
             handleTie(JSON.parse(tielist.body).tievoteuserslist);
+        });
+
+        stompClient.subscribe(`/topic/endofgame/${tableid}`, function (endofgame) {
+            endOfGame(JSON.parse(endofgame.body));
+        });
+
+        stompClient.subscribe(`/topic/deaduserleftthetable/${tableid}`, function (update) {
+            updateAllDeadUsersList(JSON.parse(update.body).content);
         });
     });
 
@@ -132,6 +146,13 @@ function sendReadyToStart() {
 
     document.querySelector("#startbutton").disabled = true;
 
+}
+
+function sendResetGame() {
+    stompClient.send(`/app/vote/reset/${tableid}`, {}, JSON.stringify({
+//        'message': document.querySelector("#messagetextarea").value,
+//        'name': checkCookie("usernameincookie")
+    }));
 }
 
 function sendVote() {
@@ -287,7 +308,7 @@ function showTieVotingOptions(tielist) {
 }
 
 function showKillerVotingOptions() {
-    document.querySelector("#killer_voteoutperson-select:not(:first-child)").innerHTML = `<option value=""></option>`;
+    document.querySelector("#killer_voteoutperson-select").innerHTML = `<option value=""></option>`;
 
 //    document.querySelector("#startgamecontainer").classList.add("hidediv");
     allusers.forEach(function (elem) {
@@ -310,6 +331,10 @@ function showKillerVotingOptions() {
 }
 
 function updateTableState(tablestate) {
+    numofplayers = tablestate.numofplayers;
+
+    //Check if there's a new gameid in order to reset the table
+    checkIfNewGameId(tablestate.gameid);
 
     //Display new Users or remove users that have disconnected
     checkIfUsersAreaExistsElseDisplay(tablestate);
@@ -317,6 +342,17 @@ function updateTableState(tablestate) {
     checkIfReadyToStart(allusers);
     //Check if user is dead
     checkIfDead(tablestate);
+
+}
+
+function checkIfNewGameId(newgameid) {
+
+    //If there is a new game id then that means that the table has been reset in back-end and so it needs to be displayed
+    //this may happen after replay has been pressed or after a non-dead user has left the game
+    if (gameid != newgameid) {
+        restartGame();
+        gameid = newgameid;
+    }
 
 }
 
@@ -422,10 +458,6 @@ function checkIfDead(tablestate) {
                     document.querySelector(`li[usersessionid=${elem}]`).classList.add("dead");
                 }
 
-
-
-
-
             }
         }
     }
@@ -441,14 +473,19 @@ function checkIfDead(tablestate) {
     if (tablestate.phase == "daykill") {
 //        debugger;
         //If there is no new dead user that means that killers did not agree to killing someone so they lost their chance
-        if (alldeadusers.length == newdeadlist.length && alldeadusers.length != 0) {
-            message = "Killers lost their chance to kill someone!";
-        } else {
-            message = "User " + usernameofdead + " was killed during the night!";
+
+        if (!firstround) {
+            if (alldeadusers.length == newdeadlist.length) {
+                message = "Killers lost their chance to kill someone!";
+            } else {
+                message = "User " + usernameofdead + " was killed during the night!";
+            }
         }
     }
 
-    updateGameFlowInfo(message);
+    if (newdeadlist != 0) {
+        updateGameFlowInfo(message);
+    }
     console.log("Dead people before: (AlldeadUsers)", alldeadusers.length, alldeadusers);
     console.log("Dead people after: (New deadlist)", newdeadlist.length, newdeadlist);
 
@@ -458,9 +495,9 @@ function checkIfDead(tablestate) {
 
 }
 
-function checkIfReadyToStart(array) {
+function checkIfReadyToStart(allusers) {
 
-    if (array.length == 6) {
+    if (allusers.length == numofplayers) {
         document.querySelector("#startbutton").disabled = false;
     } else {
         document.querySelector("#startbutton").disabled = true;
@@ -468,6 +505,8 @@ function checkIfReadyToStart(array) {
 }
 
 function triggerNextPhase(typeofphase) {
+    
+    firstround= false;
 
     if (typeofphase == "nightkill") {
 
@@ -482,7 +521,7 @@ function triggerNextPhase(typeofphase) {
     } else if (typeofphase == "daykill") {
         let message = document.querySelector("#gameflowinfo textarea").innerHTML;
         updateGameFlowInfo(message + "\nA new day has started. ");
-        resetTableForNewRound(); //To be implemented
+        resetTableForNewRound();
 
     }
 
@@ -491,8 +530,12 @@ function triggerNextPhase(typeofphase) {
 function showKillersChatAndSubscribe() {
     document.querySelector("#chatcontainer").classList.add("hidediv");
     document.querySelector("#killer_chatcontainer").classList.remove("hidediv");
-    showKillerVotingOptions();
 
+    if (!alldeadusers.includes(socketusersessionid)) {
+        showKillerVotingOptions();
+    } else {
+        document.querySelector("#killer_voteoutperson-select").innerHTML = `<option value=""></option>`;
+    }
     stompClient.subscribe(`/topic/killer_chatincoming/${tableid}`, function (chatmessage) {
         showKillerChatmessage(JSON.parse(chatmessage.body).content);
     });
@@ -515,9 +558,9 @@ function handleTie(usersintielist) {
     updateGameFlowInfo(message);
 
     //show voting options
-    if (!usersintielist.includes(socketusersessionid)) {
-        showTieVotingOptions(usersintielist);
-    }
+//    if (!usersintielist.includes(socketusersessionid)) {
+    showTieVotingOptions(usersintielist);
+//    }
 }
 
 function clearVotes() {
@@ -537,6 +580,87 @@ function resetTableForNewRound() {
     document.querySelector("#chatcontainer").classList.remove("hidediv");
     clearVotes();
     showVotingOptions();
+}
+
+function endOfGame(endofgame) {
+    let result = document.querySelector("#endresult");
+    let userlist = document.querySelector("#endresultuserslist");
+
+    if (endofgame.roleofwinners == "tie") {
+        result.innerHTML = "The game has ended in a tie!";
+    } else {
+        if (Object.keys(endofgame.winners).length > 1) {
+            result.innerHTML = "The winners are: ";
+        } else {
+            result.innerHTML = "The winner is: ";
+        }
+    }
+
+    for (var elem in endofgame.winners) {
+        let img = null;
+        let username = null;
+
+        var li = document.createElement("li");
+//        li.setAttribute("usersessionid", elem);
+
+        let role = document.createElement("p");
+        role.classList.add("winnerrole");
+        role.innerHTML = endofgame.winners[elem];
+
+        if (socketusersessionid == elem) {
+            img = document.querySelector(".userinpageimgcontainer").cloneNode(true);
+            username = document.querySelector("#userinpageusername").cloneNode(true);
+        } else {
+            img = document.querySelector(`li[usersessionid=${elem}] > .imgcontainer`).cloneNode(true);
+            username = document.querySelector(`li[usersessionid=${elem}] > p`).cloneNode(true);
+        }
+
+        li.appendChild(role);
+        li.appendChild(img);
+        li.appendChild(username);
+        userlist.appendChild(li);
+    }
+
+    document.querySelector("#endingmodalcont").classList.remove("hidediv");
+}
+
+function restartGame() {
+        firstround=true;
+
+    document.querySelector("#endingmodalcont").classList.add("hidediv");
+    document.querySelector("#killer_chatcontainer").classList.add("hidediv");
+    document.querySelector("#killer_incomingmessages").innerHTML = "";
+    document.querySelector("#chatcontainer").classList.remove("hidediv");
+    document.querySelector("#incomingmessages").innerHTML = "";
+    document.querySelector("#ingamerole").innerHTML = "";
+    document.querySelector("#endresult").innerHTML = "";
+    document.querySelector("#endresultuserslist").innerHTML = "";
+    document.querySelector("#extrainfo").classList.add("hidediv");
+    document.querySelector("#startgamecontainer").classList.remove("hidediv");
+    document.querySelector("#gameflowinfo textarea").innerHTML = `Click "Start Game" to start`;
+    document.querySelector("#voteoutperson-select").innerHTML = `<option value=""></option>`;
+    document.querySelector("#status p").innerHTML = "Alive";
+    Array.from(document.querySelectorAll("#userslist li")).forEach(function (elem) {
+        elem.classList.remove("dead");
+    });
+    clearVotes();
+
+}
+
+function updateAllDeadUsersList(sessionid) {
+    let usersleft = [];
+    
+    if (alldeadusers.includes(sessionid)) {
+
+        function notincluded(elem) {
+            return elem != sessionid;
+        }
+        usersleft = alldeadusers.filter(notincluded);
+        
+        console.log("usersleft: ", usersleft);
+    }
+    
+    alldeadusers = usersleft;
 }
 //Cookie play
 

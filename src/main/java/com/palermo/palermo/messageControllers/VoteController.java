@@ -31,12 +31,7 @@ public class VoteController {
     @Autowired
     SimpMessagingTemplate smp;
 
-//    @MessageMapping("/vote/gamevote")
-//    @SendTo("/topic/voting")
-//    public ChatMessageToClient greeting(Vote vote) throws Exception {
-//        Thread.sleep(1000); // simulated delay
-//        return new ChatMessageToClient(HtmlUtils.htmlEscape(vote.getVoter()) + " voted for " + HtmlUtils.htmlEscape(vote.getPersonvotedout()) + "!");
-//    }
+
     @MessageMapping("/vote/readystate/{variable}")
 
     public void ready(@Headers Map headers, @DestinationVariable String variable) throws Exception {
@@ -44,10 +39,10 @@ public class VoteController {
         gamemain.setUserReady(Integer.parseInt(variable), "tmp" + sessionid);
 
         //TO Be DELETED
-        gamemain.setUserReady(Integer.parseInt(variable), "tmpa");
-        gamemain.setUserReady(Integer.parseInt(variable), "tmpb");
-        gamemain.setUserReady(Integer.parseInt(variable), "tmpc");
-        gamemain.setUserReady(Integer.parseInt(variable), "tmpd");
+//        gamemain.setUserReady(Integer.parseInt(variable), "tmpa");
+//        gamemain.setUserReady(Integer.parseInt(variable), "tmpb");
+//        gamemain.setUserReady(Integer.parseInt(variable), "tmpc");
+//        gamemain.setUserReady(Integer.parseInt(variable), "tmpd");
 //        gamemain.setUserReady(Integer.parseInt(variable), "e");
 
         //TO Be DELETED
@@ -172,5 +167,11 @@ public class VoteController {
 ////        testvote.setPersonvotedout("a");
 ////        gamemain.collectVotes(Integer.parseInt(variable), testvote);
 //        //TO Be DELETED
+    }
+    
+        @MessageMapping("/vote/reset/{variable}")
+
+    public void resetTable(@Headers Map headers, @DestinationVariable String variable) throws Exception {
+        gamemain.resetTableForNewGame(Integer.parseInt(variable));
     }
 }
