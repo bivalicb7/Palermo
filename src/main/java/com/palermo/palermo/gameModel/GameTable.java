@@ -5,10 +5,12 @@
  */
 package com.palermo.palermo.gameModel;
 
+import com.palermo.palermo.entities.Game;
 import com.palermo.palermo.messageBeans.EndOfGame;
 import com.palermo.palermo.messageBeans.Roles;
 import com.palermo.palermo.messageBeans.Vote;
 import com.palermo.palermo.messageControllers.TableStateController;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,6 +32,8 @@ public class GameTable {
     private boolean gamefinished;
     private boolean gamestarted;
     private String gameid;
+    private String startdatetime;
+    private String enddatetime;
 
     // Key: String user websocket sessiodin  Value: GameUserInTable
     private Map<String, GameUserInTable> usersintable = new HashMap();
@@ -42,6 +46,23 @@ public class GameTable {
         this.intiebreakmode = false;
         this.gamefinished = false;
         this.gamestarted = false;
+        this.startdatetime = LocalDateTime.now().toString();
+    }
+
+    public String getStartdatetime() {
+        return startdatetime;
+    }
+
+    public void setStartdatetime(String startdate) {
+        this.startdatetime = startdate;
+    }
+
+    public String getEnddatetime() {
+        return enddatetime;
+    }
+
+    public void setEnddatetime(String enddate) {
+        this.enddatetime = enddate;
     }
 
     public boolean isGamestarted() {

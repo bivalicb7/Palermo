@@ -5,24 +5,24 @@
  */
 package com.palermo.palermo.gameModel;
 
-import com.palermo.palermo.entities.User;
-import com.palermo.palermo.entities.Userprofile;
+import com.palermo.palermo.entities.Game;
 import com.palermo.palermo.entities.Userprofileview;
+import com.palermo.palermo.entities.Usersingame;
+import com.palermo.palermo.messageBeans.EndOfGame;
 import com.palermo.palermo.messageBeans.NextPhase;
-import com.palermo.palermo.messageBeans.Roles;
 import com.palermo.palermo.messageBeans.TableState;
 import com.palermo.palermo.messageBeans.TieVoteUsers;
 import com.palermo.palermo.messageBeans.Vote;
 import com.palermo.palermo.messageControllers.TableStateController;
 import com.palermo.palermo.messageControllers.TablesInLobbyController;
-import com.palermo.palermo.services.UserProfileService;
+import com.palermo.palermo.services.GameService;
 import com.palermo.palermo.services.UserProfileViewService;
 import com.palermo.palermo.services.UserService;
+import com.palermo.palermo.services.UsersInGameService;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -36,6 +36,10 @@ public class GameMain {
 
     @Autowired
     UserService userService;
+    @Autowired
+    GameService gameService;
+    @Autowired
+    UsersInGameService usersIngameService;
     @Autowired
     UserProfileViewService userProfileViewService;
     @Autowired
@@ -227,7 +231,9 @@ public class GameMain {
                             tableStateController.triggerNextPhase(tableid, new NextPhase("nightkill", returnTableState(tableid)));
                         } else {
                             tableStateController.updateTableState(tableid);
-                            tableStateController.triggerEndOfGame(tableid, table.returnEndOfGame());
+                            EndOfGame endofgame = table.returnEndOfGame();
+                            saveEndedGameInDB(tableid, endofgame);
+                            tableStateController.triggerEndOfGame(tableid, endofgame);
                         }
 
                     } else {
@@ -247,7 +253,9 @@ public class GameMain {
                                 tableStateController.triggerNextPhase(tableid, new NextPhase("nightkill", returnTableState(tableid)));
                             } else {
                                 tableStateController.updateTableState(tableid);
-                                tableStateController.triggerEndOfGame(tableid, table.returnEndOfGame());
+                                EndOfGame endofgame = table.returnEndOfGame();
+                                saveEndedGameInDB(tableid, endofgame);
+                                tableStateController.triggerEndOfGame(tableid, endofgame);
                             }
                             table.setIntiebreakmode(false);
 
@@ -279,7 +287,9 @@ public class GameMain {
                             tableStateController.triggerNextPhase(tableid, new NextPhase("daykill", returnTableState(tableid)));
                         } else {
                             tableStateController.updateTableState(tableid);
-                            tableStateController.triggerEndOfGame(tableid, table.returnEndOfGame());
+                            EndOfGame endofgame = table.returnEndOfGame();
+                            saveEndedGameInDB(tableid, endofgame);
+                            tableStateController.triggerEndOfGame(tableid, endofgame);
                         }
 
                     } else {
@@ -290,7 +300,9 @@ public class GameMain {
                             tableStateController.triggerNextPhase(tableid, new NextPhase("daykill", returnTableState(tableid)));
                         } else {
                             tableStateController.updateTableState(tableid);
-                            tableStateController.triggerEndOfGame(tableid, table.returnEndOfGame());
+                            EndOfGame endofgame = table.returnEndOfGame();
+                            saveEndedGameInDB(tableid, endofgame);
+                            tableStateController.triggerEndOfGame(tableid, endofgame);
                         }
 
                     }
@@ -313,4 +325,29 @@ public class GameMain {
 
     }
 
+    public void saveEndedGameInDB(int tableid, EndOfGame endofgame) {
+        if (!endofgame.isTie()) {
+
+            GameTable table = gametables.get(tableid);
+
+            Game game = new Game();
+
+            game.setGameid(table.getGameid());
+            game.setStartdatetime(table.getStartdatetime());
+            game.setEnddatetime(LocalDateTime.now().toString());
+
+            gameService.addGame(game);
+
+            for (Map.Entry<String, String> entry : endofgame.getWinners().entrySet()) {
+
+                Usersingame usersingame = new Usersingame(table.getUsersintable().get(entry.getKey()).getUserprofileview().getUserid(), table.getGameid());
+                usersingame.setIngamerole(entry.getValue());
+                usersingame.setWon(1);
+
+                usersIngameService.addUserInGame(usersingame);
+            }
+
+        }
+
+    }
 }

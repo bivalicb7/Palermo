@@ -28,8 +28,9 @@ html, body{
     align-content: center;
     display: none;
     position: absolute;
-/*    top: 36%;*/
+    /*    top: 36%;*/
     height: auto;
+    z-index: 10;
 }
 
 .card{
@@ -125,9 +126,9 @@ div.input-group span {
 }
 #moon{
     position:absolute;
-    left:1%;
+    left:15px;
     top:10%;
-    width:60%;
+    width:25%;
     height:60%;
     background:transparent url('/palermo/images/moon.png') no-repeat;
     z-index:6;
@@ -153,11 +154,11 @@ div.input-group span {
     opacity:0;
 }
 #title{
-        top: -5%;
-    left: 4%;
+    top: -5%;
+    left: -14px;
     z-index: 6;
     /*opacity: 1;*/
-    
+
     position: absolute;
     /*left: 40%;*/
     /*top:5%;*/
