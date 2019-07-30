@@ -77,7 +77,16 @@ body {
         <a href="contact">Contact</a>
         <a href="about">About</a>
 
+        <c:if test="${sessionScope.loggedinuser.role eq 'admin'}">
+            <div id="adminmenu">
+                <a href="allusers/showallusers">All users</a>
+                <a href="ongoinggames/showongoinggames">Ongoing games</a>
+            </div>
+        </c:if>
+
         <p>${loggedinuser.username}</p>
+        <a href="logout">Log out</a>
+
 
     </div>
 

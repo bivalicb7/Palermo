@@ -389,6 +389,7 @@ public class GameTable {
             this.intiebreakmode = false;
             this.gamefinished = false;
             this.gamestarted = false;
+            this.startdatetime = LocalDateTime.now().toString();
 
             for (Map.Entry<String, GameUserInTable> entry : usersintable.entrySet()) {
 

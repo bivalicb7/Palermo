@@ -28,35 +28,26 @@ import org.springframework.web.bind.annotation.SessionAttributes;
  */
 @Controller
 @SessionAttributes("loggedinuser")
-@RequestMapping(value = "updateprofile")
-public class UserProfileController {
+@RequestMapping(value = "allusers")
+public class AllUsersController {
 
     @Autowired
     private UserRepo userrepo;
-    @Autowired
-    private UserProfileRepo userprofilerepo;
+
     @Autowired
     private UserProfileService userProfileService;
+    
     @Autowired
     private UserInFinishedGamesService userInFinishedGamesService;
 
-    @RequestMapping(value = "/showmydata", method = RequestMethod.GET)
-    public String showmydata(
-            ModelMap mm,
-            @ModelAttribute("loggedinuser") User user
+    @RequestMapping(value = "/showallusers", method = RequestMethod.GET)
+    public String showAllUsers(
+            ModelMap mm
             ) {
+//        userProfileService
         
-        //Get user profile info
-        Userprofile userprofile = userProfileService.getUserProfileById(user.getUserid());
-        mm.addAttribute("myprofile", userprofile);
         
-        //Get user's finished games
-        List<Userinfinishedgames> finishedgames = userInFinishedGamesService.getUserInFinishedGamesById(user.getUserid());
-        int gameswon = IterableUtils.size(IterableUtils.filteredIterable(finishedgames, game -> game.getWon() == 1));
         
-        mm.addAttribute("finishedgames", finishedgames );
-        mm.addAttribute("gameswon", gameswon );
-        
-        return "userprofile";
+        return "allusers";
     }
 }
