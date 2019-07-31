@@ -96,6 +96,14 @@ function connect() {
         stompClient.subscribe(`/topic/deaduserleftthetable/${tableid}`, function (update) {
             updateAllDeadUsersList(JSON.parse(update.body).content);
         });
+
+        stompClient.subscribe(`/topic/gotbanned/${tableid}`, function (userbanned) {
+            let banned = JSON.parse(userbanned.body).content;
+            if (socketusersessionid == banned) {
+                console.log(banned);
+                disconnect();
+            }
+        });
     });
 
 }
@@ -421,7 +429,9 @@ function checkIfUsersAreaExistsElseDisplay(tablestate) {
     let userstoberemoved = allusers.filter(notincluded);
 
     userstoberemoved.forEach((elem) => {
-        list.removeChild(list.querySelector(`li[usersessionid=${elem}]`));
+        if (socketusersessionid != elem) {
+            list.removeChild(list.querySelector(`li[usersessionid=${elem}]`));
+        }
     });
 
     allusers = newusersarray;
@@ -505,8 +515,8 @@ function checkIfReadyToStart(allusers) {
 }
 
 function triggerNextPhase(typeofphase) {
-    
-    firstround= false;
+
+    firstround = false;
 
     if (typeofphase == "nightkill") {
 
@@ -624,7 +634,7 @@ function endOfGame(endofgame) {
 }
 
 function restartGame() {
-        firstround=true;
+    firstround = true;
 
     document.querySelector("#endingmodalcont").classList.add("hidediv");
     document.querySelector("#killer_chatcontainer").classList.add("hidediv");
@@ -648,17 +658,17 @@ function restartGame() {
 
 function updateAllDeadUsersList(sessionid) {
     let usersleft = [];
-    
+
     if (alldeadusers.includes(sessionid)) {
 
         function notincluded(elem) {
             return elem != sessionid;
         }
         usersleft = alldeadusers.filter(notincluded);
-        
+
         console.log("usersleft: ", usersleft);
     }
-    
+
     alldeadusers = usersleft;
 }
 //Cookie play

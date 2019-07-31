@@ -50,8 +50,12 @@ public class TableStateController {
     public void triggerEndOfGame(int tableid, EndOfGame returnEndOfGame) {
         smp.convertAndSend("/topic/endofgame/" + tableid, returnEndOfGame);
     }
-    
+
     public void deadUserLefttheTable(int tableid, String sessionid) {
         smp.convertAndSend("/topic/deaduserleftthetable/" + tableid, new DeadUser(sessionid));
+    }
+
+    public void sendBan(int tableid, String sessionid) {
+        smp.convertAndSend("/topic/gotbanned/" + tableid, new DeadUser(sessionid));
     }
 }

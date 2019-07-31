@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
  */
 @Controller
 @SessionAttributes("loggedinuser")
-@RequestMapping(value = "updateprofile")
+@RequestMapping(value = "myprofile")
 public class UserProfileController {
 
     @Autowired

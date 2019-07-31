@@ -14,6 +14,13 @@ $(function () {
         connect();
     });
 
+        document.addEventListener("click", function (event) {
+            if(event.target.nodeName == "BUTTON" && event.target.classList.contains("banbutton")) {
+                console.log(event.target.attributes.table_id.value);
+                                sendBan(event.target.value, event.target.attributes.table_id.value);
+            }
+        });
+
 });
 
 function connect() {
@@ -27,6 +34,11 @@ function connect() {
         });
 
     });
+}
+
+function sendBan(sessionid, tableid) {
+   stompClient.send(`/app/vote/ban/${tableid}/${sessionid}`, {}, JSON.stringify({
+    }));
 }
 
 function disconnect() {
@@ -91,10 +103,11 @@ function  displayTable(tablesinlobby, elem) {
         li.innerHTML = `${tablesinlobby.gametablesinlobby[elem].usersintable[userelem].userprofileview.username} ${tablesinlobby.gametablesinlobby[elem].usersintable[userelem].userprofileview.firstname} ${tablesinlobby.gametablesinlobby[elem].usersintable[userelem].userprofileview.lastname} `;
 
         if (userrole == "admin") {
-            var banbutton = document.createElement("a");
+            var banbutton = document.createElement("button");
             banbutton.classList.add("banbutton");
+            banbutton.setAttribute("value", userelem);
+            banbutton.setAttribute("table_id", tablesinlobby.gametablesinlobby[elem].gametableid);
             banbutton.innerHTML = "Ban";
-            banbutton.setAttribute("href", `app/vote/ban/${userelem}`);
             li.appendChild(banbutton);
         }
         userslist.appendChild(li);

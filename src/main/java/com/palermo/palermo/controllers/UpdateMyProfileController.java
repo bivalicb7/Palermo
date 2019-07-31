@@ -47,7 +47,7 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @Controller
 @SessionAttributes("loggedinuser")
-@RequestMapping(value = "myprofile")
+@RequestMapping(value = "updateprofile")
 public class UpdateMyProfileController {
 
     @Autowired
@@ -62,7 +62,7 @@ public class UpdateMyProfileController {
     @Autowired
     ServletContext context;
 
-    @RequestMapping(value = "/showmyprofile", method = RequestMethod.GET)
+    @RequestMapping(value = "/createmyprofile", method = RequestMethod.GET)
     public String showmyprofile(
             ModelMap mm
     ) {
@@ -158,7 +158,7 @@ public class UpdateMyProfileController {
         userprofile.setUserprofileid(user.getUserid());
         userProfileService.addUserProfile(userprofile);
 
-        return "redirect:/updateprofile/showmydata";
+        return "redirect:/myprofile/showmydata";
 
     }
 

@@ -36,7 +36,7 @@
             </c:if>
 
             </br></br>
-            <a href="myprofile/updatemydata">Edit user data</a>
+            <a href="updateprofile/updatemydata">Edit user data</a>
 
 
             <div id="Info">

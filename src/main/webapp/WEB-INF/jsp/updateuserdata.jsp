@@ -57,7 +57,7 @@
 
         </style>
     </head>
-    <body background="/stastic.img/παλερμο4.jpg">
+    <body>
         <c:if test="${loggedinuser.userid eq null}">
             <%@include file="errorpage.jsp"%>
         </c:if>
@@ -66,7 +66,7 @@
 
             <%@ include file="navbar.jsp" %>
             </br>
-            <springForm:form method="post" modelAttribute="myprofile" action ="${pageContext.request.contextPath}/myprofile/addmydata" enctype="multipart/form-data">
+            <springForm:form method="post" modelAttribute="myprofile" action ="${pageContext.request.contextPath}/updateprofile/addmydata" enctype="multipart/form-data">
                 <div id="form">
                     <table>
                         <tr>

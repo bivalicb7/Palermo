@@ -52,7 +52,6 @@
                 <form id="creategamecontainer" action="lobby/startgame">
                 <label for="creategame_seat_total">Choose number of players</label>
                 <select id="creategame_seat_total" name="numofplayers">
-                    <option value=""></option>
                     <option value="6">6</option>
                     <option value="7">7</option>
                     <option value="8">8</option>

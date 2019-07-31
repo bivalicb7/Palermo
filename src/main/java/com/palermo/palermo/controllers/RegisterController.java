@@ -8,6 +8,8 @@ package com.palermo.palermo.controllers;
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import com.palermo.palermo.emailutils.EmailService;
 import com.palermo.palermo.entities.User;
+import com.palermo.palermo.entities.Userprofile;
+import com.palermo.palermo.services.UserProfileService;
 import com.palermo.palermo.services.UserService;
 import com.palermo.palermo.validators.UserRegisterValidator;
 import java.util.UUID;
@@ -38,6 +40,8 @@ public class RegisterController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private UserProfileService userProfileService;
     @Autowired
     private UserRegisterValidator userValidator;
     @Autowired
@@ -91,6 +95,11 @@ public class RegisterController {
             user.setPassword(bcryptHashString);
 
             userService.addUser(user);
+            
+            Userprofile userprofile= new Userprofile();
+            userprofile.setUserprofileid(user.getUserid());
+            userProfileService.addUserProfile(userprofile);
+            
 
             mm.addAttribute("user", user);
             mm.addAttribute("emailsuccess", emailsuccess);

@@ -30,6 +30,8 @@ public class VoteController {
     GameMain gamemain;
     @Autowired
     SimpMessagingTemplate smp;
+    @Autowired
+    TableStateController tableStateController;
 
     @MessageMapping("/vote/readystate/{variable}")
 
@@ -165,9 +167,11 @@ public class VoteController {
         gamemain.resetTableForNewGame(Integer.parseInt(variable));
     }
 
-    @MessageMapping("/vote/ban/{sessionid}")
+    @MessageMapping("/vote/ban/{tableid}/{sessionid}")
 
-    public void banFromTable(@Headers Map headers, @DestinationVariable String sessionid) throws Exception {
+    public void banFromTable(@Headers Map headers, @DestinationVariable String sessionid, @DestinationVariable String tableid) throws Exception {
+        System.out.println("banned " + tableid + " " + sessionid);
         gamemain.removeUserFromTable(sessionid);
+        tableStateController.sendBan(Integer.parseInt(tableid), sessionid);
     }
 }
