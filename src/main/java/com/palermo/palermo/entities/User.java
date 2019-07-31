@@ -191,5 +191,5 @@ public class User implements Serializable {
     public void setActive(Integer active) {
         this.active = active;
     }
-    
+
 }
