@@ -73,7 +73,8 @@ public class RegisterController {
             String text = "Click the following link to confirm your account!";
             String serial = UUID.randomUUID().toString();
             String link = "http://localhost:8080/palermo/register/confirm/" + serial;
-
+            
+            
             emailService.sendSimpleMessage(user.getEmail(), subject, HtmlUtils.htmlEscape(text + " " + link));
 
             user.setRole("plainuser");
@@ -102,15 +103,6 @@ public class RegisterController {
             //add cookie to response
             response.addCookie(cookiewithusername);
 
-//            return "redirect:/myprofile/edit";
-//            SimpleMailMessage registrationEmail = new SimpleMailMessage();
-//            registrationEmail.setTo(user.getEmail());
-//            registrationEmail.setSubject("Registration Confirmation");
-//            registrationEmail.setText("To confirm your e-mail address, please click the link below:\n");
-//            //					+ appUrl + "/confirm?token=" + user.getConfirmationToken());
-//            registrationEmail.setFrom("noreply@domain.com");
-//            modelAndView.addObject("confirmationMessage", "A confirmation e-mail has been sent to " + user.getEmail());
-//            modelAndView.setViewName("register");
             return "redirect:/myprofile/showmyprofile";
         }
     }
