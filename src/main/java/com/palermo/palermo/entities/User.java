@@ -55,6 +55,7 @@ public class User implements Serializable {
     @Column(name = "role")
     private String role;
     // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
+    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
@@ -143,6 +144,12 @@ public class User implements Serializable {
     public void setUsersingameCollection(Collection<Usersingame> usersingameCollection) {
         this.usersingameCollection = usersingameCollection;
     }
+    public Integer getActive() {
+        return active;
+    }
+    public void setActive(Integer active) {
+        this.active = active;
+    }
 
     public String getUsername() {
         return username;
@@ -182,14 +189,6 @@ public class User implements Serializable {
 
     public void setSerial(String serial) {
         this.serial = serial;
-    }
-
-    public Integer getActive() {
-        return active;
-    }
-
-    public void setActive(Integer active) {
-        this.active = active;
     }
 
 }
