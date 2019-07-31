@@ -67,7 +67,6 @@ public class User implements Serializable {
     private Integer active;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private Collection<Usersingame> usersingameCollection;
-
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
     private Userprofile userprofile;
 
@@ -192,5 +191,5 @@ public class User implements Serializable {
     public void setActive(Integer active) {
         this.active = active;
     }
-    
+
 }
