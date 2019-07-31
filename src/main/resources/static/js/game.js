@@ -570,7 +570,6 @@ function clearVotes() {
     });
 }
 
-
 function updateGameFlowInfo(message) {
     document.querySelector("#gameflowinfo textarea").innerHTML = message;
 }

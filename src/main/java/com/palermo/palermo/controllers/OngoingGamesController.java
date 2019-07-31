@@ -28,8 +28,8 @@ import org.springframework.web.bind.annotation.SessionAttributes;
  */
 @Controller
 @SessionAttributes("loggedinuser")
-@RequestMapping(value = "updateprofile")
-public class UserProfileController {
+@RequestMapping(value = "ongoinggames")
+public class OngoingGamesController {
 
     @Autowired
     private UserRepo userrepo;
@@ -40,23 +40,12 @@ public class UserProfileController {
     @Autowired
     private UserInFinishedGamesService userInFinishedGamesService;
 
-    @RequestMapping(value = "/showmydata", method = RequestMethod.GET)
-    public String showmydata(
-            ModelMap mm,
-            @ModelAttribute("loggedinuser") User user
+    @RequestMapping(value = "/showongoinggames", method = RequestMethod.GET)
+    public String showAllUsers(
+            ModelMap mm
             ) {
         
-        //Get user profile info
-        Userprofile userprofile = userProfileService.getUserProfileById(user.getUserid());
-        mm.addAttribute("myprofile", userprofile);
         
-        //Get user's finished games
-        List<Userinfinishedgames> finishedgames = userInFinishedGamesService.getUserInFinishedGamesById(user.getUserid());
-        int gameswon = IterableUtils.size(IterableUtils.filteredIterable(finishedgames, game -> game.getWon() == 1));
-        
-        mm.addAttribute("finishedgames", finishedgames );
-        mm.addAttribute("gameswon", gameswon );
-        
-        return "userprofile";
+        return "ongoinggames";
     }
 }

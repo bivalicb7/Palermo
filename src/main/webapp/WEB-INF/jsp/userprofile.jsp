@@ -23,48 +23,71 @@
     <body id="page">
         <c:if test="${loggedinuser.userid eq null}">
             <%@include file="errorpage.jsp"%>
+        </c:if>
+        <c:if test="${loggedinuser.userid ne null}">
+
+            <%@ include file="navbar.jsp" %>
+            </br>
+            <c:if test="${myprofile.profileimagebase64 ne null}">
+                <img src="data:image/png;base64, ${myprofile.profileimagebase64}"/>
             </c:if>
-            <c:if test="${loggedinuser.userid ne null}">
-            
-        <%@ include file="navbar.jsp" %>
-        </br>
-        <c:if test="${myprofile.profileimagebase64 ne null}">
-            <img src="data:image/png;base64, ${myprofile.profileimagebase64}"/>
-        </c:if>
-        <c:if test="${myprofile.profileimagebase64 eq null}">
-            <img src="images/man-user.png"/>
-        </c:if>
+            <c:if test="${myprofile.profileimagebase64 eq null}">
+                <img src="images/man-user.png"/>
+            </c:if>
 
             </br></br>
             <a href="myprofile/updatemydata">Edit user data</a>
-           
-    
-        <div id="Info">
-            <p>
-                <strong>First Name:</strong>
-                <span>${myprofile.firstname}</span>
-            </p>
-            <p>
-                <strong>Last Name:</strong>
-                <span>${myprofile.lastname}</span>
-            </p>
-            <p>
-                <strong>Date of birth:</strong>
-                <span>${myprofile.dateofbirthday}</span>
-            </p>
-            <p>
-                <strong>Number of wins:</strong>
-                <span type="number"> 10 </span>
-            </p>
-            <p>
-                <strong>Number of losts:</strong>
-                <span type="numner"> 1  </span>
-            </p>
+
+
+            <div id="Info">
+                <p>
+                    <strong>First Name:</strong>
+                    <span>${myprofile.firstname}</span>
+                </p>
+                <p>
+                    <strong>Last Name:</strong>
+                    <span>${myprofile.lastname}</span>
+                </p>
+                <p>
+                    <strong>Date of birth:</strong>
+                    <span>${myprofile.dateofbirthday}</span>
+                </p>
+                <p>
+                    <strong>Number of wins:</strong>
+                    <span type="number"> ${gameswon} </span>
+                </p>
+                <!--                <p>
+                                    <strong>Number of losts:</strong>
+                                    <span type="numner"> 1  </span>
+                                </p>-->
+            </div>
+
+            <div id="gamefinishedcontainer">
+                <c:choose>
+                    <c:when test="${!empty finishedgames}">
+                        <c:forEach  items="${finishedgames}" var="finishedgame">
+                            <div class="gamefinished">
+                                <p class="date">Start date: ${finishedgame.startdatetime}</p>
+                                <p class="date">End date: ${finishedgame.enddatetime}</p>
+                                <c:if test="${finishedgame.won eq 1}">
+                                    <p class="ingamerole"> Won as a: ${finishedgame.ingamerole}</p>
+                                </c:if>
+                            </div>
+                        </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                        <p id="nofinishedgames">There are no finished games!</p>                    
+                    </c:otherwise>
+                </c:choose>
+
+
+            </div>
+
+            <!-- Needed because other elements inside ProfilePage have floats -->
+            <div style="clear:both"></div>
         </div>
-    
-        <!-- Needed because other elements inside ProfilePage have floats -->
-        <div style="clear:both"></div>
-    </div>
-            </c:if>
-    </body>
+    </c:if>
+
+</body>
+
 </html>
