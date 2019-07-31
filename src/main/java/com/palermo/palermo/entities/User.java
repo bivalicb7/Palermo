@@ -6,6 +6,7 @@
 package com.palermo.palermo.entities;
 
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -15,11 +16,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -52,12 +55,18 @@ public class User implements Serializable {
     @Column(name = "role")
     private String role;
     // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
-    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
     @Column(name = "email")
     private String email;
+    @Size(max = 255)
+    @Column(name = "serial")
+    private String serial;
+    @Column(name = "active")
+    private Integer active;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private Collection<Usersingame> usersingameCollection;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
     private Userprofile userprofile;
 
@@ -125,6 +134,16 @@ public class User implements Serializable {
         this.userprofile = userprofile;
     }
 
+
+    @XmlTransient
+    public Collection<Usersingame> getUsersingameCollection() {
+        return usersingameCollection;
+    }
+
+    public void setUsersingameCollection(Collection<Usersingame> usersingameCollection) {
+        this.usersingameCollection = usersingameCollection;
+    }
+
     public String getUsername() {
         return username;
     }
@@ -156,5 +175,21 @@ public class User implements Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
-    
+
+    public String getSerial() {
+        return serial;
+    }
+
+    public void setSerial(String serial) {
+        this.serial = serial;
+    }
+
+    public Integer getActive() {
+        return active;
+    }
+
+    public void setActive(Integer active) {
+        this.active = active;
+    }
+
 }

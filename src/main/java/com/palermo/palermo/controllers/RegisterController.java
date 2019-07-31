@@ -73,45 +73,29 @@ public class RegisterController {
             String text = "Click the following link to confirm your account!";
             String serial = UUID.randomUUID().toString();
             String link = "http://localhost:8080/palermo/register/confirm/" + serial;
-
-            emailService.sendSimpleMessage(user.getEmail(), subject, HtmlUtils.htmlEscape(text + " " + link));
-
+            boolean emailsuccess = false;
+            
+            try {
+                emailService.sendSimpleMessage(user.getEmail(), subject, HtmlUtils.htmlEscape(text + " " + link));
+                emailsuccess = true;
+            } catch (Exception e) {
+                emailsuccess = false;
+            }
+            
             user.setRole("plainuser");
+            user.setSerial(serial);
+            user.setActive(0);
 
             //hash password
             String bcryptHashString = BCrypt.withDefaults().hashToString(12, user.getPassword().toCharArray());
             user.setPassword(bcryptHashString);
 
             userService.addUser(user);
-//            mm.addAttribute("loggedinuser", );
-            User loggedinuser = userService.getUserByUsername(user.getUsername());
-            loggedinuser.setPassword(null);
-            session.setAttribute("loggedinuser", loggedinuser);
 
-            //Add user in cookie
-            // create a cookie
-            Cookie cookie = new Cookie("useridincookie", Integer.toString(loggedinuser.getUserid()));
-            cookie.setPath("/");
-            //add cookie to response
-            response.addCookie(cookie);
+            mm.addAttribute("user", user);
+            mm.addAttribute("emailsuccess", emailsuccess);
 
-            //Add user's username in cookie   
-            // create a cookie
-            Cookie cookiewithusername = new Cookie("usernameincookie", loggedinuser.getUsername());
-            cookie.setPath("/");
-            //add cookie to response
-            response.addCookie(cookiewithusername);
-
-//            return "redirect:/myprofile/edit";
-//            SimpleMailMessage registrationEmail = new SimpleMailMessage();
-//            registrationEmail.setTo(user.getEmail());
-//            registrationEmail.setSubject("Registration Confirmation");
-//            registrationEmail.setText("To confirm your e-mail address, please click the link below:\n");
-//            //					+ appUrl + "/confirm?token=" + user.getConfirmationToken());
-//            registrationEmail.setFrom("noreply@domain.com");
-//            modelAndView.addObject("confirmationMessage", "A confirmation e-mail has been sent to " + user.getEmail());
-//            modelAndView.setViewName("register");
-            return "redirect:/myprofile/showmyprofile";
+            return "register";
         }
     }
 
@@ -120,9 +104,10 @@ public class RegisterController {
             ModelMap mm,
             @PathVariable("serial") String serial
     ) {
-
-        System.out.println(serial);
-//        mm.addAttribute("user", new User());
+        
+        User user = userService.findBySerial(serial);
+        user.setActive(1);
+        userService.addUser(user);
         return "redirect:/index/login";
     }
 

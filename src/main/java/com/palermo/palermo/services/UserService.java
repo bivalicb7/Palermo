@@ -16,26 +16,31 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class UserService {
+
     @Autowired
     private UserRepo userRepo;
 
-    
     public boolean checkIfUsernameExists(String username) {
         return userRepo.existsUserByUsername(username);
     }
-    
+
     public User getUserByUsername(String username) {
         return userRepo.findUserByUsername(username);
     }
-    
+
     public User getUserById(int userid) {
-       return userRepo.findById(userid).get();
+        return userRepo.findById(userid).get();
     }
-     
+
     public void addUser(User user) {
         userRepo.save(user);
     }
+
     public User findByEmail(String email) {
-		return userRepo.findByEmail(email);
-	}
+        return userRepo.findByEmail(email);
+    }
+    
+    public User findBySerial(String serial) {
+        return userRepo.findBySerial(serial);
+    }
 }

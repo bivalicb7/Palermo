@@ -31,21 +31,11 @@ public class VoteController {
     @Autowired
     SimpMessagingTemplate smp;
 
-
     @MessageMapping("/vote/readystate/{variable}")
 
     public void ready(@Headers Map headers, @DestinationVariable String variable) throws Exception {
         String sessionid = headers.get("simpSessionId").toString();
         gamemain.setUserReady(Integer.parseInt(variable), "tmp" + sessionid);
-
-        //TO Be DELETED
-//        gamemain.setUserReady(Integer.parseInt(variable), "tmpa");
-//        gamemain.setUserReady(Integer.parseInt(variable), "tmpb");
-//        gamemain.setUserReady(Integer.parseInt(variable), "tmpc");
-//        gamemain.setUserReady(Integer.parseInt(variable), "tmpd");
-//        gamemain.setUserReady(Integer.parseInt(variable), "e");
-
-        //TO Be DELETED
     }
 
     @MessageMapping("/vote/gamevote/{variable}")
@@ -168,10 +158,16 @@ public class VoteController {
 ////        gamemain.collectVotes(Integer.parseInt(variable), testvote);
 //        //TO Be DELETED
     }
-    
-        @MessageMapping("/vote/reset/{variable}")
+
+    @MessageMapping("/vote/reset/{variable}")
 
     public void resetTable(@Headers Map headers, @DestinationVariable String variable) throws Exception {
         gamemain.resetTableForNewGame(Integer.parseInt(variable));
+    }
+
+    @MessageMapping("/vote/ban/{sessionid}")
+
+    public void banFromTable(@Headers Map headers, @DestinationVariable String sessionid) throws Exception {
+        gamemain.removeUserFromTable(sessionid);
     }
 }

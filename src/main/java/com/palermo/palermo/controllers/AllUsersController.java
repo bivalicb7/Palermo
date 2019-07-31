@@ -8,10 +8,12 @@ package com.palermo.palermo.controllers;
 import com.palermo.palermo.entities.User;
 import com.palermo.palermo.entities.Userinfinishedgames;
 import com.palermo.palermo.entities.Userprofile;
+import com.palermo.palermo.entities.Userprofileview;
 import com.palermo.palermo.repositories.UserProfileRepo;
 import com.palermo.palermo.repositories.UserRepo;
 import com.palermo.palermo.services.UserInFinishedGamesService;
 import com.palermo.palermo.services.UserProfileService;
+import com.palermo.palermo.services.UserProfileViewService;
 import java.util.List;
 import org.apache.commons.collections4.IterableUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,35 +30,26 @@ import org.springframework.web.bind.annotation.SessionAttributes;
  */
 @Controller
 @SessionAttributes("loggedinuser")
-@RequestMapping(value = "updateprofile")
-public class UserProfileController {
+@RequestMapping(value = "allusers")
+public class AllUsersController {
 
     @Autowired
     private UserRepo userrepo;
+
     @Autowired
-    private UserProfileRepo userprofilerepo;
-    @Autowired
-    private UserProfileService userProfileService;
+    private UserProfileViewService userProfileViewService;
+    
     @Autowired
     private UserInFinishedGamesService userInFinishedGamesService;
 
-    @RequestMapping(value = "/showmydata", method = RequestMethod.GET)
-    public String showmydata(
-            ModelMap mm,
-            @ModelAttribute("loggedinuser") User user
+    @RequestMapping(value = "/showallusers", method = RequestMethod.GET)
+    public String showAllUsers(
+            ModelMap mm
             ) {
         
-        //Get user profile info
-        Userprofile userprofile = userProfileService.getUserProfileById(user.getUserid());
-        mm.addAttribute("myprofile", userprofile);
-        
-        //Get user's finished games
-        List<Userinfinishedgames> finishedgames = userInFinishedGamesService.getUserInFinishedGamesById(user.getUserid());
-        int gameswon = IterableUtils.size(IterableUtils.filteredIterable(finishedgames, game -> game.getWon() == 1));
-        
-        mm.addAttribute("finishedgames", finishedgames );
-        mm.addAttribute("gameswon", gameswon );
-        
-        return "userprofile";
+        List<Userprofileview> list = userProfileViewService.getAll();
+        System.out.println(list.toString());
+        mm.addAttribute("allusers",  list);
+        return "allusers";
     }
 }

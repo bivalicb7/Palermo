@@ -6,6 +6,7 @@
 
 var stompClient = null;
 let allexistingtableids = [];
+let userrole = checkCookie("roleincookie");
 
 $(function () {
 
@@ -88,7 +89,16 @@ function  displayTable(tablesinlobby, elem) {
     for (var userelem in tablesinlobby.gametablesinlobby[elem].usersintable) {
         var li = document.createElement("li");
         li.innerHTML = `${tablesinlobby.gametablesinlobby[elem].usersintable[userelem].userprofileview.username} ${tablesinlobby.gametablesinlobby[elem].usersintable[userelem].userprofileview.firstname} ${tablesinlobby.gametablesinlobby[elem].usersintable[userelem].userprofileview.lastname} `;
+
+        if (userrole == "admin") {
+            var banbutton = document.createElement("a");
+            banbutton.classList.add("banbutton");
+            banbutton.innerHTML = "Ban";
+            banbutton.setAttribute("href", `app/vote/ban/${userelem}`);
+            li.appendChild(banbutton);
+        }
         userslist.appendChild(li);
+
 //            console.log(tablesinlobby.gametablesinlobby[elem].usersintable[userelem].user.username);
     }
 
@@ -190,5 +200,31 @@ function checkIfTableIsFull(tableparam) {
 //        fragment.appendChild(divcont);
 //        list.appendChild(fragment);
 //    }
+
+//Cookie play
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
+function checkCookie(cname) {
+    var value = getCookie(cname);
+    if (value != "") {
+        return value;
+    } else {
+        return 0;
+    }
+}
 
 

@@ -9,6 +9,7 @@ import com.palermo.palermo.entities.Userprofile;
 import com.palermo.palermo.entities.Userprofileview;
 import com.palermo.palermo.repositories.UserProfileRepo;
 import com.palermo.palermo.repositories.UserProfileViewRepo;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,8 +22,12 @@ public class UserProfileViewService {
 
     @Autowired
     private UserProfileViewRepo userprofileviewRepo;
-    
+
     public Userprofileview getUserProfileViewById(int userprofileid) {
-       return userprofileviewRepo.findById(userprofileid).get();
+        return userprofileviewRepo.findById(userprofileid).get();
+    }
+
+    public List<Userprofileview> getAll() {
+        return userprofileviewRepo.findAll();
     }
 }
