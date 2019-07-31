@@ -27,6 +27,11 @@
                     <td><springForm:input path="password"/></td> 
                     <td><springForm:errors path="password"/></td> 
                 </tr>
+                <tr>
+                    <td>Email</td>
+                    <td><springForm:input  type="email" path="email"/></td> 
+                    <td><springForm:errors path="email"/></td> 
+                </tr>
             </table>
             <input type="submit">
         </springForm:form>
