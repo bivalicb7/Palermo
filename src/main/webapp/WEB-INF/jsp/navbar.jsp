@@ -3,7 +3,8 @@
     Created on : 9 Ιουλ 2019, 12:22:19 μμ
     Author     : djbil
 --%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+
+ <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
@@ -37,3 +38,4 @@
         <a href="logout">Log out</a>
 </body>
     </div>
+

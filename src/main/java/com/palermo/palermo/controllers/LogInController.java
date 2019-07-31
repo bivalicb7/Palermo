@@ -80,6 +80,13 @@ public class LogInController {
             //add cookie to response
             response.addCookie(cookiewithusername);
             
+            //Add user's role in cookie   
+            // create a cookie
+            Cookie cookiewithrole = new Cookie("roleincookie", loggedinuser.getRole());
+            cookiewithrole.setPath("/");
+            //add cookie to response
+            response.addCookie(cookiewithrole);
+            
             
 //            return "home";
             return "redirect:/lobby/home";

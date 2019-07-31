@@ -32,15 +32,14 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Userprofileview.findByFirstname", query = "SELECT u FROM Userprofileview u WHERE u.firstname = :firstname")
     , @NamedQuery(name = "Userprofileview.findByLastname", query = "SELECT u FROM Userprofileview u WHERE u.lastname = :lastname")})
 public class Userprofileview implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+    
     @Id
     @Basic(optional = false)
-    @NotNull
+    @NotNull()
     @Column(name = "userid")
     private int userid;
     @Basic(optional = false)
-    @NotNull
+    @NotNull()
     @Size(min = 1, max = 45)
     @Column(name = "username")
     private String username;
@@ -50,10 +49,25 @@ public class Userprofileview implements Serializable {
     @Size(max = 100)
     @Column(name = "lastname")
     private String lastname;
+    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
+    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
+    @Basic(optional = false)
+    @NotNull()
+    @Size(min = 1, max = 255)
+    @Column(name = "email")
+    private String email;
+    @Basic(optional = false)
+    @NotNull()
+    @Size(min = 1, max = 45)
+    @Column(name = "role")
+    private String role;
+    @Column(name = "active")
+    private Integer active;
     @Lob
     @Size(max = 16777215)
     @Column(name = "profileimagebase64")
     private String profileimagebase64;
+    private static final long serialVersionUID = 1L;
 
     public Userprofileview() {
     }
@@ -88,6 +102,30 @@ public class Userprofileview implements Serializable {
 
     public void setLastname(String lastname) {
         this.lastname = lastname;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public Integer getActive() {
+        return active;
+    }
+
+    public void setActive(Integer active) {
+        this.active = active;
     }
 
     public String getProfileimagebase64() {
