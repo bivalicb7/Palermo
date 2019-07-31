@@ -23,8 +23,8 @@
 <body>
     <div class="topnav">
         <a href="lobby/home">Lobby</a>
-        <a href="myprofile/showmyprofile">Update my data</a>
-        <a href="updateprofile/showmydata">My profile</a>
+        <a href="updateprofile/createmyprofile">Update my data</a>
+        <a href="myprofile/showmydata">My profile</a>
         <a href="contact">Contact</a>
         <a href="about">About</a>
 

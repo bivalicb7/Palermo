@@ -383,7 +383,7 @@ function checkIfUsersAreaExistsElseDisplay(tablestate) {
                 socketusersessionid = elem;
 
                 //Check if image is null in case default avatar needs to be displayed
-                if (tablestate.usersintable[elem].userprofileview.profileimagebase64 != "") {
+                if (tablestate.usersintable[elem].userprofileview.profileimagebase64 != null) {
                     document.querySelector("#userinpageseat img").setAttribute("src", `data:image/png;base64, ${tablestate.usersintable[elem].userprofileview.profileimagebase64}`);
                 } else {
                     document.querySelector("#userinpageseat img").setAttribute("src", "images/man-user.png");
