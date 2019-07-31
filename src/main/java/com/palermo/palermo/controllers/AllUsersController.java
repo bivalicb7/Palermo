@@ -8,10 +8,12 @@ package com.palermo.palermo.controllers;
 import com.palermo.palermo.entities.User;
 import com.palermo.palermo.entities.Userinfinishedgames;
 import com.palermo.palermo.entities.Userprofile;
+import com.palermo.palermo.entities.Userprofileview;
 import com.palermo.palermo.repositories.UserProfileRepo;
 import com.palermo.palermo.repositories.UserRepo;
 import com.palermo.palermo.services.UserInFinishedGamesService;
 import com.palermo.palermo.services.UserProfileService;
+import com.palermo.palermo.services.UserProfileViewService;
 import java.util.List;
 import org.apache.commons.collections4.IterableUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +37,7 @@ public class AllUsersController {
     private UserRepo userrepo;
 
     @Autowired
-    private UserProfileService userProfileService;
+    private UserProfileViewService userProfileViewService;
     
     @Autowired
     private UserInFinishedGamesService userInFinishedGamesService;
@@ -44,10 +46,10 @@ public class AllUsersController {
     public String showAllUsers(
             ModelMap mm
             ) {
-//        userProfileService
         
-        
-        
+        List<Userprofileview> list = userProfileViewService.getAll();
+        System.out.println(list.toString());
+        mm.addAttribute("allusers",  list);
         return "allusers";
     }
 }

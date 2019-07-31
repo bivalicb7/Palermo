@@ -19,6 +19,50 @@
         <title>All users</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <%@ include file="navbar.jsp" %>
+
+        <h1>All users</h1>
+        <c:choose>
+            <c:when test="${!empty allusers}">
+                <table>
+                    <thead>
+                        <tr>
+                            <td >Profile picture</td>
+                            <td >User id</td>
+                            <td >Username</td>
+                            <td >First Name</td>
+                            <td >Last Name</td>
+                            <td >Email</td>
+                            <td >Role</td>
+                            <td >Account status</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <c:forEach items="${allusers}" var="user">
+                            <tr>
+                                <c:choose>
+                                    <c:when test="${user.profileimagebase64 != null}">
+                                        <td ><img src="data:image/png;base64, ${user.profileimagebase64}" alt="profile pic"/></td>
+                                        </c:when>    
+                                        <c:otherwise>
+                                        <td ><img src="images/man-user.png" alt="profile pic"/></td>
+                                        </c:otherwise>
+                                    </c:choose>
+
+                                <td >${user.userid}</td>
+                                <td >${user.username}</td>
+                                <td >${user.firstname}</td>
+                                <td >${user.lastname}</td>
+                                <td >${user.email}</td>
+                                <td >${user.role}</td>
+                            </tr>
+                        </c:forEach>
+                    </tbody>
+                </table>
+            </c:when>
+            <c:otherwise>
+                <p id="nousers">No users at the moment</p>                    
+            </c:otherwise>
+        </c:choose>
     </body>
 </html>
