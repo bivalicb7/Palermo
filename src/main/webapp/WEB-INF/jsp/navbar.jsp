@@ -39,10 +39,7 @@
             <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" />
             <img alt="" border="0" src="https://www.sandbox.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1" />
         </form>
-<!--        <form action="instruction.jsp" method="get" 
-            <input type="hidden" name="cmd" value="_s-xclick" />
-            <input type="hidden" name="buttoninstruction" value="CM6S52A42ZU58" />
-        </form>-->
+
         <p>${loggedinuser.username}</p>
         <a href="logout">Log out</a>
 </body>

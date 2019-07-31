@@ -47,8 +47,8 @@
                         <
                     </div>
                      <div class="card-body">
-                        <springForm:form method="post" modelAttribute="user"
-                                         action="${pageContext.request.contextPath}/index/dologin">
+                         <springForm:form method="post" modelAttribute="user" action="register/docreateaccount">
+
                             <div class="input-group form-group">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fas fa-user"></i></span>
