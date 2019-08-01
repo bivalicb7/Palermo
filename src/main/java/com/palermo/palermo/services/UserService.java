@@ -43,4 +43,8 @@ public class UserService {
     public User findBySerial(String serial) {
         return userRepo.findBySerial(serial);
     }
+    
+    public void delete(int userid) {
+        userRepo.deleteById(userid);
+    }
 }

@@ -24,6 +24,13 @@ public class ProductServiceInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
+//        if (!request.getRequestURI().contains("index")
+//                || !request.getRequestURI().contains("register")                
+//                || !request.getRequestURI().contains("css")                
+//                || !request.getRequestURI().contains("js")                
+//                || !request.getRequestURI().contains("images")                
+//                || !request.getRequestURI().equals("/palermo/")
+//                ) {
         if (!request.getRequestURI().startsWith("/palermo/index")
                 && !request.getRequestURI().startsWith("/palermo/register")
                 && !request.getRequestURI().startsWith("/palermo/css")

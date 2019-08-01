@@ -17,13 +17,12 @@
 
 <!DOCTYPE html>
 <html>
-   <head>
+    <head>
         <base href="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/" />
 
         <!--<link href="webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">-->
         <script src="webjars/jquery/jquery.min.js"></script>
         <link href="css/register.css" rel="stylesheet">
-        <script src="js/register.js"></script>
 
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 
@@ -40,54 +39,54 @@
     </head>
     <div class="container">
         <img src="/palermo/images/title.png">
-            <div class="d-flex justify-content-center h-100">
-                <div class="card">
-                    <div class="card-header">
-                        <h3 align="center">Sign Up</h3>
-                        <
-                    </div>
-                     <div class="card-body">
-                         <springForm:form method="post" modelAttribute="user" action="register/docreateaccount">
-
-                            <div class="input-group form-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fas fa-user"></i></span>
-                                </div>
-                                <springForm:input path="username" type="text" class="form-control" placeholder="enter a username"/>
-                                <springForm:errors path="username" />
-
-                            </div>
-                            <div class="input-group form-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fas fa-unlock"></i></span>
-                                </div>
-                                <springForm:input path="password" type="password" class="form-control" placeholder="enter a password"/>
-                                <springForm:errors path="password" />
-                            </div>
-                            <div class="input-group form-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fas fa-unlock"></i></span>
-                                </div>
-                                <input path="password" name="confirm password" type="password" class="form-control" placeholder="enter a password"/>
-                                <springForm:errors path="password" />
-                            </div>
-                            <div class="input-group form-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fas fa-user"></i></span>
-                                </div>
-                                <springForm:input path="email" type="email" class="form-control" placeholder="enter your email"/>
-                                <springForm:errors path="username" />
-
-                            </div>
-
-                            <div class="form-group">
-                                <input type="submit" value="Sign Up" class="btn float-right login_btn">
-                            </div>
-                        </springForm:form>
-                    </div>
-<!--                    
+        <div class="d-flex justify-content-center h-100">
+            <div class="card">
+                <div class="card-header">
+                    <h3 align="center">Sign Up</h3>
+                    <
                 </div>
+                <div class="card-body">
+                    <springForm:form method="post" modelAttribute="user" action="register/docreateaccount">
+
+                        <div class="input-group form-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            </div>
+                            <springForm:input path="username" type="text" class="form-control" placeholder="enter a username"/>
+                            <springForm:errors path="username" />
+
+                        </div>
+                        <div class="input-group form-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-unlock"></i></span>
+                            </div>
+                            <springForm:input path="password" type="password" class="form-control" placeholder="enter a password"/>
+                            <springForm:errors path="password" />
+                        </div>
+                        <div class="input-group form-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-unlock"></i></span>
+                            </div>
+                            <input path="password" name="confirm password" type="password" class="form-control" placeholder="enter a password"/>
+                            <springForm:errors path="password" />
+                        </div>
+                        <div class="input-group form-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            </div>
+                            <springForm:input path="email" type="email" class="form-control" placeholder="enter your email"/>
+                            <springForm:errors path="username" />
+
+                        </div>
+
+                        <div class="form-group">
+                            <input type="submit" value="Sign Up" class="btn float-right login_btn">
+                        </div>
+                    </springForm:form>
+                </div>                 
             </div>
         </div>
-    </body>
+    </div>
+</body>
+<script src="js/register.js"></script>
 </html>
