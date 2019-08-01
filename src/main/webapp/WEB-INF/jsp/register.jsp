@@ -27,6 +27,62 @@
               integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Register</title>
+<!--        <script type="text/javascript">
+
+            function checkForm(form)
+            {
+                if (form.username.value == "") {
+                    alert("Error: Username cannot be blank!");
+                    form.username.focus();
+                    return false;
+                }
+                re = /^\w+$/;
+                if (!re.test(form.username.value)) {
+                    alert("Error: Username must contain only letters, numbers and underscores!");
+                    form.username.focus();
+                    return false;
+                }
+
+                if (form.pwd1.value != "" && form.pwd1.value == form.pwd2.value) {
+                    if (form.pwd1.value.length < 6) {
+                        alert("Error: Password must contain at least six characters!");
+                        form.pwd1.focus();
+                        return false;
+                    }
+                    if (form.pwd1.value == form.username.value) {
+                        alert("Error: Password must be different from Username!");
+                        form.pwd1.focus();
+                        return false;
+                    }
+                    re = /[0-9]/;
+                    if (!re.test(form.pwd1.value)) {
+                        alert("Error: password must contain at least one number (0-9)!");
+                        form.pwd1.focus();
+                        return false;
+                    }
+                    re = /[a-z]/;
+                    if (!re.test(form.pwd1.value)) {
+                        alert("Error: password must contain at least one lowercase letter (a-z)!");
+                        form.pwd1.focus();
+                        return false;
+                    }
+                    re = /[A-Z]/;
+                    if (!re.test(form.pwd1.value)) {
+                        alert("Error: password must contain at least one uppercase letter (A-Z)!");
+                        form.pwd1.focus();
+                        return false;
+                    }
+                } else {
+                    alert("Error: Please check that you've entered and confirmed your password!");
+                    form.pwd1.focus();
+                    return false;
+                }
+
+                alert("You entered a valid password: " + form.pwd1.value);
+                return true;
+            }
+
+        </script>-->
     </head>
     <div class="container">
         <img src="/palermo/images/title.png">
@@ -37,39 +93,42 @@
                     <
                 </div>
                 <div class="card-body">
-                    <springForm:form method="post" modelAttribute="user" action="register/docreateaccount">
-                        <div class="input-group form-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                    <!--<form  onsubmit="return checkForm(this);">-->
+                        <springForm:form method="post" modelAttribute="user" action="register/docreateaccount">
+                            <div class="input-group form-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                </div>
+                                <springForm:input path="username" type="text" class="form-control" placeholder="enter a username"/>
+                                <springForm:errors path="username" />
                             </div>
-                            <springForm:input path="username" type="text" class="form-control" placeholder="enter a username"/>
-                            <springForm:errors path="username" />
-                        </div>
-                        <div class="input-group form-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fas fa-unlock"></i></span>
+                            <div class="input-group form-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fas fa-unlock"></i></span>
+                                </div>
+                                <springForm:input path="password" type="password" class="form-control" placeholder="enter a password"/>
+                                <springForm:errors path="password" />
                             </div>
-                            <springForm:input path="password" type="password" class="form-control" placeholder="enter a password"/>
-                            <springForm:errors path="password" />
-                        </div>
-                        <div class="input-group form-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fas fa-unlock"></i></span>
+                            <div class="input-group form-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fas fa-unlock"></i></span>
+                                </div>
+                                <!--<input path="passwordconfirm" name="confirm password" type="password" class="form-control" placeholder="enter a password"/>-->
+                                <springForm:input path="passwordconfirm" type="password" class="form-control" placeholder="retype password"/>
+                                <springForm:errors path="passwordconfirm" />
                             </div>
-                            <input path="password" name="confirm password" type="password" class="form-control" placeholder="enter a password"/>
-                            <springForm:errors path="passwordconfirm" />
-                        </div>
-                        <div class="input-group form-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            <div class="input-group form-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                </div>
+                                <springForm:input path="email" type="email" class="form-control" placeholder="enter your email"/>
+                                <springForm:errors path="email" />
                             </div>
-                            <springForm:input path="email" type="email" class="form-control" placeholder="enter your email"/>
-                            <springForm:errors path="email" />
-                        </div>
-                        <div class="form-group">
-                            <input type="submit" value="Sign Up" class="btn float-right login_btn">
-                        </div>
-                    </springForm:form>
+                            <div class="form-group">
+                                <input type="submit" value="Sign Up" class="btn float-right login_btn">
+                            </div>
+                        </springForm:form>
+                    <!--</form>-->
                 </div>                 
             </div>
         </div>
