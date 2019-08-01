@@ -76,7 +76,7 @@
                                     <span class="input-group-text"><i class="fas fa-user"></i></span>
                                 </div>
                                 <springForm:input path="email" type="email" class="form-control" placeholder="enter your email"/>
-                                <springForm:errors path="username" />
+                                <springForm:errors path="email" />
 
                             </div>
 

@@ -32,6 +32,11 @@ public class UserRegisterValidator implements Validator {
         boolean check = userService.checkIfUsernameExists(user.getUsername());
         if (check) {
             errors.rejectValue("username", "username.unique");
-        }    }
+        } 
+        boolean checkEmail= userService.checkIfEmailExists(user.getEmail());
+        if (checkEmail) {
+            errors.rejectValue("email", "email.unique");
+        }
+    }
     
 }

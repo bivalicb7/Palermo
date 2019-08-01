@@ -43,4 +43,7 @@ public class UserService {
     public User findBySerial(String serial) {
         return userRepo.findBySerial(serial);
     }
+     public boolean checkIfEmailExists(String email) {
+        return userRepo.existsUserByEmail(email);
+    }
 }
