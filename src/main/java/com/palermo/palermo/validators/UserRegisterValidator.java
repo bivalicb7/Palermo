@@ -37,6 +37,15 @@ public class UserRegisterValidator implements Validator {
         if (checkEmail) {
             errors.rejectValue("email", "email.unique");
         }
+       
+//        if (!user.getPassword().equals(user.getPasswordconfirm())){
+//            errors.rejectValue("passwordconfirm","password.not.match");
+//        }
+    String pass1=user.getPassword();
+    String pass2=user.getPasswordconfirm();
+    if(!pass1.equals(pass2)){
+    errors.rejectValue("passwordconfirm","password.not.match");
+    } 
     }
     
 }

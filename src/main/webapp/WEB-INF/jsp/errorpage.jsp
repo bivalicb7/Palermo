@@ -118,22 +118,19 @@ figcaption span {
 	<div class="sad-mac"></div>
 	<figcaption>
 		<span class="sr-text"></span>
+		<span class="i"></span>
+		<span class="n"></span>
+		<span class="a"></span>
+		<span class="c"></span>
+		<span class="t"></span>
+		<span class="i"></span>
+		<span class="v"></span>
+		<span class="e"></span>
+		<span class="u"></span>
+		<span class="s"></span>
 		<span class="e"></span>
 		<span class="r"></span>
-		<span class="r"></span>
-		<span class="o"></span>
-		<span class="r"></span>
-		<span class="_4"></span>
-		<span class="_0"></span>
-		<span class="_4"></span>
-		<span class="n"></span>
-		<span class="o"></span>
-		<span class="t"></span>
-		<span class="f"></span>
-		<span class="o"></span>
-		<span class="u"></span>
-		<span class="n"></span>
-		<span class="d"></span>
+		
 	</figcaption>
 </figure>
         
