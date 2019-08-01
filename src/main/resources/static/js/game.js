@@ -100,7 +100,7 @@ function connect() {
         stompClient.subscribe(`/topic/gotbanned/${tableid}`, function (userbanned) {
             let banned = JSON.parse(userbanned.body).content;
             if (socketusersessionid == banned) {
-                console.log(banned);
+                alert("You have been banned from this table by the administrator");
                 disconnect();
             }
         });
@@ -399,7 +399,7 @@ function checkIfUsersAreaExistsElseDisplay(tablestate) {
                 imgcontainer.setAttribute("class", "imgcontainer");
                 var img = document.createElement("img");
 
-                if (tablestate.usersintable[elem].userprofileview.profileimagebase64 != "") {
+                if (tablestate.usersintable[elem].userprofileview.profileimagebase64 != null) {
                     img.setAttribute("src", `data:image/png;base64, ${tablestate.usersintable[elem].userprofileview.profileimagebase64}`);
                 } else {
                     img.setAttribute("src", "images/man-user.png");

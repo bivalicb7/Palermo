@@ -10,9 +10,13 @@ package com.palermo.palermo.controllers;
 import com.palermo.palermo.entities.User;
 import com.palermo.palermo.gameModel.GameMain;
 import com.palermo.palermo.gameModel.GameTable;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.endpoint.EndpointsSupplier;
@@ -33,6 +37,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
  * @author Los_e
  */
 @Controller
+@SessionAttributes("loggedinuser")
 @RequestMapping(value = "lobby")
 //@SessionAttributes("loggedinuser")
 
@@ -40,6 +45,9 @@ public class LobbyController {
 
     @Autowired
     GameMain gamemain;
+
+    @Autowired
+    LogInController logInController;
 
     @RequestMapping(value = "/home", method = RequestMethod.GET)
     public String showLobby(ModelMap mm) {

@@ -14,12 +14,12 @@ $(function () {
         connect();
     });
 
-        document.addEventListener("click", function (event) {
-            if(event.target.nodeName == "BUTTON" && event.target.classList.contains("banbutton")) {
-                console.log(event.target.attributes.table_id.value);
-                                sendBan(event.target.value, event.target.attributes.table_id.value);
-            }
-        });
+    document.addEventListener("click", function (event) {
+        if (event.target.nodeName == "BUTTON" && event.target.classList.contains("banbutton")) {
+            console.log(event.target.attributes.table_id.value);
+            sendBan(event.target.value, event.target.attributes.table_id.value);
+        }
+    });
 
 });
 
@@ -37,7 +37,7 @@ function connect() {
 }
 
 function sendBan(sessionid, tableid) {
-   stompClient.send(`/app/vote/ban/${tableid}/${sessionid}`, {}, JSON.stringify({
+    stompClient.send(`/app/vote/ban/${tableid}/${sessionid}`, {}, JSON.stringify({
     }));
 }
 
@@ -151,7 +151,16 @@ function updateUsersInTable(tablesinlobby, id) {
         ++numofusers;
         var li = document.createElement("li");
         li.innerHTML = `${tablesinlobby.gametablesinlobby[id].usersintable[userelem].userprofileview.username} ${tablesinlobby.gametablesinlobby[id].usersintable[userelem].userprofileview.firstname} ${tablesinlobby.gametablesinlobby[id].usersintable[userelem].userprofileview.lastname} `;
-
+       
+        if (userrole == "admin") {
+            var banbutton = document.createElement("button");
+            banbutton.classList.add("banbutton");
+            banbutton.setAttribute("value", userelem);
+            banbutton.setAttribute("table_id", tablesinlobby.gametablesinlobby[id].gametableid);
+            banbutton.innerHTML = "Ban";
+            li.appendChild(banbutton);
+        }
+        
         if (!usernames.includes(li.innerHTML)) {
             li.classList.add("userentrance");
         }
@@ -176,43 +185,6 @@ function checkIfTableIsFull(tableparam) {
         }
     }
 }
-
-//function showTables(tablesinlobby) {
-//
-////    console.log(tablesinlobby);
-//    var list = document.querySelector("#tableslist");
-//    list.innerHTML = "";
-//    var fragment = document.createDocumentFragment();
-//    for (var elem in tablesinlobby.gametablesinlobby) {
-//        var divcont = document.createElement("div");
-//        divcont.setAttribute("id", "tablecontainer");
-//        divcont.setAttribute("style", "border: 3px solid black; width: auto; margin: 10px;");
-//
-//        var tableid = document.createElement("p");
-//        tableid.innerHTML = `Table id: ${tablesinlobby.gametablesinlobby[elem].gametableid}`;
-//        var numofusers = document.createElement("p");
-//        numofusers.innerHTML = `Num of users: ${Object.keys(tablesinlobby.gametablesinlobby[elem].usersintable).length}`;
-//        var userslist = document.createElement("ul");
-////        li.innerHTML = tablestate.usersintable[elem].user.username;
-//
-//        for (var userelem in tablesinlobby.gametablesinlobby[elem].usersintable) {
-//            var li = document.createElement("li");
-//            li.innerHTML = tablesinlobby.gametablesinlobby[elem].usersintable[userelem].user.username;
-//            userslist.appendChild(li);
-////            console.log(tablesinlobby.gametablesinlobby[elem].usersintable[userelem].user.username);
-//        }
-//
-//        var jointablelink = document.createElement("a");
-//        jointablelink.innerHTML = "Join table";
-//        jointablelink.setAttribute("href", `joingame?tableid=${tablesinlobby.gametablesinlobby[elem].gametableid}`);
-//
-//        divcont.appendChild(tableid);
-//        divcont.appendChild(numofusers);
-//        divcont.appendChild(userslist);
-//        divcont.appendChild(jointablelink);
-//        fragment.appendChild(divcont);
-//        list.appendChild(fragment);
-//    }
 
 //Cookie play
 

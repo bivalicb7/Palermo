@@ -18,7 +18,8 @@
 	padding: 0;
 }
 body {
-	background: currentColor;
+	background: black;
+        color: white;
 }
 /* I. Containers */
 figure {
@@ -112,10 +113,11 @@ figcaption span {
         </style>
     </head>
     <body>
+        <h1>You need to activate your account!</h1>
         <figure>
 	<div class="sad-mac"></div>
 	<figcaption>
-		<span class="sr-text">Error 404: Not Found</span>
+		<span class="sr-text"></span>
 		<span class="e"></span>
 		<span class="r"></span>
 		<span class="r"></span>
