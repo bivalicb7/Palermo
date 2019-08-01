@@ -51,6 +51,8 @@ body {
 
 
 #gamecontainer {
+    position: relative;
+    justify-content: center;
     display: flex;
     flex-wrap: wrap;
     width: 95%;

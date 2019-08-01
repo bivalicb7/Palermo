@@ -1,0 +1,62 @@
+.phasecontainer {
+
+    position: absolute;
+    width: 90%;
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+}
+
+.phasecontainer .imgpic{
+
+    width: 25%;
+    height: auto;
+}
+
+.phasecontainer .imgpic{
+    position: relative;
+    animation-name: imgpic;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out;
+    animation-duration: 6s;
+}
+
+.phasecontainer .imgtext{
+    display: none;
+    position: relative;
+    /* animation-name: imgtext; */
+    /* animation-fill-mode: forwards; */
+    /* animation-timing-function: ease-in-out; */
+    /* animation-duration: 8s; */
+    z-index: 1;
+}
+@keyframes imgpic{
+    0% {
+        left: -20%;
+      }
+
+    50% {
+        left: 40%;
+      }
+
+      100% {
+        left: 101%;
+      }
+    }
+
+@keyframes imgtext{
+    0% {
+      }
+    /* /* 40% {
+        left: 40%;
+      } */
+    50% {
+        animation-name: bounce;
+      }
+    /* 60% {
+        left: 60%;
+      } */
+      100% {
+      }
+    }

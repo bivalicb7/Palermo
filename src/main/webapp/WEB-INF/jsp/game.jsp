@@ -20,10 +20,13 @@
         <base href="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/" />
         <link href="webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
         <link href="css/game.css" rel="stylesheet">
+        <link href="css/phase.css" rel="stylesheet">
+        <link href="css/animate.css" rel="stylesheet">
         <script src="webjars/jquery/jquery.min.js"></script>
         <script src="webjars/sockjs-client/sockjs.min.js"></script>
         <script src="webjars/stomp-websocket/stomp.min.js"></script>
         <script src="js/game.js"></script>
+        <script src="js/phase.js"></script>
     </head>
     <body>
         <c:if test="${loggedinuser.userid eq null}">

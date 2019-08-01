@@ -523,13 +523,16 @@ function triggerNextPhase(typeofphase) {
         if (ingamerole == "hiddenkiller" || ingamerole == "nothiddenkiller") {
             showKillersChatAndSubscribe();
             let message = document.querySelector("#gameflowinfo textarea").innerHTML;
+            showPhase("night");
             updateGameFlowInfo(message + "\nNight has fallen! You get to kill one person. \n Beware that if you don't vote for the same person, your chance is lost.");
         } else {
             let message = document.querySelector("#gameflowinfo textarea").innerHTML;
+            showPhase("night");
             updateGameFlowInfo(message + "\nWait while killers pick their kill...");
         }
     } else if (typeofphase == "daykill") {
         let message = document.querySelector("#gameflowinfo textarea").innerHTML;
+        showPhase("day");
         updateGameFlowInfo(message + "\nA new day has started. ");
         resetTableForNewRound();
 

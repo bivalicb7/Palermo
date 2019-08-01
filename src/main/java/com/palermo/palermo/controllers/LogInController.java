@@ -58,7 +58,7 @@ public class LogInController {
             @Valid @ModelAttribute("user") User user,
             BindingResult br
     ) {
-        
+                
         if (br.hasErrors()) {
             return "login";
         } else {
