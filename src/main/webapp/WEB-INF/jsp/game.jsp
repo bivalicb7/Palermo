@@ -27,6 +27,7 @@
         <script src="webjars/stomp-websocket/stomp.min.js"></script>
         <script src="js/game.js"></script>
         <script src="js/phase.js"></script>
+        <script src="js/countdown.js"></script>
     </head>
     <body>
         <c:if test="${loggedinuser.userid eq null}">

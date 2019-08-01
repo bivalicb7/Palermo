@@ -36,8 +36,6 @@
 
 
             <%@ include file="navbar.jsp" %>
-            <h1>Userid = ${loggedinuser.userid}</h1>
-            <h1>Username = ${sessionScope.loggedinuser.username}</h1>
 
             <div id="tableslist"></div>
 

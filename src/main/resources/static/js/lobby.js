@@ -86,7 +86,7 @@ function  displayTable(tablesinlobby, elem) {
     var divcont = document.createElement("div");
     divcont.classList.add("tableentrance", "tablecontainer");
     divcont.setAttribute("id", `table_id${tablesinlobby.gametablesinlobby[elem].gametableid}`);
-    divcont.setAttribute("style", "border: 3px solid black; width: auto; margin: 0 10px 10px 10px;");
+//    divcont.setAttribute("style", "border: 3px solid black; width: auto; margin: 0 10px 10px 10px;");
 
     var numberofseats = document.createElement("p");
     numberofseats.classList.add("numberofseats");
