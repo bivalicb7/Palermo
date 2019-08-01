@@ -57,7 +57,7 @@
                                 <span class="input-group-text"><i class="fas fa-unlock"></i></span>
                             </div>
                             <input path="password" name="confirm password" type="password" class="form-control" placeholder="enter a password"/>
-                            <springForm:errors path="password" />
+                            <springForm:errors path="passwordconfirm" />
                         </div>
                         <div class="input-group form-group">
                             <div class="input-group-prepend">
