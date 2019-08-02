@@ -150,7 +150,7 @@ function updateUsersInTable(tablesinlobby, id) {
     for (var userelem in tablesinlobby.gametablesinlobby[id].usersintable) {
         ++numofusers;
         var li = document.createElement("li");
-        li.innerHTML = `${tablesinlobby.gametablesinlobby[id].usersintable[userelem].userprofileview.username} ${tablesinlobby.gametablesinlobby[id].usersintable[userelem].userprofileview.firstname} ${tablesinlobby.gametablesinlobby[id].usersintable[userelem].userprofileview.lastname} `;
+        li.innerHTML = `${tablesinlobby.gametablesinlobby[id].usersintable[userelem].userprofileview.username} `;
        
         if (userrole == "admin") {
             var banbutton = document.createElement("button");

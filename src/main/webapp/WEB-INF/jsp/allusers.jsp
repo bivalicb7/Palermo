@@ -16,6 +16,7 @@
     <head>
         <base href="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/" />
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link href="css/allusers.css" rel="stylesheet">
         <title>All users</title>
     </head>
     <body>

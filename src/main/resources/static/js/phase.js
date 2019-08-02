@@ -17,8 +17,6 @@ function showPhase(typeofphase) {
         span.setAttribute("id", "countdown");
         span.innerHTML = "5";
         div.appendChild(span);
-        
-        
     } 
 
     if (imgpic.hasAttribute("src")) {
@@ -67,7 +65,7 @@ function showPhase(typeofphase) {
         if (event.animationName == "bounceInUp") {
             setTimeout(function () {
                 document.querySelector(".imgtext").classList.add("bounceOutUp");
-            }, 10000);
+            }, 3000);
         }
 
         if (event.animationName == "bounceOutUp") {

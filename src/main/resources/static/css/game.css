@@ -101,6 +101,7 @@ body {
     justify-content: center;
     list-style: none;
     background-image: url("/palermo/images/grunge.jpg");
+    overflow-y: scroll;
 }
 
 /* Seat */
@@ -167,7 +168,7 @@ body {
 }
 
 #userinpageseat p {
-margin: 0;
+    margin: 0;
 }
 
 .userinpageimgcontainer {
@@ -231,9 +232,9 @@ margin: 0;
 }
 
 #votesoutreceived {
-        width: 100%;
-        display: flex;
-        flex-wrap: wrap;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 
@@ -493,7 +494,7 @@ margin: 0;
     width: 10px;
     height: 10px;
     background-color: red;
-    z-index: 2;
+    /*z-index: 1;*/
     border-radius: 5px;
 }
 
@@ -533,28 +534,36 @@ margin: 0;
 }
 
 #endingmodal { 
-        background-image: url("/palermo/images/grunge.jpg");
-
+    background-image: url("/palermo/images/grunge.jpg");
+    justify-content: center;
     display: flex;
     flex-wrap: wrap;
     background-color: white;
     width: 50%;
-height: auto;
-position: relative;
-    top: 10%;
+    height: 80%;
+    position: relative;
+    /*top: 10%;*/
+    padding: 20px;
+    border-radius: 10px;
+    z-index: 20;
+    overflow-y: scroll;
+
 }
 
 #endheader, #endresult {
     display: flex;
     flex-wrap: wrap;
-    background-color: white;
-    width: 50%;
-    height: 50%;
+    /*background-color: white;*/
+    width: 100%;
+    /*height: 50%;*/
+    color: white;
+    font-size: large;
+    font-weight: 900;
 }
 
 #endresultuserslist {
     width: 100%;
-    height: 70%;
+    /*height: 70%;*/
     margin: 0;
     list-style: none;
     padding: 20px;
@@ -566,22 +575,80 @@ position: relative;
 #endresultuserslist li {
     display: flex;
     flex-wrap: wrap;
-    width: 50%;
+    width: 100%;
+    justify-content: space-around;
+    align-items: center;
+    border: 3px solid white;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.imgcontainer {
+    width: 30%;
+    height: 100%;
+}
+
+.imgcontainer img{
+    width: 100%;
+    height: auto;
+}
+
+#endresultuserslist p {
+    margin: 0;
+    width:30%;
+    text-align: center;
+    color: white;
+    font-size: large;
+    font-weight: 900;
+
 }
 
 .winnerrole {
-        /*width: 50%;*/
+    /*width: 50%;*/
 }
 
+#replaybutton {
+    font-size: 15px !important;
+    /*margin-top: 10px;*/
+    margin-left: 10%;
+    margin-right: 10%;
+    /* display: inline-block; */
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+    color: white;
+    /* background-color: darkred; */
+    width: max-content;
+    text-decoration: none;
+    /*height: max-content;*/
+    background: #8E0E00;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #1F1C18, #8E0E00);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #1F1C18, #8E0E00); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+#endingmodal .userinpageimgcontainer {
+    width: 30%;
+    height: 100%;
+}
+
+#endingmodal .userinpageimgcontainer img {
+    width: 100%;
+    height: auto;
+}
 .userinpageimgcontainer {
-        width: 50%;
+    width: 50%;
     height: 50%;
     margin: 0;
     display: flex;
     justify-content: center;
-}
-
-.userinpageimgcontainer img {
-    width: auto;
-    height: 50%;
 }

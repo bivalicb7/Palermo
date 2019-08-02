@@ -24,11 +24,12 @@
 
 #countdown {
     position: relative;
-    animation-name: imgpic;
+/*    animation-name: imgpic;
     animation-fill-mode: forwards;
     animation-timing-function: ease-in-out;
-    animation-duration: 10s;
-    font-size: 20px;
+    animation-duration: 10s;*/
+    font-size: 50px;
+    font-weight: 900;
     color: darkred;
 }
 

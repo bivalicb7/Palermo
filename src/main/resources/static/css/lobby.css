@@ -104,6 +104,35 @@ body {
 
 }
 
+.banbutton {
+     font-size: 15px !important;
+    /*margin-top: 10px;*/
+    margin-left: 10%;
+    margin-right: 10%;
+    /* display: inline-block; */
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+    color: white;
+    /* background-color: darkred; */
+    width: max-content;
+    text-decoration: none;
+    /*height: max-content;*/
+    background: #8E0E00;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #1F1C18, #8E0E00);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #1F1C18, #8E0E00); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
 
 .userslist {
     display: flex;
@@ -111,7 +140,7 @@ body {
     width: 100%;
     padding: 0;
     justify-content: flex-start;
-    min-height: 80px;
+    /*min-height: 80px;*/
 }
 
 .userslist li{
