@@ -18,46 +18,8 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <base href="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/" />
         <title>JSP Page</title>
-<!--        <link href="css/userprofile.css" rel="stylesheet">-->
-               <style>
+        <link href="css/userprofile.css" rel="stylesheet">
 
-            input[type=text], select {
-                width: 100%;
-                padding: 12px 20px;
-                margin: 8px 0;
-                display: inline-block;
-                border: 1px solid #ccc;
-                border-radius: 4px;
-                box-sizing: border-box;
-            }
-            form {
-                margin-left: auto;
-                margin-right: auto;
-                border-radius: 5px;
-                background-color: #f2f2f2;
-                padding: 10px;
-                top: 50%;
-                width: 40%;
-                text-align: center;
-                font-size: 18px;
-            }
-
-            input[type=submit] {
-                width: 100%;
-                background-color:darkred ;
-                color: white;
-                padding: 14px 20px;
-                margin: 8px 0;
-                border: none;
-                border-radius: 4px;
-                cursor: pointer;
-                text-align: center;
-            }
-            input[type=submit]:hover {
-                background-color:#000;
-            }
-
-        </style>
     </head>
     <body>
         <c:if test="${loggedinuser.userid eq null}">
@@ -78,13 +40,13 @@
             <a href="updateprofile/updatemydata">Edit user data</a>
 
 
-            <div id="form">
-                <table>
-                <tr>
-                    <td>First Name:</td>
-                    <td>${myprofile.firstname}</td>
-                </tr>
-                </table>
+            <div id="Info">
+
+                <p>
+                    <strong>First Name:</strong>
+                    <span>${myprofile.firstname}</span>
+                </p>
+
                 <p>
                     <strong>Last Name:</strong>
                     <span>${myprofile.lastname}</span>
@@ -106,31 +68,42 @@
             <div id="gamefinishedcontainer">
                 <c:choose>
                     <c:when test="${!empty finishedgames}">
-                        <c:forEach  items="${finishedgames}" var="finishedgame">
-                            <div class="gamefinished">
-                                <p class="date">Start date: ${finishedgame.startdatetime}</p>
-                                <p class="date">End date: ${finishedgame.enddatetime}</p>
-                                <c:if test="${finishedgame.won eq 1}">
-                                    <p class="ingamerole"> Won as a: ${finishedgame.ingamerole}</p>
-                                </c:if>
-                            </div>
-                        </c:forEach>
+                        <table id="playerinfo">
+                            <thead>
+                                <tr>
+                                    <th>Start date</th>
+                                    <th>End date</th>
+                                    <th>Role</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <c:forEach  items="${finishedgames}" var="finishedgame">
+                                    <tr>
+                                        <!--                                <div class="gamefinished">-->
+                                        <td>${finishedgame.startdatetime}</td>
+        <!--                                <p class="date">Start date: ${finishedgame.startdatetime}</p>-->
+        <!--                                <p class="date">End date: ${finishedgame.enddatetime}</p>-->
+                                        <td>${finishedgame.enddatetime}</td>
+                                        <c:if test="${finishedgame.won eq 1}">
+        <!--                                    <p class="ingamerole"> Won as a: ${finishedgame.ingamerole}</p>-->
+                                            <td>${finishedgame.ingamerole}</td>
+                                        </c:if>
+                                    </tr>
+                                    <!--                        </div>-->
+                                </c:forEach>
+                            </tbody>
+                        </table>
                     </c:when>
                     <c:otherwise>
                         <p id="nofinishedgames">There are no finished games!</p>                    
                     </c:otherwise>
                 </c:choose>
-
-
             </div>
-                
 
             <!-- Needed because other elements inside ProfilePage have floats -->
             <div style="clear:both"></div>
-            
-        </div>
-    </c:if>
+        </c:if>
 
-</body>
+    </body>
 
 </html>

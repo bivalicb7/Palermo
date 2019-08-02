@@ -15,47 +15,12 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <base href="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/" />
+        <link href="css/updateuserdata.css" rel="stylesheet">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        
         <title>My Profile</title>
-        <style>
-
-            input[type=text], select {
-                width: 100%;
-                padding: 12px 20px;
-                margin: 8px 0;
-                display: inline-block;
-                border: 1px solid #ccc;
-                border-radius: 4px;
-                box-sizing: border-box;
-            }
-            #editform {
-                margin-left: auto;
-                margin-right: auto;
-                border-radius: 5px;
-                background-color: #f2f2f2;
-                padding: 10px;
-                top: 50%;
-                width: 40%;
-                text-align: center;
-                font-size: 18px;
-            }
-
-            input[type=submit] {
-                width: 100%;
-                background-color:darkred ;
-                color: white;
-                padding: 14px 20px;
-                margin: 8px 0;
-                border: none;
-                border-radius: 4px;
-                cursor: pointer;
-                text-align: center;
-            }
-            input[type=submit]:hover {
-                background-color:#000;
-            }
-
-        </style>
+       
     </head>
     <body>
         <c:if test="${loggedinuser.userid eq null}">
@@ -64,6 +29,7 @@
         <c:if test="${loggedinuser.userid ne null}">
             
             <%@ include file="navbar.jsp" %>
+            </br>
             
             <springForm:form id="editform" method="post" modelAttribute="myprofile" action ="${pageContext.request.contextPath}/updateprofile/addmydata" enctype="multipart/form-data">
                 <div id="form">
