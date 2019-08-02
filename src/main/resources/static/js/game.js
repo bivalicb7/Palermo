@@ -47,6 +47,20 @@ $(function () {
     $("#replaybutton").click(function () {
         sendResetGame();
     });
+
+    document.querySelector("#messagetextarea").addEventListener('keyup', event => {
+        if (event.keyCode === 13) {
+            sendChatMessage();
+        }
+    });
+    
+    document.querySelector("#killer_messagetextarea").addEventListener('keyup', event => {
+        if (event.keyCode === 13) {
+            sendKillerChatMessage();
+        }
+    });
+    
+    
 });
 
 function connect() {
