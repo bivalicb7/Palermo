@@ -9,7 +9,11 @@ and open the template in the editor.
     Created on : Jul 17, 2019, 12:48:50 AM
     Author     : Los_e
 */
+@import url('https://fonts.googleapis.com/css?family=Poppins&display=swap');
+
 body {
+    font-family: 'Poppins', sans-serif !important;
+
     display: flex;
     flex-wrap: wrap;
     width: 100vw;
@@ -105,7 +109,7 @@ body {
 }
 
 .banbutton {
-     font-size: 15px !important;
+    font-size: 15px !important;
     /*margin-top: 10px;*/
     margin-left: 10%;
     margin-right: 10%;

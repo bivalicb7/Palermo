@@ -47,6 +47,20 @@ $(function () {
     $("#replaybutton").click(function () {
         sendResetGame();
     });
+
+    document.querySelector("#messagetextarea").addEventListener('keyup', event => {
+        if (event.keyCode === 13) {
+            sendChatMessage();
+        }
+    });
+    
+    document.querySelector("#killer_messagetextarea").addEventListener('keyup', event => {
+        if (event.keyCode === 13) {
+            sendKillerChatMessage();
+        }
+    });
+    
+    
 });
 
 function connect() {
@@ -474,7 +488,7 @@ function checkIfDead(tablestate) {
 
     if (tablestate.phase == "nightkill") {
         if (tablestate.killbyrussianroulette == true) {
-            showPhase("russian");
+            showRussian();
             message = "User " + usernameofdead + " was killed in Russian Roulette!"
         } else {
             showPhase("night");
