@@ -36,8 +36,6 @@
 
 
             <%@ include file="navbar.jsp" %>
-            <h1>Userid = ${loggedinuser.userid}</h1>
-            <h1>Username = ${sessionScope.loggedinuser.username}</h1>
 
             <div id="tableslist"></div>
 
@@ -49,6 +47,8 @@
             <!--</div>-->
             <%--</c:if>--%>
             <!--<div >-->
+                <div id="choosenumcont">
+
                 <form id="creategamecontainer" action="lobby/startgame">
                 <label for="creategame_seat_total">Choose number of players</label>
                 <select id="creategame_seat_total" name="numofplayers">
@@ -63,6 +63,8 @@
                 <input type="submit" value="Create new game">
                 <!--<a href="lobby/startgame">Create new game</a>-->
                 </form>
+                        </div>
+
             <!--</div>-->
         </c:if>
     </body>

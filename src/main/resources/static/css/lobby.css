@@ -1,3 +1,5 @@
+/* //Loby css */
+
 /*
 To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
@@ -7,9 +9,149 @@ and open the template in the editor.
     Created on : Jul 17, 2019, 12:48:50 AM
     Author     : Los_e
 */
+body {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100vw;
+    height: 100vh;
+
+    background: #D3CCE3;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #E9E4F0, #D3CCE3);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #E9E4F0, #D3CCE3); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
 
 #tableslist {
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    /* flex-wrap: wrap; */
+    width: 60%;
+    height: 90%;
+    /* justify-content: center; */
+    padding: 50px;
+}
+
+#choosenumcont {
+    background-image: url("/palermo/images/grunge.jpg");
+
+    width: 30%;
+    height: 20%;
+    box-shadow: 10px 10px 12px -4px rgba(150,150,150,0.75);
+    background-color: lightgrey;
+    border-radius: 10px;
+    margin-top: 60px;
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#choosenumcont form{
+    width: 100%;
+    height: max-content;
+    display: flex;
+    flex-wrap: wrap;
+    text-align: center;
+    /* flex-direction: column; */
+    justify-content: center;
+    margin: 0;
+}
+
+#choosenumcont form select{
+    width: max-content;
+    height: fit-content;
+    letter-spacing: 5px;
+
+}
+
+#choosenumcont form label{
+    margin-right: 10px;
+    font-weight: bold;
+    color: white;
+    letter-spacing: 5px;
+}
+
+
+#choosenumcont form input{
+    font-size: 15px !important;
+    margin-top: 10px;
+    margin-left: 10%;
+    margin-right: 10%;
+    /* display: inline-block; */
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+    color: white;
+    /* background-color: darkred; */
+    width: max-content;
+    text-decoration: none;
+    height: max-content;
+    background: #8E0E00;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #1F1C18, #8E0E00);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #1F1C18, #8E0E00); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
+
+.banbutton {
+     font-size: 15px !important;
+    /*margin-top: 10px;*/
+    margin-left: 10%;
+    margin-right: 10%;
+    /* display: inline-block; */
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+    color: white;
+    /* background-color: darkred; */
+    width: max-content;
+    text-decoration: none;
+    /*height: max-content;*/
+    background: #8E0E00;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #1F1C18, #8E0E00);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #1F1C18, #8E0E00); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+
+.userslist {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    padding: 0;
+    justify-content: flex-start;
+    /*min-height: 80px;*/
+}
+
+.userslist li{
+    max-height: 40px;
+    padding: 10px;
+    text-align: center;
+    box-shadow: 10px 10px 12px -4px rgba(150,150,150,0.75);
+    background-color: white;
+    border-radius: 10px;
+    margin: 10px;
+
 }
 
 .userentrance {
@@ -23,6 +165,72 @@ and open the template in the editor.
     animation-name: slidein2;
 }
 
+.tablecontainer {
+    background-image: url("/palermo/images/grunge.jpg");
+    background-position: center;
+    background-size: cover;
+
+    border-radius: 10px;
+    background-color: azure;
+    width: 80%;
+    min-height: 30%;
+    margin: 10px 10px 10px 10px;
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    padding: 20px;
+    box-shadow: 10px 10px 12px -4px rgba(150,150,150,0.75);
+
+
+}
+
+.tablelist:not(:first-child) {
+    /* margin-top: 50px; */
+}
+
+
+.tablecontainer p {
+    width: 100%;
+    text-align: right;
+    height: 25px;
+    margin: 0;
+    font-weight: bold;
+    color: white;
+    letter-spacing: 5px;
+}
+
+.tablecontainer a{
+    font-size: 15px !important;
+    margin-top: 10px;
+    /* display: inline-block; */
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+    color: white;
+    /* background-color: darkred; */
+    width: 100px;
+    text-decoration: none;
+    background: #8E0E00;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #1F1C18, #8E0E00);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #1F1C18, #8E0E00); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+    /* transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out; */
+}
+
+
+
+
 @keyframes slidein1 {
     from {
         margin-left: 5%;
@@ -34,7 +242,7 @@ and open the template in the editor.
         /*width: 100%;*/
     }
 }
-    
+
 @keyframes slidein2 {
     from {
         margin-top: -10%;
@@ -42,7 +250,7 @@ and open the template in the editor.
     }
 
     to {
-       margin-top: 0%;
+        margin-top: 0%;
         opacity: 1;
     }
 }
@@ -52,6 +260,9 @@ and open the template in the editor.
     flex-wrap: wrap;
 }
 
+.userslist {
+    list-style-type: none;
+}
 /*#creategamecontainer input {
     background-color: black;
     border-radius: 5px;

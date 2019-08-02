@@ -86,7 +86,7 @@ function  displayTable(tablesinlobby, elem) {
     var divcont = document.createElement("div");
     divcont.classList.add("tableentrance", "tablecontainer");
     divcont.setAttribute("id", `table_id${tablesinlobby.gametablesinlobby[elem].gametableid}`);
-    divcont.setAttribute("style", "border: 3px solid black; width: auto; margin: 0 10px 10px 10px;");
+//    divcont.setAttribute("style", "border: 3px solid black; width: auto; margin: 0 10px 10px 10px;");
 
     var numberofseats = document.createElement("p");
     numberofseats.classList.add("numberofseats");
@@ -100,7 +100,7 @@ function  displayTable(tablesinlobby, elem) {
 
     for (var userelem in tablesinlobby.gametablesinlobby[elem].usersintable) {
         var li = document.createElement("li");
-        li.innerHTML = `${tablesinlobby.gametablesinlobby[elem].usersintable[userelem].userprofileview.username} ${tablesinlobby.gametablesinlobby[elem].usersintable[userelem].userprofileview.firstname} ${tablesinlobby.gametablesinlobby[elem].usersintable[userelem].userprofileview.lastname} `;
+        li.innerHTML = `${tablesinlobby.gametablesinlobby[elem].usersintable[userelem].userprofileview.username} `;
 
         if (userrole == "admin") {
             var banbutton = document.createElement("button");
@@ -150,7 +150,7 @@ function updateUsersInTable(tablesinlobby, id) {
     for (var userelem in tablesinlobby.gametablesinlobby[id].usersintable) {
         ++numofusers;
         var li = document.createElement("li");
-        li.innerHTML = `${tablesinlobby.gametablesinlobby[id].usersintable[userelem].userprofileview.username} ${tablesinlobby.gametablesinlobby[id].usersintable[userelem].userprofileview.firstname} ${tablesinlobby.gametablesinlobby[id].usersintable[userelem].userprofileview.lastname} `;
+        li.innerHTML = `${tablesinlobby.gametablesinlobby[id].usersintable[userelem].userprofileview.username} `;
        
         if (userrole == "admin") {
             var banbutton = document.createElement("button");

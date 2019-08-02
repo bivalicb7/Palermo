@@ -1,0 +1,116 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Aug 2, 2019, 7:07:17 AM
+    Author     : Los_e
+*/
+body {
+    /*width: 90vw;*/
+    display: flex;
+    flex-wrap: wrap;
+    /*font-family: 'Concert One', cursive;*/
+    margin: auto;
+    /* background: url("icons/wall.jpeg"); */
+     background: url("/palermo/images/grunge.jpg"); 
+    /* background-attachment: fixed;
+    background-size: cover; */
+        background-attachment: fixed;
+        background-size: cover;
+            /*background-attachment: fixed;*/
+}
+
+table {
+    border-collapse:separate; 
+    border-spacing:0 30px; 
+}
+
+table td {
+    vertical-align: middle;
+    text-align: center;
+}
+
+thead {
+    background-color: white;
+    font-size: 1.5em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    /*font-size: 2.5vw;*/
+    color: darkred;
+}
+
+thead td:not(:last-child) {
+        /*border-right: 3px solid #fff78f;*/
+}
+
+thead td {
+    padding: 10px;
+}
+
+tbody tr {
+    box-shadow:         3px 3px 3px white, 5px 5px 5px #22b9ca; 
+
+}
+
+tbody td{
+    padding: 10px;
+    /*color: #f30cd4*/
+         background-color: white ; 
+}
+
+table tbody tr:nth-child(even) {
+    background: white;
+
+}
+
+table tbody tr:nth-child(odd) {
+    background: white;
+}
+
+table img {
+    width: 70%;
+    height: auto;
+    border-radius: 20px;
+    border: 6px solid darkred;
+}
+
+tbody a {
+    color: darkred;
+    text-decoration: none;
+}
+
+tbody a:hover {
+    text-decoration-line: underline;
+
+}
+
+table input {
+    font-size: 15px !important;
+    /*margin-top: 10px;*/
+    margin-left: 10%;
+    margin-right: 10%;
+    /* display: inline-block; */
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+    color: white;
+    /* background-color: darkred; */
+    width: max-content;
+    text-decoration: none;
+    /*height: max-content;*/
+    background: #8E0E00;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #1F1C18, #8E0E00);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #1F1C18, #8E0E00); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}

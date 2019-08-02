@@ -45,5 +45,9 @@ public class UserService {
     }
      public boolean checkIfEmailExists(String email) {
         return userRepo.existsUserByEmail(email);
+     }
+    
+    public void delete(int userid) {
+        userRepo.deleteById(userid);
     }
 }

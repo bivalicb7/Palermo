@@ -28,7 +28,7 @@
                 border-radius: 4px;
                 box-sizing: border-box;
             }
-            form {
+            #editform {
                 margin-left: auto;
                 margin-right: auto;
                 border-radius: 5px;
@@ -62,11 +62,10 @@
             <%@include file="errorpage.jsp"%>
         </c:if>
         <c:if test="${loggedinuser.userid ne null}">
-
-
+            
             <%@ include file="navbar.jsp" %>
-            </br>
-            <springForm:form method="post" modelAttribute="myprofile" action ="${pageContext.request.contextPath}/updateprofile/addmydata" enctype="multipart/form-data">
+            
+            <springForm:form id="editform" method="post" modelAttribute="myprofile" action ="${pageContext.request.contextPath}/updateprofile/addmydata" enctype="multipart/form-data">
                 <div id="form">
                     <table>
                         <tr>

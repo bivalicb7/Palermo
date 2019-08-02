@@ -16,6 +16,7 @@
     <head>
         <base href="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}/" />
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link href="css/allusers.css" rel="stylesheet">
         <title>All users</title>
     </head>
     <body>
@@ -35,6 +36,8 @@
                             <td >Email</td>
                             <td >Role</td>
                             <td >Account status</td>
+                            <td >Update user</td>
+                            <td >Delete user</td>
                         </tr>
                     </thead>
                     <tbody>
@@ -54,15 +57,50 @@
                                 <td >${user.firstname}</td>
                                 <td >${user.lastname}</td>
                                 <td >${user.email}</td>
-                                <td >${user.role}</td>
-                            </tr>
-                        </c:forEach>
-                    </tbody>
-                </table>
-            </c:when>
-            <c:otherwise>
-                <p id="nousers">No users at the moment</p>                    
-            </c:otherwise>
-        </c:choose>
-    </body>
+                        <form action="allusers/updateuserinfo" method="post">
+                            <td >
+                                <select name="role">
+                                    <c:choose>
+                                        <c:when test="${user.role eq 'plainuser'}">
+                                            <option value="${user.role}">Plain user</option>
+                                            <option value="admin">Administrator</option>
+                                        </c:when>
+                                        <c:when test="${user.role eq 'admin'}">
+                                            <option value="${user.role}">Administrator</option>
+                                            <option value="plainuser">Plain user</option>
+                                        </c:when>
+                                    </c:choose>
+                                </select>
+                            </td>
+
+                            <td >
+                                <select name="active">
+                                    <c:choose>
+                                        <c:when test="${user.active eq '0'}">
+                                            <option value="${user.active}">Inactive</option>
+                                            <option value="1">Active</option>
+                                        </c:when>
+                                        <c:when test="${user.active eq '1'}">
+                                            <option value="${user.active}">Active</option>
+                                            <option value="0">Inactive</option>
+                                        </c:when>
+                                    </c:choose>
+                                </select>
+                            </td>
+                            <td ><input type="submit"></td>
+                            <input type="hidden" value="${user.userid}" name ="userid">
+                        </form>
+
+                        <td ><a href="allusers/deleteuser/${user.userid}">Delete</a></td>
+                    </tr>
+                </c:forEach>
+            </tbody>
+        </table>
+    </c:when>
+    <c:otherwise>
+        <p id="nousers">No users at the moment</p>                    
+    </c:otherwise>
+</c:choose>
+</body>
+<script src="js/allusers.js"></script>
 </html>
