@@ -57,10 +57,9 @@
                     </div>
                     <p id="userinpageusername"></p>
                     <div id="ingamerolecontainer">
-                        <img/>
                         <p id="ingamerole"></p>
                     </div>
-                    <div id="extrainfo"  class="hidediv" style="border: 1px solid;">
+                    <div id="extrainfo"  class="hidediv">
                         <p id="otheruserrole"></p>
                         <p id="otherusername"></p>
                     </div>
