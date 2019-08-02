@@ -48,10 +48,15 @@ body {
 
 #imgcont {
     width: 100%;
+    height: 40%;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
 
+}
+#imgcont img {
+    width: auto;
+    height: 100%;
 }
 
 #ProfilePage

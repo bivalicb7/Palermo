@@ -76,10 +76,10 @@ public class RegisterController {
             String subject = "Confirmation email Palermo";
             String text = "Click the following link to confirm your account!";
             String serial = UUID.randomUUID().toString();
-            String link = "http://localhost:8080/palermo/register/confirm/" + serial;
+            String link = "http:/10.150.13.137:8080/palermo/register/confirm/" + serial;
             boolean emailsuccess = false;
             
-            try {
+                        try {
                 emailService.sendSimpleMessage(user.getEmail(), subject, HtmlUtils.htmlEscape(text + " " + link));
                 emailsuccess = true;
             } catch (Exception e) {
