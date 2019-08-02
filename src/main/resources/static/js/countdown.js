@@ -40,12 +40,13 @@ function showRussian() {
 
             initCountdown();
 
-            setTimeout(function () {
-                document.querySelector(".imgtextrussian").classList.add("bounceOutUp");
-            }, 3000);
+//            setTimeout(function () {
+//                document.querySelector(".imgtextrussian").classList.add("bounceOutUp");
+//            }, 3000);
         }
 
         if (event.animationName == "bounceOutUp") {
+            clearPhase();
         }
     });
 }
@@ -65,8 +66,10 @@ function countdownfunc() {
 //    (seconds == 1) ? document.getElementById("plural").textContent = "" : document.getElementById("plural").textContent = "s";
     document.getElementById("countdown").innerHTML = seconds;
     if (seconds <= 0) {
-            document.getElementById("countdown").innerHTML = 0;
-        clearPhase();
+        document.getElementById("countdown").innerHTML = 0;
+        document.querySelector(".imgtextrussian").classList.add("bounceOutUp");
+        document.querySelector("#countercont").classList.add("animated", "bounceOutDown");
+
     }
 
 }
