@@ -42,7 +42,7 @@
 
             input[type=submit] {
                 width: 100%;
-                background-color: #4CAF50;
+                background-color:darkred ;
                 color: white;
                 padding: 14px 20px;
                 margin: 8px 0;
@@ -52,7 +52,7 @@
                 text-align: center;
             }
             input[type=submit]:hover {
-                background-color: #45a049;
+                background-color:#000;
             }
 
         </style>
@@ -89,6 +89,7 @@
                         <label for="upload">Choose file to upload</label>
                         </tr>
                         <input type="submit">
+                        </table>
                         </div>
                     </springForm:form>
                 </c:if>
