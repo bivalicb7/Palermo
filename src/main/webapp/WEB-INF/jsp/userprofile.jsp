@@ -28,42 +28,52 @@
         <c:if test="${loggedinuser.userid ne null}">
 
             <%@ include file="navbar.jsp" %>
-            </br>
-            <c:if test="${myprofile.profileimagebase64 ne null}">
-                <img src="data:image/png;base64, ${myprofile.profileimagebase64}"/>
-            </c:if>
-            <c:if test="${myprofile.profileimagebase64 eq null}">
-                <img src="images/man-user.png"/>
-            </c:if>
 
-            </br></br>
-            <a href="updateprofile/updatemydata">Edit user data</a>
+            <div id="infocont">
 
+                <div id="playerdetails">
 
-            <div id="Info">
+                    <div id="imgcont">
+                        <c:if test="${myprofile.profileimagebase64 ne null}">
 
-                <p>
-                    <strong>First Name:</strong>
-                    <span>${myprofile.firstname}</span>
-                </p>
+                            <img src="data:image/png;base64, ${myprofile.profileimagebase64}"/>
+                        </c:if>
+                        <c:if test="${myprofile.profileimagebase64 eq null}">
+                            <img src="images/man-user.png"/>
+                        </c:if>
+                    </div>
 
-                <p>
-                    <strong>Last Name:</strong>
-                    <span>${myprofile.lastname}</span>
-                </p>
-                <p>
-                    <strong>Date of birth:</strong>
-                    <span>${myprofile.dateofbirthday}</span>
-                </p>
-                <p>
-                    <strong>Number of wins:</strong>
-                    <span type="number"> ${gameswon} </span>
-                </p>
-                <!--                <p>
-                                    <strong>Number of losts:</strong>
-                                    <span type="numner"> 1  </span>
-                                </p>-->
+                    <a href="updateprofile/updatemydata">Edit user data</a>
+
+                    <div id="infoinfocont">
+                        <div id="Info">
+
+                            <p>
+                                <strong>First Name:</strong>
+                                <span>${myprofile.firstname}</span>
+                            </p>
+
+                            <p>
+                                <strong>Last Name:</strong>
+                                <span>${myprofile.lastname}</span>
+                            </p>
+                            <p>
+                                <strong>Date of birth:</strong>
+                                <span>${myprofile.dateofbirthday}</span>
+                            </p>
+                            <p>
+                                <strong>Number of wins:</strong>
+                                <span type="number"> ${gameswon} </span>
+                            </p>
+                            <!--                <p>
+                                                <strong>Number of losts:</strong>
+                                                <span type="numner"> 1  </span>
+                                            </p>-->
+                        </div>
+                    </div>
+                </div>
             </div>
+
 
             <div id="gamefinishedcontainer">
                 <c:choose>
