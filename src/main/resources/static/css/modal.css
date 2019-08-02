@@ -1,4 +1,9 @@
-body {font-family: Arial, Helvetica, sans-serif;}
+
+@import url('https://fonts.googleapis.com/css?family=Poppins&display=swap');
+
+
+body {    font-family: 'Poppins', sans-serif !important;
+          ;}
 
 /* The Modal (background) */
 .modal {
@@ -16,6 +21,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
 }
 pre{
     /*overflow-y: scroll;*/
+font-family: 'Poppins', sans-serif !important;
 }
 
 /* Modal Content */
