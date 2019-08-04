@@ -19,11 +19,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author djbil
  */
+
+@Component
 public class PayPalClient {
     String clientId = "AVzlY5bP5lzrqO9NBO-6o04gtDyFm-HdUTqNNP-0NYJDDSD8YyXVjlptqwNoxh73i-2Nalfd5iRzqfsX";
 String clientSecret = "EAm8G2hWTJlmx5TlnznAwz1l8Hs5ELeqKuoVt-UeKL1o8Q26iVCx1JZXcQN5Spa9RvMAJJOm47ybpp6J";
@@ -46,8 +49,8 @@ public Map<String, Object> createPayment(String sum){
     payment.setTransactions(transactions);
 
     RedirectUrls redirectUrls = new RedirectUrls();
-    redirectUrls.setCancelUrl("http://localhost:4200/cancel");
-    redirectUrls.setReturnUrl("http://localhost:4200/");
+    redirectUrls.setCancelUrl("http://localhost:8080/payment/cancel");
+    redirectUrls.setReturnUrl("http://localhost:8080/palermo/payment/afterdonation");
     payment.setRedirectUrls(redirectUrls);
     Payment createdPayment;
     try {

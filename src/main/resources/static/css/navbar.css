@@ -3,7 +3,7 @@
 
 body {
     margin: 0;
-/*    font-family: Arial, Helvetica, sans-serif;*/
+    /*    font-family: Arial, Helvetica, sans-serif;*/
     font-family: 'Poppins', sans-serif !important;
 
 }
@@ -46,8 +46,9 @@ body {
     justify-content: flex-end;
 }
 
-#myBtn {
-        font-size: 15px !important;
+#myBtn, #payPalDonate {
+    margin-right: 5px;
+    font-size: 15px !important;
     /* margin-top: 10px; */
     /* display: inline-block; */
     font-weight: 400;
@@ -120,4 +121,70 @@ body {
 .topnav a.active {
     background-color: #4CAF50;
     color: white;
+}
+
+form input[type="submit"] {
+    font-size: 15px !important;
+    margin-top: 10px;
+    margin-left: 10%;
+    margin-right: 10%;
+    /* display: inline-block; */
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+    color: white;
+    /* background-color: darkred; */
+    width: max-content;
+    text-decoration: none;
+    /*height: max-content;*/
+    background: #8E0E00;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #1F1C18, #8E0E00);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #1F1C18, #8E0E00); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+#payPalModal {
+    /*display: flex;*/
+    flex-wrap: wrap;
+    justify-content: center;
+
+}
+
+#paypal-modal-content{
+    width: 50%;
+    height: 50%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+}
+
+#paypalformcontainer{
+    width: 100%;
+    height: 50%;
+    background-color: black;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    border-radius: 10px;
+    padding: 20px;
+        background-image: url("/palermo/images/grunge.jpg");
+
+}
+
+#paypalformcontainer p{
+    width: 100%;
+}
+
+#paypalformcontainer form{
+    width:50%
 }

@@ -34,16 +34,18 @@
                     <a href="allusers/showallusers">All users</a>
                 </div>
             </c:if>
-            <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post" target="_top" class="topnav">
+<!--            <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post" target="_top" class="topnav">
                 <input type="hidden" name="cmd" value="_s-xclick" />
                 <input type="hidden" name="hosted_button_id" value="CM6S52A42ZU58" />
                 <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" />
                 <img alt="" border="0" src="https://www.sandbox.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1" />
-            </form>
+            </form>-->
+            
         </div>
 
         <div id="midlinks">
             <button id="myBtn">Instructions</button>
+            <button id="payPalDonate" title="Donate through PayPal">Donate</button>
         </div>
 
         <div id="endnav">
@@ -94,6 +96,23 @@
     who have killed everyone else, or the players who have remained in the game after the killers have been  killed. 
     
          <b>Have fun!!!</b></pre>
+            </div>
+            </div>
+            
+        <!-- The PayPal Modal -->
+        <div id="payPalModal" class="modal">
+
+            <!-- Modal content -->
+            <div id="paypal-modal-content">
+                <span class="close">&times;</span>
+                <div id="paypalformcontainer">
+                    <p id="formtext">Choose doanation amount</p>
+                    <form method="post" action="paypal/make/payment">
+                        <input id="suminput" type="text" name="sum" placeholder="EUR"/>
+                        <input id="donatebutton" type="submit" value="Donate"/>
+                    </form>
+                </div>
+            </div>
             </div>
 
         </div>
