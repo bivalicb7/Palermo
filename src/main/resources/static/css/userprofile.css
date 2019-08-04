@@ -7,6 +7,9 @@ body {
     flex-wrap: wrap;
     width: 100vw;
     height: 80vh;
+     background: #D3CCE3;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #E9E4F0, #D3CCE3);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #E9E4F0, #D3CCE3); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
 #infocont {
@@ -14,7 +17,7 @@ body {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    height: 80%;
+    height: 90%;
     align-content: space-around;
     /*        background-image: url("/palermo/images/grunge.jpg");
     padding: 20px;
@@ -45,10 +48,15 @@ body {
 
 #imgcont {
     width: 100%;
+    height: 40%;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
 
+}
+#imgcont img {
+    width: auto;
+    height: 100%;
 }
 
 #ProfilePage
