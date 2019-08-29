@@ -25,7 +25,4 @@ function completePayment(paymentId, payerId) {
             .then(function (myJson) {
                 console.log(myJson);
             });
-
-//    return this.http.post(this.url + 'paypal/make/payment?sum=' + sum, {})
-//    .map((response: Response) => response.json());
 }

@@ -80,8 +80,6 @@ function makePayment(sum) {
                 window.open(myJson.redirect_url);
             });
 
-//    return this.http.post(this.url + 'paypal/make/payment?sum=' + sum, {})
-//    .map((response: Response) => response.json());
 }
 
 function completePayment(paymentId, payerId) {
