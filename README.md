@@ -1,4 +1,4 @@
-#Palermo
+# Palermo #
 
 **About the game**
 
@@ -6,9 +6,9 @@ Palermo is an interactive web application based on the famous game "Night falls 
 A player may create a new table or join an existing one in the Lobby area which still has available seats. Once a table's seats have all been claimed, all the users have to click on the Start Game button and the game starts!
  A set of roles is randomly assigned among the players. The roles of the game are:
 
-*one"hidden killer" whose identity is secret
-*one"non hidden killer" whose identity is revealed to the "spy" and to the co-killer
-*one spy
+* one"hidden killer" whose identity is secret
+* one"non hidden killer" whose identity is revealed to the "spy" and to the co-killer
+* one spy
 * the civilians
 
 The killers' purpose is to get all the civilians plus the spy out of the game, while the rest of the players try to sniff out the killers and vote them out first.
