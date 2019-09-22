@@ -55,3 +55,27 @@ using the administrator account though.
 **How to play the game in dev mode**
 
 In order to play a game in dev mode you either need to serve the project and have other people log in or log in with at least 6 accounts in different browser windows on your machine.
+
+### Prerequisites
+
+What things you need to install the software: 
+
+* Netbeans IDE
+* Apache Tomcat
+
+## Built With
+
+* Maven - Dependency Management
+* Spring boot
+* Spring WebSocket API with SockJS
+
+Third party APIs
+
+* PayPal developer API
+
+## Authors
+
+* **Liana Kotzabasi** - *Initial work* - [kotzabasi](https://github.com/kotzabasi)
+* **Vasilis Efthymiou** - *Initial work* - [vasilissavage](https://github.com/vasilissavage)
+* **Evangelos Kalabokis** - *Initial work* - [EvanKal](https://github.com/EvanKal)
+
